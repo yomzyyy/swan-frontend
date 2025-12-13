@@ -1,0 +1,137 @@
+import { Link } from 'react-router-dom';
+import { jobOpenings } from './data/jobOpenings';
+
+const CareersPage = () => {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
+        <div className="max-w-7xl mx-auto px-8">
+          <h1 className="text-6xl font-extrabold mb-6">
+            Join Our Team
+          </h1>
+          <p className="text-xl opacity-95 max-w-3xl leading-relaxed">
+            Build your career with a global leader in LPG maritime transport.
+            We're always looking for talented individuals who share our commitment
+            to excellence and safety.
+          </p>
+        </div>
+      </div>
+
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2 className="text-4xl font-bold text-gray-900 mb-12">
+            Why Work at SWAN Shipping?
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-3xl p-8">
+              <div className="w-16 h-16 bg-[#207dff] rounded-full flex items-center justify-center mb-6">
+                <span className="text-3xl">🌏</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Global Opportunities
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Work with international teams and operate in 50+ ports worldwide.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-2 border-cyan-200 rounded-3xl p-8">
+              <div className="w-16 h-16 bg-[#207dff] rounded-full flex items-center justify-center mb-6">
+                <span className="text-3xl">📚</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Training & Development
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Continuous professional development and maritime training programs.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 border-2 border-indigo-200 rounded-3xl p-8">
+              <div className="w-16 h-16 bg-[#207dff] rounded-full flex items-center justify-center mb-6">
+                <span className="text-3xl">💼</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Competitive Benefits
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Comprehensive health insurance, retirement plans, and performance bonuses.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="py-16">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2 className="text-4xl font-bold text-gray-900 mb-12">
+            Current Openings
+          </h2>
+
+          <div className="space-y-6">
+            {jobOpenings.map((job) => (
+              <div
+                key={job.id}
+                className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        {job.department}
+                      </span>
+                      <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        📍 {job.location}
+                      </span>
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        {job.type}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed">
+                      {job.description}
+                    </p>
+                  </div>
+                  <div>
+                    <button className="bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 whitespace-nowrap">
+                      Apply Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="py-16 bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white">
+        <div className="max-w-4xl mx-auto px-8 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Don't See Your Role?
+          </h2>
+          <p className="text-xl mb-8 opacity-95">
+            We're always interested in hearing from talented professionals.
+            Send us your resume and let's talk about your future with SWAN Shipping.
+          </p>
+          <button className="bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300">
+            Submit Resume
+          </button>
+        </div>
+      </div>
+
+      <div className="py-12 text-center bg-gray-50">
+        <Link
+          to="/"
+          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+        >
+          Back to Home
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default CareersPage;
