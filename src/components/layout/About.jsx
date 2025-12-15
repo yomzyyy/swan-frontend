@@ -18,6 +18,36 @@ const About = () => {
   // State for active tab
   const [activeTab, setActiveTab] = useState('heritage');
 
+  const tabContent = {
+    heritage: {
+      badge: 'Our Story',
+      title: 'Delivering Trusted LPG Maritime Services for Over 30 Years',
+      body: 'For over three decades, Swan Shipping Corporation has been committed to providing safe, efficient, and cost-effective LPG maritime services to customers worldwide.\n\nBacked by experienced maritime professionals and a strong technical foundation, we specialize in ship management, vessel operations, and LPG transport support — ensuring reliability, compliance, and operational excellence at every stage.',
+      stats: [
+        { number: '19', label: 'Modern Vessels' },
+        { number: '50+', label: 'Global Ports' }
+      ]
+    },
+    innovation: {
+      badge: 'Our Approach',
+      title: 'Modern Solutions for Evolving Maritime Needs',
+      body: 'We continuously adapt to changing maritime regulations and industry standards by integrating modern ship management practices, technical expertise, and operational efficiency to support safe LPG transport worldwide.',
+      stats: [
+        { number: '19', label: 'Modern Vessels' },
+        { number: '50+', label: 'Global Ports' }
+      ]
+    },
+    sustainability: {
+      badge: 'Our Commitment',
+      title: 'Responsible Operations for Safer Seas',
+      body: 'Swan Shipping Corporation is committed to responsible maritime operations by promoting safety, regulatory compliance, and environmentally conscious practices across all vessel management activities.',
+      stats: [
+        { number: '19', label: 'Modern Vessels' },
+        { number: '50+', label: 'Global Ports' }
+      ]
+    }
+  };
+
   return (
     <section id="about" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-8">
@@ -139,26 +169,20 @@ const About = () => {
             - flex flex-col: Enables vertical flexbox layout
             - h-full: Match height of adjacent column
           */}
-          <div className="bg-[#1a2332] rounded-3xl p-12 text-white shadow-xl flex flex-col h-full">
+          <div className="bg-[#1a2332] rounded-3xl p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
             {/* Badge */}
             <span className="bg-[#207dff] px-4 py-2 rounded-full text-xs font-bold mb-6 uppercase tracking-wide shadow-lg shadow-blue-500/30 self-start">
-              Our Story
+              {tabContent[activeTab].badge}
             </span>
 
             {/* Heading */}
             <h3 className="text-4xl font-bold mb-6 leading-tight">
-              Building the Future of LPG
-              <br />
-              Transport
+              {tabContent[activeTab].title}
             </h3>
 
             {/* Description */}
-            <p className="text-gray-300 leading-relaxed mb-8 text-lg">
-              Our team is composed of highly experienced technical people
-              with strong backgrounds in ship design, shipbuilding
-              supervision, dry docking, ship business and gas carrier
-              operation. We are committed to delivering safe, efficient, and
-              environmentally responsible maritime solutions.
+            <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
+              {tabContent[activeTab].body}
             </p>
 
             {/* Stats Grid */}
@@ -167,24 +191,17 @@ const About = () => {
               - grid grid-cols-2: 2 equal columns
               - gap-8: Space between items
             */}
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <div className="text-4xl font-extrabold text-[#207dff] mb-2">
-                  12+
+            <div className="grid grid-cols-2 gap-8 mt-8">
+              {tabContent[activeTab].stats.map((stat, index) => (
+                <div key={index}>
+                  <div className="text-4xl font-extrabold text-[#207dff] mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-400 text-sm">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-gray-400 text-sm">
-                  Modern Vessels
-                </div>
-              </div>
-
-              <div>
-                <div className="text-4xl font-extrabold text-[#207dff] mb-2">
-                  50+
-                </div>
-                <div className="text-gray-400 text-sm">
-                  Global Ports
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

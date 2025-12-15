@@ -1,24 +1,6 @@
-/**
- * Tailwind CSS v4 Setup
- *
- * NEW SYNTAX (v4):
- * - Uses @import instead of @tailwind directives
- * - Imports from "tailwindcss" package
- */
-
 @import "tailwindcss";
 
-/**
- * Custom global styles
- * You can add custom CSS here
- */
 
-/**
- * SMOOTH SCROLLING
- *
- * scroll-behavior: smooth - Makes all anchor link jumps smooth
- * This works when clicking links with href="#section-id"
- */
 html {
   scroll-behavior: smooth;
 }
