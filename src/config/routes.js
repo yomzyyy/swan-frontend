@@ -10,4 +10,21 @@ export const ROUTES = {
   PRIVACY: '/privacy-policy',
   TERMS: '/terms-conditions',
   COOKIE: '/cookie-policy',
+
+  // Admin routes
+  ADMIN_LOGIN: '/system-access',
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_NEWS: '/admin/news',
+  ADMIN_NEWS_CREATE: '/admin/news/create',
+  ADMIN_NEWS_EDIT: '/admin/news/edit/:id',
+  ADMIN_FLEET: '/admin/fleet',
+  ADMIN_FLEET_CREATE: '/admin/fleet/create',
+  ADMIN_FLEET_EDIT: '/admin/fleet/edit/:id',
+  ADMIN_CAREERS: '/admin/careers',
+  ADMIN_CAREERS_CREATE: '/admin/careers/create',
+  ADMIN_CAREERS_EDIT: '/admin/careers/edit/:id',
+  ADMIN_CONTENT_ABOUT: '/admin/content/about',
+  ADMIN_CONTENT_SERVICES: '/admin/content/services',
+  ADMIN_CONTENT_HOME: '/admin/content/home',
+  ADMIN_MEDIA: '/admin/media',
 };
