@@ -22,6 +22,8 @@ import FleetListAdmin from './features/admin/fleet/FleetListAdmin';
 import FleetFormAdmin from './features/admin/fleet/FleetFormAdmin';
 import CareersListAdmin from './features/admin/careers/CareersListAdmin';
 import CareersFormAdmin from './features/admin/careers/CareersFormAdmin';
+import HeroImagesAdmin from './features/admin/hero/HeroImagesAdmin';
+import HeroImageFormAdmin from './features/admin/hero/HeroImageFormAdmin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 
@@ -31,7 +33,7 @@ function App() {
       <AuthProvider>
         <ScrollToTop />
         <Routes>
-          {/* Public routes with Navbar and Footer */}
+          
           <Route
             path="/"
             element={
@@ -143,10 +145,10 @@ function App() {
             }
           />
 
-          {/* Admin login route (no Navbar/Footer) */}
+          
           <Route path="/system-access" element={<LoginPage />} />
 
-          {/* Protected admin routes */}
+          
           <Route
             path="/admin/*"
             element={
@@ -155,22 +157,26 @@ function App() {
                   <Routes>
                     <Route path="dashboard" element={<AdminDashboard />} />
 
-                    {/* News Management */}
+                    
                     <Route path="news" element={<NewsListAdmin />} />
                     <Route path="news/create" element={<NewsFormAdmin />} />
                     <Route path="news/edit/:id" element={<NewsFormAdmin />} />
 
-                    {/* Fleet Management */}
+                    
                     <Route path="fleet" element={<FleetListAdmin />} />
                     <Route path="fleet/create" element={<FleetFormAdmin />} />
                     <Route path="fleet/edit/:id" element={<FleetFormAdmin />} />
 
-                    {/* Careers Management */}
+                    
                     <Route path="careers" element={<CareersListAdmin />} />
                     <Route path="careers/create" element={<CareersFormAdmin />} />
                     <Route path="careers/edit/:id" element={<CareersFormAdmin />} />
 
-                    {/* Phase 6-7: More admin routes will be added here */}
+                    
+                    <Route path="hero" element={<HeroImagesAdmin />} />
+                    <Route path="hero/edit/:position" element={<HeroImageFormAdmin />} />
+
+                    
                   </Routes>
                 </AdminLayout>
               </ProtectedRoute>

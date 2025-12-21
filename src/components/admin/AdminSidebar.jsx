@@ -38,8 +38,8 @@ const AdminSidebar = () => {
       icon: '💼',
     },
     {
-      title: 'Media Library',
-      path: '/admin/media',
+      title: 'Hero Images',
+      path: '/admin/hero',
       icon: '🖼️',
     },
     {
@@ -65,13 +65,13 @@ const AdminSidebar = () => {
 
   return (
     <div className="w-64 bg-[#001E3C] text-white flex flex-col">
-      {/* Logo/Brand */}
+      
       <div className="p-6 border-b border-gray-700">
         <h1 className="text-2xl font-bold">SWAN Admin</h1>
         <p className="text-xs text-gray-400 mt-1">Content Management</p>
       </div>
 
-      {/* Navigation */}
+      
       <nav className="flex-1 overflow-y-auto p-4">
         {navItems.map((item, index) => {
           if (item.isSection) {
@@ -103,13 +103,25 @@ const AdminSidebar = () => {
         })}
       </nav>
 
-      {/* Logout Button */}
+      
       <div className="p-4 border-t border-gray-700">
         <button
           onClick={logout}
-          className="w-full bg-gradient-to-r from-[#207dff] to-[#00bfff] hover:shadow-lg hover:shadow-blue-500/50 text-white py-2 px-4 rounded-lg transition-all duration-200 flex items-center justify-center"
+          className="w-full bg-[#207dff] hover:bg-[#1a65cc] text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
         >
-          <span className="mr-2">🚪</span>
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
+          </svg>
           <span className="text-sm font-medium">Logout</span>
         </button>
       </div>

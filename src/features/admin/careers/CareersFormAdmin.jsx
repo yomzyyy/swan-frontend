@@ -59,7 +59,7 @@ const CareersFormAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-2">
           <button
@@ -77,17 +77,17 @@ const CareersFormAdmin = () => {
         </p>
       </div>
 
-      {/* Error Message */}
+      
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      {/* Form */}
+      
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Title */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Job Title <span className="text-red-500">*</span>
@@ -103,7 +103,7 @@ const CareersFormAdmin = () => {
             />
           </div>
 
-          {/* Department */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Department <span className="text-red-500">*</span>
@@ -124,7 +124,7 @@ const CareersFormAdmin = () => {
             </select>
           </div>
 
-          {/* Location */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Location <span className="text-red-500">*</span>
@@ -140,7 +140,7 @@ const CareersFormAdmin = () => {
             />
           </div>
 
-          {/* Type */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Employment Type <span className="text-red-500">*</span>
@@ -159,7 +159,7 @@ const CareersFormAdmin = () => {
             </select>
           </div>
 
-          {/* Description */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Job Description <span className="text-red-500">*</span>
@@ -176,7 +176,7 @@ const CareersFormAdmin = () => {
           </div>
         </div>
 
-        {/* Actions */}
+        
         <div className="mt-6 flex justify-end space-x-4">
           <button
             type="button"

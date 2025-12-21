@@ -42,15 +42,20 @@ const AdminTable = ({ columns, data, onEdit, onDelete, emptyMessage = 'No data a
                       {onEdit && (
                         <button
                           onClick={() => onEdit(row)}
-                          className="text-[#207dff] hover:text-[#1a65cc] transition-colors duration-200"
+                          className="px-4 py-2 bg-[#207dff] text-white rounded-lg hover:bg-[#1a65cc] transition-colors duration-200 font-medium cursor-pointer"
                         >
                           Edit
                         </button>
                       )}
                       {onDelete && (
                         <button
-                          onClick={() => onDelete(row)}
-                          className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onDelete(row);
+                          }}
+                          type="button"
+                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium cursor-pointer"
                         >
                           Delete
                         </button>

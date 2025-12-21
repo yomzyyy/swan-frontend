@@ -107,7 +107,7 @@ const AboutContentAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">About Page Content</h1>
@@ -123,21 +123,21 @@ const AboutContentAdmin = () => {
         </a>
       </div>
 
-      {/* Success Message */}
+      
       {successMessage && (
         <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
           {successMessage}
         </div>
       )}
 
-      {/* Error Message */}
+      
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      {/* Tab Selector */}
+      
       <div className="mb-6">
         <div className="flex space-x-2">
           {['heritage', 'innovation', 'sustainability'].map((tab) => (
@@ -156,10 +156,10 @@ const AboutContentAdmin = () => {
         </div>
       </div>
 
-      {/* Form */}
+      
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="space-y-6">
-          {/* Badge */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Badge Text
@@ -173,7 +173,7 @@ const AboutContentAdmin = () => {
             />
           </div>
 
-          {/* Title */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title
@@ -187,7 +187,7 @@ const AboutContentAdmin = () => {
             />
           </div>
 
-          {/* Body */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Body Text
@@ -202,7 +202,7 @@ const AboutContentAdmin = () => {
             <p className="text-xs text-gray-500 mt-1">Use \n\n to separate paragraphs</p>
           </div>
 
-          {/* Stats */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Statistics
@@ -232,7 +232,7 @@ const AboutContentAdmin = () => {
           </div>
         </div>
 
-        {/* Actions */}
+        
         <div className="mt-6 flex justify-between">
           <button
             type="button"

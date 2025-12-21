@@ -1,23 +1,13 @@
-/**
- * Form Validation Utilities
- *
- * Provides validation functions for contact forms
- */
-
-// Email validation
 export const validateEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 };
 
-// Phone validation (international format)
 export const validatePhone = (phone) => {
-  // Allow optional + at start, then digits, spaces, dashes, parentheses
   const regex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
   return regex.test(phone);
 };
 
-// File validation
 export const validateFile = (file, maxSize = 5 * 1024 * 1024) => {
   if (!file) {
     return { valid: false, error: 'Please select a file' };
@@ -40,7 +30,6 @@ export const validateFile = (file, maxSize = 5 * 1024 * 1024) => {
   return { valid: true };
 };
 
-// Validate General Contact Form
 export const validateContactForm = (formData) => {
   const errors = {};
 
@@ -71,7 +60,6 @@ export const validateContactForm = (formData) => {
   return errors;
 };
 
-// Validate Job Application Form
 export const validateJobForm = (formData) => {
   const errors = {};
 
@@ -113,7 +101,6 @@ export const validateJobForm = (formData) => {
   return errors;
 };
 
-// Validate Quote Request Form
 export const validateQuoteForm = (formData) => {
   const errors = {};
 

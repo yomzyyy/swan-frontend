@@ -1,21 +1,6 @@
 import { useState } from 'react';
 
-/**
- * About Section - Using Tailwind CSS
- *
- * FEATURES:
- * - Tab navigation (Heritage, Innovation, Sustainability)
- * - Two-column layout (image + content)
- * - Stats display
- * - Responsive design
- *
- * NEW TAILWIND CONCEPTS:
- * - Conditional rendering with state
- * - Tab styling with active states
- * - Grid layout for complex designs
- */
 const About = () => {
-  // State for active tab
   const [activeTab, setActiveTab] = useState('heritage');
 
   const tabContent = {
@@ -52,7 +37,7 @@ const About = () => {
     <section id="about" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-8">
 
-        {/* Section Header */}
+        
         <div className="text-center mb-16">
           {/*
             TEXT GRADIENT HEADING:
@@ -68,7 +53,7 @@ const About = () => {
           </h2>
         </div>
 
-        {/* Tab Navigation */}
+        
         {/*
           FLEX LAYOUT:
           - flex justify-center: Center horizontally
@@ -118,7 +103,7 @@ const About = () => {
           </button>
         </div>
 
-        {/* Content Grid - Two Columns */}
+        
         {/*
           RESPONSIVE GRID:
           - grid: Enable CSS Grid
@@ -128,7 +113,7 @@ const About = () => {
         */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
 
-          {/* LEFT - Image */}
+          
           {/*
             IMAGE CONTAINER:
             - rounded-3xl: Large border radius
@@ -158,7 +143,7 @@ const About = () => {
               </div>
           </div>
 
-          {/* RIGHT - Content Card */}
+          
           {/*
             CONTENT CARD:
             - bg-[#1a2332]: Dark navy background
@@ -170,22 +155,22 @@ const About = () => {
             - h-full: Match height of adjacent column
           */}
           <div className="bg-[#1a2332] rounded-3xl p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
-            {/* Badge */}
+            
             <span className="bg-[#207dff] px-4 py-2 rounded-full text-xs font-bold mb-6 uppercase tracking-wide shadow-lg shadow-blue-500/30 self-start">
               {tabContent[activeTab].badge}
             </span>
 
-            {/* Heading */}
+            
             <h3 className="text-4xl font-bold mb-6 leading-tight">
               {tabContent[activeTab].title}
             </h3>
 
-            {/* Description */}
+            
             <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
               {tabContent[activeTab].body}
             </p>
 
-            {/* Stats Grid */}
+            
             {/*
               STATS GRID:
               - grid grid-cols-2: 2 equal columns

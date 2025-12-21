@@ -91,7 +91,7 @@ const NewsFormAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-2">
           <button
@@ -109,17 +109,17 @@ const NewsFormAdmin = () => {
         </p>
       </div>
 
-      {/* Error Message */}
+      
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      {/* Form */}
+      
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Title */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title <span className="text-red-500">*</span>
@@ -135,7 +135,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          {/* Slug */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Slug <span className="text-red-500">*</span>
@@ -152,7 +152,7 @@ const NewsFormAdmin = () => {
             <p className="text-xs text-gray-500 mt-1">URL-friendly version of the title</p>
           </div>
 
-          {/* Date */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Date <span className="text-red-500">*</span>
@@ -167,7 +167,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          {/* Category */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Category <span className="text-red-500">*</span>
@@ -187,7 +187,7 @@ const NewsFormAdmin = () => {
             </select>
           </div>
 
-          {/* Image URL */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Image URL <span className="text-red-500">*</span>
@@ -215,7 +215,7 @@ const NewsFormAdmin = () => {
             )}
           </div>
 
-          {/* Excerpt */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Excerpt <span className="text-red-500">*</span>
@@ -231,7 +231,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          {/* Content */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content <span className="text-red-500">*</span>
@@ -247,7 +247,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          {/* Hashtags */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Hashtags
@@ -294,7 +294,7 @@ const NewsFormAdmin = () => {
           </div>
         </div>
 
-        {/* Actions */}
+        
         <div className="mt-6 flex justify-end space-x-4">
           <button
             type="button"

@@ -1,8 +1,3 @@
-/**
- * FormSelect Component
- *
- * Reusable dropdown select field with label, error handling, and consistent styling
- */
 
 const FormSelect = ({
   label,
@@ -17,13 +12,13 @@ const FormSelect = ({
 }) => {
   return (
     <div className="mb-6">
-      {/* Label */}
+      
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      {/* Select Field */}
+      
       <select
         id={name}
         name={name}
@@ -48,7 +43,7 @@ const FormSelect = ({
         ))}
       </select>
 
-      {/* Error Message */}
+      
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}

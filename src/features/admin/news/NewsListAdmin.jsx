@@ -95,7 +95,7 @@ const NewsListAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">News Articles</h1>
@@ -109,7 +109,7 @@ const NewsListAdmin = () => {
         </button>
       </div>
 
-      {/* Search */}
+      
       <div className="mb-6">
         <input
           type="text"
@@ -120,7 +120,7 @@ const NewsListAdmin = () => {
         />
       </div>
 
-      {/* Table */}
+      
       <AdminTable
         columns={columns}
         data={filteredArticles}
@@ -129,7 +129,7 @@ const NewsListAdmin = () => {
         emptyMessage="No articles found. Create your first article!"
       />
 
-      {/* Delete Confirmation Dialog */}
+      
       <ConfirmDialog
         isOpen={deleteConfirmOpen}
         title="Delete Article"

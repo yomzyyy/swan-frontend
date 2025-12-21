@@ -1,24 +1,74 @@
 import { useState, useEffect } from 'react';
+import { api } from '../../services/api';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const images = [
-    'https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80',
-    'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80',
-    'https://images.unsplash.com/photo-1605745341075-1b0c3401c2d7?w=1920&q=80',
+  const fallbackImages = [
+    {
+      url: 'https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80',
+      altText: 'Maritime vessel at sea'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80',
+      altText: 'LPG tanker ship'
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1605745341075-1b0c3401c2d7?w=1920&q=80',
+      altText: 'Shipping operations'
+    }
   ];
 
   useEffect(() => {
+    loadHeroImages();
+  }, []);
+
+  const loadHeroImages = async () => {
+    try {
+      const response = await api.hero.getAll();
+      const heroImages = response.data.data;
+
+      if (heroImages && heroImages.length > 0) {
+        const sortedImages = heroImages
+          .sort((a, b) => a.position - b.position)
+          .map((img) => ({
+            url: `${
+              import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1'
+            }${img.imageUrl}`,
+            altText: img.altText
+          }));
+
+        setImages(sortedImages);
+      } else {
+        setImages(fallbackImages);
+      }
+    } catch (error) {
+      console.error('Failed to load hero images, using fallback:', error);
+      setImages(fallbackImages);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (images.length === 0) return;
+
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
     }, 5000);
+
     return () => clearInterval(timer);
   }, [images.length]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
+
+  if (loading) {
+    return <div className="min-h-screen bg-gray-900" />;
+  }
 
   return (
     <section className="min-h-screen relative flex items-center pt-24 pb-16 overflow-hidden">
@@ -29,8 +79,10 @@ const Hero = () => {
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            backgroundImage: `url('${image}')`,
+            backgroundImage: `url('${image.url}')`,
           }}
+          role="img"
+          aria-label={image.altText}
         />
       ))}
 

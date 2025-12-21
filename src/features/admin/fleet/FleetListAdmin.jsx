@@ -100,7 +100,7 @@ const FleetListAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Fleet Vessels</h1>
@@ -114,7 +114,7 @@ const FleetListAdmin = () => {
         </button>
       </div>
 
-      {/* Search */}
+      
       <div className="mb-6">
         <input
           type="text"
@@ -125,7 +125,7 @@ const FleetListAdmin = () => {
         />
       </div>
 
-      {/* Table */}
+      
       <AdminTable
         columns={columns}
         data={filteredVessels}
@@ -134,7 +134,7 @@ const FleetListAdmin = () => {
         emptyMessage="No vessels found. Add your first vessel!"
       />
 
-      {/* Delete Confirmation Dialog */}
+      
       <ConfirmDialog
         isOpen={deleteConfirmOpen}
         title="Delete Vessel"

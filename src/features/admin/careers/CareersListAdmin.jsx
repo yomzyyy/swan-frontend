@@ -85,7 +85,7 @@ const CareersListAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Job Postings</h1>
@@ -99,7 +99,7 @@ const CareersListAdmin = () => {
         </button>
       </div>
 
-      {/* Search */}
+      
       <div className="mb-6">
         <input
           type="text"
@@ -110,7 +110,7 @@ const CareersListAdmin = () => {
         />
       </div>
 
-      {/* Table */}
+      
       <AdminTable
         columns={columns}
         data={filteredJobs}
@@ -119,7 +119,7 @@ const CareersListAdmin = () => {
         emptyMessage="No job postings found. Create your first posting!"
       />
 
-      {/* Delete Confirmation Dialog */}
+      
       <ConfirmDialog
         isOpen={deleteConfirmOpen}
         title="Delete Job Posting"

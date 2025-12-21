@@ -62,7 +62,7 @@ const FleetFormAdmin = () => {
 
   return (
     <div>
-      {/* Header */}
+      
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-2">
           <button
@@ -80,17 +80,17 @@ const FleetFormAdmin = () => {
         </p>
       </div>
 
-      {/* Error Message */}
+      
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      {/* Form */}
+      
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Vessel Name <span className="text-red-500">*</span>
@@ -106,7 +106,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Type */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Type <span className="text-red-500">*</span>
@@ -125,7 +125,7 @@ const FleetFormAdmin = () => {
             </select>
           </div>
 
-          {/* Capacity */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Capacity <span className="text-red-500">*</span>
@@ -141,7 +141,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Year */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Year Built <span className="text-red-500">*</span>
@@ -158,7 +158,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Flag */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Flag <span className="text-red-500">*</span>
@@ -174,7 +174,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Trade Area */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Trade Area <span className="text-red-500">*</span>
@@ -190,7 +190,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Yard */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Shipyard <span className="text-red-500">*</span>
@@ -206,7 +206,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          {/* Image URL */}
+          
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Image URL <span className="text-red-500">*</span>
@@ -235,7 +235,7 @@ const FleetFormAdmin = () => {
           </div>
         </div>
 
-        {/* Actions */}
+        
         <div className="mt-6 flex justify-end space-x-4">
           <button
             type="button"

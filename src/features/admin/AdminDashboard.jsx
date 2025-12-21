@@ -43,7 +43,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      {/* Welcome Section */}
+      
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Welcome back, {user?.name || user?.username}!
@@ -51,14 +51,14 @@ const AdminDashboard = () => {
         <p className="text-gray-600">Here's what's happening with your content today.</p>
       </div>
 
-      {/* Stats Grid */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
           <AdminCard key={index} {...stat} />
         ))}
       </div>
 
-      {/* Quick Actions */}
+      
       <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Recent Activity (Placeholder) */}
+      
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
         <p className="text-gray-500">No recent activity to display.</p>

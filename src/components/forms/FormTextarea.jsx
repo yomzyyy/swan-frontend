@@ -1,8 +1,3 @@
-/**
- * FormTextarea Component
- *
- * Reusable textarea field with label, error handling, and consistent styling
- */
 
 const FormTextarea = ({
   label,
@@ -17,13 +12,13 @@ const FormTextarea = ({
 }) => {
   return (
     <div className="mb-6">
-      {/* Label */}
+      
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      {/* Textarea Field */}
+      
       <textarea
         id={name}
         name={name}
@@ -43,7 +38,7 @@ const FormTextarea = ({
         `}
       />
 
-      {/* Error Message */}
+      
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}

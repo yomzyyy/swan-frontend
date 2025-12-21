@@ -1,8 +1,3 @@
-/**
- * FormFileUpload Component
- *
- * Reusable file upload field with preview, label, error handling, and consistent styling
- */
 
 const FormFileUpload = ({
   label,
@@ -25,13 +20,13 @@ const FormFileUpload = ({
 
   return (
     <div className="mb-6">
-      {/* Label */}
+      
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      {/* File Input */}
+      
       <div className={`
         border-2 border-dashed rounded-2xl p-6 transition-colors duration-300
         ${error ? 'border-red-500' : 'border-gray-300 hover:border-[#207dff]'}
@@ -49,7 +44,7 @@ const FormFileUpload = ({
           htmlFor={name}
           className="flex flex-col items-center cursor-pointer"
         >
-          {/* Upload Icon */}
+          
           <svg
             className="w-12 h-12 text-gray-400 mb-3"
             fill="none"
@@ -64,7 +59,7 @@ const FormFileUpload = ({
             />
           </svg>
 
-          {/* File Info or Instructions */}
+          
           {file ? (
             <div className="text-center">
               <p className="text-sm font-semibold text-gray-700">{file.name}</p>
@@ -86,7 +81,7 @@ const FormFileUpload = ({
         </label>
       </div>
 
-      {/* Error Message */}
+      
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}
