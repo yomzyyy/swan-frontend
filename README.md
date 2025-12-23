@@ -4,11 +4,11 @@ Modern web application for SWAN Shipping, a leading LPG maritime transport provi
 
 ## Features
 
-- 🚢 Fleet showcase with 19+ LPG carriers
-- 📰 News and company updates
-- 💼 Career opportunities portal
-- 📧 Multi-form contact system
-- 📱 Fully responsive design
+-  Fleet showcase with 19+ LPG carriers
+-  News and company updates
+-  Career opportunities portal
+-  Multi-form contact system
+-  Fully responsive design
 
 ## Tech Stack
 
