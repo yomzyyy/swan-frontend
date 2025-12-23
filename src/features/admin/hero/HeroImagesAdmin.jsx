@@ -162,40 +162,6 @@ const HeroImagesAdmin = () => {
         </p>
       </div>
 
-      
-      <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
-            <svg
-              className="h-5 w-5 text-blue-600 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <p className="text-sm text-blue-800">
-              <strong>Important:</strong> You must maintain exactly 3 hero images (positions 1,
-              2, 3). Click <strong>Edit</strong> to upload or replace an image at each position.
-            </p>
-            <ul className="mt-2 text-xs text-blue-700 list-disc list-inside space-y-1">
-              <li>Recommended size: 1920×1080px for best quality</li>
-              <li>Accepted formats: JPEG, PNG, WebP</li>
-              <li>Maximum file size: 5MB</li>
-              <li>Alt text is required for accessibility</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      
       {loading ? (
         <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
