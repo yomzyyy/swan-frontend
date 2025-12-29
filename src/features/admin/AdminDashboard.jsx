@@ -1,43 +1,71 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import AdminCard from '../../components/admin/AdminCard';
 import { getStorageData } from '../../utils/localStorage';
+import { getAllVessels } from '../admin/fleet/fleetAdminService';
+import { getAllCareers } from '../admin/careers/careersAdminService';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
 
-  const newsArticles = getStorageData('swan_admin_news') || [];
-  const fleetVessels = getStorageData('swan_admin_fleet') || [];
-  const careers = getStorageData('swan_admin_careers') || [];
-  const media = getStorageData('swan_admin_media') || [];
+  const [newsCount, setNewsCount] = useState(0);
+  const [fleetCount, setFleetCount] = useState(0);
+  const [careersCount, setCareersCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch all data in parallel
+        const [vessels, careers] = await Promise.all([
+          getAllVessels(),
+          getAllCareers()
+        ]);
+
+        // News still uses localStorage (not connected to DB yet)
+        const newsArticles = getStorageData('swan_admin_news') || [];
+
+        // Set counts
+        setFleetCount(vessels.length);
+        setCareersCount(careers.length);
+        setNewsCount(newsArticles.length);
+
+      } catch (error) {
+        console.error('Failed to load dashboard counts:', error);
+        // Set to 0 on error
+        setFleetCount(0);
+        setCareersCount(0);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCounts();
+  }, []);
 
   const stats = [
     {
       title: 'News Articles',
-      value: newsArticles.length,
+      value: newsCount,
       icon: '📰',
       color: 'blue',
       link: '/admin/news',
     },
     {
       title: 'Fleet Vessels',
-      value: fleetVessels.length,
+      value: fleetCount,
       icon: '🚢',
       color: 'green',
       link: '/admin/fleet',
     },
     {
       title: 'Job Postings',
-      value: careers.length,
+      value: careersCount,
       icon: '💼',
       color: 'purple',
       link: '/admin/careers',
-    },
-    {
-      title: 'Media Files',
-      value: media.length,
-      icon: '🖼️',
-      color: 'orange',
-      link: '/admin/media',
     },
   ];
 

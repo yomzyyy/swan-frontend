@@ -27,5 +27,4 @@ export const ROUTES = {
   ADMIN_CONTENT_ABOUT: '/admin/content/about',
   ADMIN_CONTENT_SERVICES: '/admin/content/services',
   ADMIN_CONTENT_HOME: '/admin/content/home',
-  ADMIN_MEDIA: '/admin/media',
 };
