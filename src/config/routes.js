@@ -4,6 +4,7 @@ export const ROUTES = {
   SERVICES: '/services',
   FLEET: '/fleet',
   CAREERS: '/careers',
+  CAREER_APPLICATION: '/careers/apply/:id',
   CONTACT: '/contact',
   NEWS: '/news',
   NEWS_ARTICLE: '/news/:slug',

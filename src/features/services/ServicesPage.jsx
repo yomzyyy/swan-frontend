@@ -251,6 +251,15 @@ const ServicesPage = () => {
         </div>
       </section>
 
+      <div className="py-12 text-center bg-white">
+        <Link
+          to="/"
+          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+        >
+          Back to Home
+        </Link>
+      </div>
+
       <div className="py-16 bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white">
         <div className="max-w-4xl mx-auto px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">
@@ -263,15 +272,6 @@ const ServicesPage = () => {
             Get in Touch
           </button>
         </div>
-      </div>
-
-      <div className="py-12 text-center bg-gray-50">
-        <Link
-          to="/"
-          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-        >
-          Back to Home
-        </Link>
       </div>
     </div>
   );

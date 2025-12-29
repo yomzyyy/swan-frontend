@@ -1,7 +1,44 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { jobOpenings } from './data/jobOpenings';
+import { api } from '../../services/api';
 
 const CareersPage = () => {
+  const [jobOpenings, setJobOpenings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCareers = async () => {
+      try {
+        setLoading(true);
+        const response = await api.careers.getAll();
+        setJobOpenings(response.data.data);
+      } catch (err) {
+        setError('Failed to load career opportunities');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCareers();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Loading opportunities...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-red-600">{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
@@ -69,8 +106,21 @@ const CareersPage = () => {
             Current Openings
           </h2>
 
-          <div className="space-y-6">
-            {jobOpenings.map((job) => (
+          {jobOpenings.length === 0 ? (
+            <div className="bg-white rounded-3xl p-12 shadow-lg text-center">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-5xl">💼</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                No Open Positions Currently
+              </h3>
+              <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+                We don't have any open positions at the moment, but we're always interested in hearing from talented professionals. Feel free to submit your resume through the form below.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {jobOpenings.map((job) => (
               <div
                 key={job.id}
                 className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
@@ -96,15 +146,28 @@ const CareersPage = () => {
                     </p>
                   </div>
                   <div>
-                    <button className="bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 whitespace-nowrap">
+                    <Link
+                      to={`/careers/apply/${job.id}`}
+                      className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 whitespace-nowrap"
+                    >
                       Apply Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
         </div>
+      </div>
+
+      <div className="py-12 text-center bg-white">
+        <Link
+          to="/"
+          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+        >
+          Back to Home
+        </Link>
       </div>
 
       <div className="py-16 bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white">
@@ -116,19 +179,13 @@ const CareersPage = () => {
             We're always interested in hearing from talented professionals.
             Send us your resume and let's talk about your future with SWAN Shipping.
           </p>
-          <button className="bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300">
+          <Link
+            to="/contact"
+            className="inline-block bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300"
+          >
             Submit Resume
-          </button>
+          </Link>
         </div>
-      </div>
-
-      <div className="py-12 text-center bg-gray-50">
-        <Link
-          to="/"
-          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-        >
-          Back to Home
-        </Link>
       </div>
     </div>
   );

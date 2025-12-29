@@ -16,9 +16,14 @@ const NewsListAdmin = () => {
     loadArticles();
   }, []);
 
-  const loadArticles = () => {
-    const allArticles = getAllArticles();
-    setArticles(allArticles);
+  const loadArticles = async () => {
+    try {
+      const allArticles = await getAllArticles();
+      setArticles(allArticles);
+    } catch (error) {
+      console.error('Failed to load articles:', error);
+      setArticles([]);
+    }
   };
 
   const handleEdit = (article) => {
@@ -30,9 +35,9 @@ const NewsListAdmin = () => {
     setDeleteConfirmOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (articleToDelete) {
-      const result = deleteArticle(articleToDelete.id);
+      const result = await deleteArticle(articleToDelete.id);
       if (result.success) {
         loadArticles();
         setDeleteConfirmOpen(false);

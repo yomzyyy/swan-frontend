@@ -7,6 +7,7 @@ import AboutPage from './features/about/AboutPage';
 import ServicesPage from './features/services/ServicesPage';
 import FleetPage from './features/fleet/FleetPage';
 import CareersPage from './features/careers/CareersPage';
+import JobApplicationForm from './features/careers/JobApplicationForm';
 import ContactPage from './features/contact/ContactPage';
 import NewsPage from './features/news/NewsPage';
 import ArticlePage from './features/news/ArticlePage';
@@ -80,6 +81,16 @@ function App() {
               <>
                 <Navbar />
                 <CareersPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/careers/apply/:id"
+            element={
+              <>
+                <Navbar />
+                <JobApplicationForm />
                 <Footer />
               </>
             }
@@ -169,7 +180,7 @@ function App() {
 
                     
                     <Route path="careers" element={<CareersListAdmin />} />
-                    <Route path="careers/create" element={<CareersFormAdmin />} />
+                    <Route path="careers/new" element={<CareersFormAdmin />} />
                     <Route path="careers/edit/:id" element={<CareersFormAdmin />} />
 
                     

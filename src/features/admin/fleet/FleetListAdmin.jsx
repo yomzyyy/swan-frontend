@@ -16,9 +16,14 @@ const FleetListAdmin = () => {
     loadVessels();
   }, []);
 
-  const loadVessels = () => {
-    const allVessels = getAllVessels();
-    setVessels(allVessels);
+  const loadVessels = async () => {
+    try {
+      const allVessels = await getAllVessels();
+      setVessels(allVessels);
+    } catch (error) {
+      console.error('Failed to load vessels:', error);
+      setVessels([]);
+    }
   };
 
   const handleEdit = (vessel) => {
@@ -30,9 +35,9 @@ const FleetListAdmin = () => {
     setDeleteConfirmOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (vesselToDelete) {
-      const result = deleteVessel(vesselToDelete.id);
+      const result = await deleteVessel(vesselToDelete.id);
       if (result.success) {
         loadVessels();
         setDeleteConfirmOpen(false);

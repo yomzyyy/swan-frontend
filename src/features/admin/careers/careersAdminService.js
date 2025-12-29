@@ -1,73 +1,57 @@
-import { getStorageData, setStorageData, updateStorageItem, deleteStorageItem, generateId } from '../../../utils/localStorage';
+import { api } from '../../../services/api';
 
-const STORAGE_KEY = 'swan_admin_careers';
-
-export const getAllJobs = () => {
-  return getStorageData(STORAGE_KEY) || [];
-};
-
-export const getJobById = (id) => {
-  const jobs = getAllJobs();
-  return jobs.find(job => job.id === parseInt(id));
-};
-
-export const createJob = (jobData) => {
-  const jobs = getAllJobs();
-  const newId = generateId(jobs);
-
-  const newJob = {
-    ...jobData,
-    id: newId,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  jobs.push(newJob);
-  setStorageData(STORAGE_KEY, jobs);
-
-  return { success: true, data: newJob };
-};
-
-export const updateJob = (id, jobData) => {
-  const jobs = getAllJobs();
-  const existingJob = getJobById(id);
-
-  if (!existingJob) {
-    return { success: false, error: 'Job not found' };
+export const getAllCareers = async () => {
+  try {
+    const response = await api.careers.getAll();
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch careers:', error);
+    throw error;
   }
-
-  const updatedJob = {
-    ...existingJob,
-    ...jobData,
-    id: parseInt(id),
-    createdAt: existingJob.createdAt,
-    updatedAt: new Date().toISOString(),
-  };
-
-  const updatedJobs = jobs.map(job =>
-    job.id === parseInt(id) ? updatedJob : job
-  );
-
-  setStorageData(STORAGE_KEY, updatedJobs);
-
-  return { success: true, data: updatedJob };
 };
 
-export const deleteJob = (id) => {
-  return deleteStorageItem(STORAGE_KEY, parseInt(id));
-};
-
-export const initializeCareersData = (defaultJobs) => {
-  const existing = getAllJobs();
-  if (existing.length === 0 && defaultJobs && defaultJobs.length > 0) {
-    const jobsWithIds = defaultJobs.map((job, index) => ({
-      ...job,
-      id: index + 1,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }));
-    setStorageData(STORAGE_KEY, jobsWithIds);
-    return jobsWithIds;
+export const getCareerById = async (id) => {
+  try {
+    const response = await api.careers.getById(id);
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch career:', error);
+    throw error;
   }
-  return existing;
+};
+
+export const createCareer = async (careerData) => {
+  try {
+    const response = await api.careers.create(careerData);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to create career'
+    };
+  }
+};
+
+export const updateCareer = async (id, careerData) => {
+  try {
+    const response = await api.careers.update(id, careerData);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to update career'
+    };
+  }
+};
+
+export const deleteCareer = async (id) => {
+  try {
+    await api.careers.delete(id);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to delete career'
+    };
+  }
 };

@@ -22,14 +22,22 @@ const FleetFormAdmin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (isEditMode) {
-      const vessel = getVesselById(id);
-      if (vessel) {
-        setFormData(vessel);
-      } else {
-        setError('Vessel not found');
+    const fetchVessel = async () => {
+      if (isEditMode) {
+        try {
+          const vessel = await getVesselById(id);
+          if (vessel) {
+            setFormData(vessel);
+          } else {
+            setError('Vessel not found');
+          }
+        } catch (error) {
+          setError('Failed to load vessel');
+          console.error(error);
+        }
       }
-    }
+    };
+    fetchVessel();
   }, [id, isEditMode]);
 
   const handleChange = (e) => {
@@ -44,8 +52,8 @@ const FleetFormAdmin = () => {
 
     try {
       const result = isEditMode
-        ? updateVessel(id, formData)
-        : createVessel(formData);
+        ? await updateVessel(id, formData)
+        : await createVessel(formData);
 
       if (result.success) {
         navigate('/admin/fleet');

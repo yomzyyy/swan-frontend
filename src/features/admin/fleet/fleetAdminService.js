@@ -1,73 +1,57 @@
-import { getStorageData, setStorageData, updateStorageItem, deleteStorageItem, generateId } from '../../../utils/localStorage';
+import { api } from '../../../services/api';
 
-const STORAGE_KEY = 'swan_admin_fleet';
-
-export const getAllVessels = () => {
-  return getStorageData(STORAGE_KEY) || [];
-};
-
-export const getVesselById = (id) => {
-  const vessels = getAllVessels();
-  return vessels.find(vessel => vessel.id === parseInt(id));
-};
-
-export const createVessel = (vesselData) => {
-  const vessels = getAllVessels();
-  const newId = generateId(vessels);
-
-  const newVessel = {
-    ...vesselData,
-    id: newId,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  vessels.push(newVessel);
-  setStorageData(STORAGE_KEY, vessels);
-
-  return { success: true, data: newVessel };
-};
-
-export const updateVessel = (id, vesselData) => {
-  const vessels = getAllVessels();
-  const existingVessel = getVesselById(id);
-
-  if (!existingVessel) {
-    return { success: false, error: 'Vessel not found' };
+export const getAllVessels = async () => {
+  try {
+    const response = await api.fleet.getAll();
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch vessels:', error);
+    throw error;
   }
-
-  const updatedVessel = {
-    ...existingVessel,
-    ...vesselData,
-    id: parseInt(id),
-    createdAt: existingVessel.createdAt,
-    updatedAt: new Date().toISOString(),
-  };
-
-  const updatedVessels = vessels.map(vessel =>
-    vessel.id === parseInt(id) ? updatedVessel : vessel
-  );
-
-  setStorageData(STORAGE_KEY, updatedVessels);
-
-  return { success: true, data: updatedVessel };
 };
 
-export const deleteVessel = (id) => {
-  return deleteStorageItem(STORAGE_KEY, parseInt(id));
-};
-
-export const initializeFleetData = (defaultVessels) => {
-  const existing = getAllVessels();
-  if (existing.length === 0 && defaultVessels && defaultVessels.length > 0) {
-    const vesselsWithIds = defaultVessels.map((vessel, index) => ({
-      ...vessel,
-      id: index + 1,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }));
-    setStorageData(STORAGE_KEY, vesselsWithIds);
-    return vesselsWithIds;
+export const getVesselById = async (id) => {
+  try {
+    const response = await api.fleet.getById(id);
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch vessel:', error);
+    throw error;
   }
-  return existing;
+};
+
+export const createVessel = async (vesselData) => {
+  try {
+    const response = await api.fleet.create(vesselData);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to create vessel'
+    };
+  }
+};
+
+export const updateVessel = async (id, vesselData) => {
+  try {
+    const response = await api.fleet.update(id, vesselData);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to update vessel'
+    };
+  }
+};
+
+export const deleteVessel = async (id) => {
+  try {
+    await api.fleet.delete(id);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to delete vessel'
+    };
+  }
 };

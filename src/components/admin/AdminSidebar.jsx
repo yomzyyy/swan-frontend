@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const { logout } = useAuth();
 
@@ -12,11 +12,17 @@ const AdminSidebar = () => {
     return location.pathname.startsWith(path);
   };
 
+  const handleLinkClick = () => {
+    // Close sidebar on mobile when clicking a link
+    if (onClose) {
+      onClose();
+    }
+  };
+
   const navItems = [
     {
       title: 'Dashboard',
       path: '/admin/dashboard',
-      icon: '📊',
     },
     {
       title: 'Content Management',
@@ -25,22 +31,18 @@ const AdminSidebar = () => {
     {
       title: 'News Articles',
       path: '/admin/news',
-      icon: '📰',
     },
     {
       title: 'Fleet Vessels',
       path: '/admin/fleet',
-      icon: '🚢',
     },
     {
       title: 'Job Postings',
       path: '/admin/careers',
-      icon: '💼',
     },
     {
       title: 'Hero Images',
       path: '/admin/hero',
-      icon: '🖼️',
     },
     {
       title: 'Page Content',
@@ -49,26 +51,41 @@ const AdminSidebar = () => {
     {
       title: 'Home Page',
       path: '/admin/content/home',
-      icon: '🏠',
     },
     {
       title: 'About Page',
       path: '/admin/content/about',
-      icon: 'ℹ️',
     },
     {
       title: 'Services Page',
       path: '/admin/content/services',
-      icon: '⚙️',
     },
   ];
 
   return (
-    <div className="w-64 bg-[#001E3C] text-white flex flex-col">
-      
-      <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-bold">SWAN Admin</h1>
-        <p className="text-xs text-gray-400 mt-1">Content Management</p>
+    <div
+      className={`
+        fixed md:static inset-y-0 left-0 z-30
+        w-64 bg-[#001E3C] text-white flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}
+    >
+      {/* Header with close button for mobile */}
+      <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">SWAN Admin</h1>
+          <p className="text-xs text-gray-400 mt-1">Content Management</p>
+        </div>
+        <button
+          onClick={onClose}
+          className="md:hidden text-gray-400 hover:text-white"
+          aria-label="Close menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       
@@ -90,13 +107,13 @@ const AdminSidebar = () => {
             <Link
               key={index}
               to={item.path}
+              onClick={handleLinkClick}
               className={`flex items-center px-3 py-2 mb-1 rounded-lg transition-all duration-200 ${
                 active
                   ? 'bg-[#207dff] text-white shadow-lg'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               }`}
             >
-              <span className="mr-3 text-lg">{item.icon}</span>
               <span className="text-sm font-medium">{item.title}</span>
             </Link>
           );

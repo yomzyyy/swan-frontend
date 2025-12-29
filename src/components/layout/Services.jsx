@@ -3,7 +3,7 @@ const Services = () => {
     <section id="services" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-8">
 
-        
+
         <div className="mb-12">
           <h2 className="text-5xl font-extrabold text-gray-900 mb-4">
             COMPREHENSIVE

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 
 const FormFileUpload = ({
   label,
@@ -6,8 +7,13 @@ const FormFileUpload = ({
   error,
   required = false,
   accept = '.pdf,.doc,.docx',
-  file = null
+  file = null,
+  description = 'PDF or DOC (max 5MB)',
+  showImagePreview = false,
+  disabled = false
 }) => {
+  const [imagePreview, setImagePreview] = useState(null);
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     onChange({
@@ -16,7 +22,29 @@ const FormFileUpload = ({
         value: selectedFile
       }
     });
+
+    // Generate image preview if enabled and file is an image
+    if (showImagePreview && selectedFile && selectedFile.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.onerror = () => {
+        setImagePreview(null);
+        console.error('Failed to read file');
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setImagePreview(null);
+    }
   };
+
+  // Clear preview when file prop changes to null
+  useEffect(() => {
+    if (!file) {
+      setImagePreview(null);
+    }
+  }, [file]);
 
   return (
     <div className="mb-6">
@@ -26,9 +54,10 @@ const FormFileUpload = ({
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      
+
       <div className={`
         border-2 border-dashed rounded-2xl p-6 transition-colors duration-300
+        ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}
         ${error ? 'border-red-500' : 'border-gray-300 hover:border-[#207dff]'}
       `}>
         <input
@@ -37,6 +66,7 @@ const FormFileUpload = ({
           name={name}
           onChange={handleFileChange}
           accept={accept}
+          disabled={disabled}
           className="hidden"
         />
 
@@ -74,14 +104,26 @@ const FormFileUpload = ({
                 Click to upload or drag and drop
               </p>
               <p className="text-xs text-gray-500 mt-1">
-                PDF or DOC (max 5MB)
+                {description}
               </p>
             </div>
           )}
         </label>
       </div>
 
-      
+      {/* Image Preview */}
+      {showImagePreview && imagePreview && (
+        <div className="mt-4">
+          <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+          <img
+            src={imagePreview}
+            alt="Upload preview"
+            className="w-full max-w-2xl h-64 object-cover rounded-lg border shadow-sm"
+          />
+        </div>
+      )}
+
+      {/* Error Message */}
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}

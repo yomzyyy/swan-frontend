@@ -7,6 +7,7 @@ import {
   formatFileSize,
   validateImageFile
 } from './heroAdminService';
+import FormFileUpload from '../../../components/forms/FormFileUpload';
 
 const HeroImageFormAdmin = () => {
   const { position } = useParams();
@@ -14,7 +15,6 @@ const HeroImageFormAdmin = () => {
 
   const [currentImage, setCurrentImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const [altText, setAltText] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -43,14 +43,13 @@ const HeroImageFormAdmin = () => {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.value; // FormFileUpload passes file as e.target.value
     if (!file) return;
 
     const validation = validateImageFile(file);
     if (!validation.valid) {
       setError(validation.error);
       setImageFile(null);
-      setImagePreview(null);
       return;
     }
 
@@ -58,12 +57,6 @@ const HeroImageFormAdmin = () => {
     setError('');
     setSuccess('');
     setUploadMode('replace');
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
@@ -218,40 +211,19 @@ const HeroImageFormAdmin = () => {
           </div>
         )}
 
-        
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {currentImage ? 'Replace with New Image' : 'Upload Image'}{' '}
-            {!currentImage && <span className="text-red-500">*</span>}
-          </label>
-          <input
-            type="file"
-            accept="image/jpeg,image/jpg,image/png,image/webp"
-            onChange={handleFileChange}
-            disabled={uploadMode === 'alttext-only'}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent disabled:bg-gray-100"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Recommended: 1920×1080px | JPEG, PNG, WebP | Max 5MB
-          </p>
-        </div>
 
-        
-        {imagePreview && (
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              New Image Preview
-            </label>
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="w-full max-w-2xl h-64 object-cover rounded border shadow-sm"
-            />
-            <p className="text-xs text-gray-600 mt-1">
-              {imageFile.name} ({formatFileSize(imageFile.size)})
-            </p>
-          </div>
-        )}
+        <FormFileUpload
+          label={currentImage ? 'Replace with New Image' : 'Upload Image'}
+          name="heroImage"
+          onChange={handleFileChange}
+          error={error && !imageFile ? error : ''}
+          required={!currentImage}
+          accept="image/jpeg,image/jpg,image/png,image/webp"
+          file={imageFile}
+          description="JPEG, PNG, or WebP (max 5MB) | Recommended: 1920×1080px"
+          showImagePreview={true}
+          disabled={uploadMode === 'alttext-only'}
+        />
 
         
         <div className="mb-6">
