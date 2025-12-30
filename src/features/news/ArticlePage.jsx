@@ -1,12 +1,50 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { getArticleBySlug, getRecentArticles } from './data/articles';
+import { api } from '../../services/api';
+import { formatNewsDate } from '../../utils/dateFormatter';
 
 const ArticlePage = () => {
   const { slug } = useParams();
-  const article = getArticleBySlug(slug);
-  const recentArticles = getRecentArticles(3);
+  const [article, setArticle] = useState(null);
+  const [recentArticles, setRecentArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!article) {
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch current article by slug
+        const articleResponse = await api.news.getBySlug(slug);
+        setArticle(articleResponse.data.data);
+
+        // Fetch all articles for "Recent News" section
+        const allArticlesResponse = await api.news.getAll();
+        const allArticles = allArticlesResponse.data.data
+          .sort((a, b) => b.publishedAt - a.publishedAt);
+        setRecentArticles(allArticles.slice(0, 4));
+
+      } catch (err) {
+        setError('Failed to load article');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Loading article...</div>
+      </div>
+    );
+  }
+
+  if (error || !article) {
     return <Navigate to="/news" replace />;
   }
 
@@ -16,7 +54,7 @@ const ArticlePage = () => {
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-              {article.date}
+              {formatNewsDate(article.publishedAt)}
             </span>
             {article.category && (
               <span className="bg-[#207dff] px-4 py-2 rounded-full text-sm font-semibold">
@@ -122,7 +160,7 @@ const ArticlePage = () => {
                     </div>
                     <div className="p-6">
                       <span className="text-gray-500 text-xs font-semibold uppercase block mb-2">
-                        {relatedArticle.date}
+                        {formatNewsDate(relatedArticle.publishedAt)}
                       </span>
                       <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
                         {relatedArticle.title}

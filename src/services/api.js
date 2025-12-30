@@ -61,6 +61,8 @@ export const api = {
   news: {
     getAll: () => apiClient.get('/api/news'),
 
+    getAllAdmin: () => apiClient.get('/api/news/admin/all'),
+
     getById: (id) => apiClient.get(`/api/news/${id}`),
 
     getBySlug: (slug) => apiClient.get(`/api/news/slug/${slug}`),
@@ -69,7 +71,12 @@ export const api = {
 
     update: (id, data) => apiClient.put(`/api/news/${id}`, data),
 
-    delete: (id) => apiClient.delete(`/api/news/${id}`)
+    delete: (id) => apiClient.delete(`/api/news/${id}`),
+
+    uploadImage: (formData) =>
+      apiClient.post('/api/news/images/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
   },
 
   fleet: {

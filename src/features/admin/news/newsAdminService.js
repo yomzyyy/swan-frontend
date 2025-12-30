@@ -9,7 +9,7 @@ const generateSlug = (title) => {
 
 export const getAllArticles = async () => {
   try {
-    const response = await api.news.getAll();
+    const response = await api.news.getAllAdmin();
     return response.data.data;
   } catch (error) {
     console.error('Failed to fetch articles:', error);
@@ -86,4 +86,57 @@ export const deleteArticle = async (id) => {
 
 export const initializeNewsData = () => {
   return [];
+};
+
+export const uploadNewsImage = async (imageFile, altText = '') => {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    formData.append('altText', altText);
+
+    const response = await api.news.uploadImage(formData);
+    return {
+      success: true,
+      data: response.data.data
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || 'Failed to upload image'
+    };
+  }
+};
+
+export const validateImageFile = (file) => {
+  if (!file) {
+    return { valid: false, error: 'No file selected' };
+  }
+
+  // Validate type
+  const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  if (!validTypes.includes(file.type)) {
+    return {
+      valid: false,
+      error: 'Invalid file type. Please upload JPEG, PNG, or WebP images.'
+    };
+  }
+
+  // Validate size (5MB max)
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    return {
+      valid: false,
+      error: `File too large. Maximum size is ${formatFileSize(maxSize)}.`
+    };
+  }
+
+  return { valid: true };
+};
+
+export const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 };

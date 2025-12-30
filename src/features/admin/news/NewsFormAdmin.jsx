@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createArticle, updateArticle, getArticleById } from './newsAdminService';
+import { createArticle, updateArticle, getArticleById, uploadNewsImage, validateImageFile } from './newsAdminService';
+import FormFileUpload from '../../../components/forms/FormFileUpload';
 
 const NewsFormAdmin = () => {
   const { id } = useParams();
@@ -22,15 +23,35 @@ const NewsFormAdmin = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [imageMode, setImageMode] = useState('url');
+  const [imageFile, setImageFile] = useState(null);
+  const [imageAltText, setImageAltText] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [imageUploading, setImageUploading] = useState(false);
+
   useEffect(() => {
-    if (isEditMode) {
-      const article = getArticleById(id);
-      if (article) {
-        setFormData(article);
-      } else {
-        setError('Article not found');
+    const loadArticle = async () => {
+      if (isEditMode) {
+        try {
+          const article = await getArticleById(id);
+          if (article) {
+            // Convert publishedAt timestamp to date string for input
+            const dateStr = new Date(article.publishedAt).toISOString().split('T')[0];
+            setFormData({
+              ...article,
+              date: dateStr,
+            });
+          } else {
+            setError('Article not found');
+          }
+        } catch (err) {
+          const errorMessage = err.message || 'Failed to load article';
+          setError(`Failed to load article: ${errorMessage}`);
+          console.error('Error loading article:', err);
+        }
       }
-    }
+    };
+    loadArticle();
   }, [id, isEditMode]);
 
   const handleChange = (e) => {
@@ -44,6 +65,21 @@ const NewsFormAdmin = () => {
         .replace(/^-|-$/g, '');
       setFormData(prev => ({ ...prev, slug }));
     }
+  };
+
+  const handleImageFileChange = (e) => {
+    const file = e.target.value;
+    if (!file) return;
+
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      setImageError(validation.error);
+      setImageFile(null);
+      return;
+    }
+
+    setImageFile(file);
+    setImageError('');
   };
 
   const handleAddHashtag = () => {
@@ -72,9 +108,43 @@ const NewsFormAdmin = () => {
     setIsSubmitting(true);
 
     try {
+      let imageUrl = formData.image;
+
+      // If upload mode and file selected, upload first
+      if (imageMode === 'upload' && imageFile) {
+        setImageUploading(true);
+        const uploadResult = await uploadNewsImage(imageFile, imageAltText);
+        setImageUploading(false);
+
+        if (!uploadResult.success) {
+          setError(uploadResult.error || 'Failed to upload image');
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Use uploaded image URL (full URL from backend)
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
+        imageUrl = `${baseUrl}${uploadResult.data.imageUrl}`;
+      }
+
+      // Convert date string to timestamp for API
+      const publishedAt = new Date(formData.date).getTime();
+
+      const dataToSubmit = {
+        title: formData.title,
+        slug: formData.slug,
+        excerpt: formData.excerpt,
+        content: formData.content,
+        category: formData.category,
+        image: imageUrl,
+        hashtags: formData.hashtags,
+        publishedAt: publishedAt,
+        status: 'published'
+      };
+
       const result = isEditMode
-        ? updateArticle(id, formData)
-        : createArticle(formData);
+        ? await updateArticle(id, dataToSubmit)
+        : await createArticle(dataToSubmit);
 
       if (result.success) {
         navigate('/admin/news');
@@ -86,6 +156,7 @@ const NewsFormAdmin = () => {
       console.error(err);
     } finally {
       setIsSubmitting(false);
+      setImageUploading(false);
     }
   };
 
@@ -187,30 +258,103 @@ const NewsFormAdmin = () => {
             </select>
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image URL <span className="text-red-500">*</span>
+              Article Image <span className="text-red-500">*</span>
             </label>
-            <input
-              type="url"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
-              placeholder="https://example.com/image.jpg"
-            />
-            {formData.image && (
-              <div className="mt-2">
-                <img
-                  src={formData.image}
-                  alt="Preview"
-                  className="w-32 h-20 object-cover rounded"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
+
+            {/* Mode Toggle */}
+            <div className="flex space-x-2 mb-4">
+              <button
+                type="button"
+                onClick={() => setImageMode('url')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  imageMode === 'url'
+                    ? 'bg-[#207dff] text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Image URL
+              </button>
+              <button
+                type="button"
+                onClick={() => setImageMode('upload')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  imageMode === 'upload'
+                    ? 'bg-[#207dff] text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Upload Image
+              </button>
+            </div>
+
+            {/* URL Mode */}
+            {imageMode === 'url' && (
+              <div>
+                <input
+                  type="url"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  required={imageMode === 'url'}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
+                  placeholder="https://example.com/image.jpg"
                 />
+                {formData.image && (
+                  <div className="mt-2">
+                    <img
+                      src={formData.image}
+                      alt="Preview"
+                      className="w-32 h-20 object-cover rounded"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Upload Mode */}
+            {imageMode === 'upload' && (
+              <div>
+                <FormFileUpload
+                  label=""
+                  name="newsImage"
+                  onChange={handleImageFileChange}
+                  error={imageError}
+                  required={imageMode === 'upload' && !formData.image && !imageFile}
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  file={imageFile}
+                  description="JPEG, PNG, or WebP (max 5MB) | Recommended: 1200×630px for social sharing"
+                  showImagePreview={true}
+                />
+
+                {/* Optional Alt Text for Upload */}
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Alt Text (optional, for accessibility)
+                  </label>
+                  <input
+                    type="text"
+                    value={imageAltText}
+                    onChange={(e) => setImageAltText(e.target.value)}
+                    maxLength={200}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
+                    placeholder="Describe the image for screen readers"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    {imageAltText.length}/200
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {imageUploading && (
+              <div className="mt-2 text-sm text-blue-600">
+                Uploading image...
               </div>
             )}
           </div>

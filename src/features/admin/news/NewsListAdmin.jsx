@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminTable from '../../../components/admin/AdminTable';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
 import { getAllArticles, deleteArticle } from './newsAdminService';
+import { formatNewsDate } from '../../../utils/dateFormatter';
 
 const NewsListAdmin = () => {
   const [articles, setArticles] = useState([]);
@@ -80,9 +81,9 @@ const NewsListAdmin = () => {
     },
     {
       header: 'Date',
-      accessor: 'date',
+      accessor: 'publishedAt',
       render: (article) => (
-        <span className="text-sm text-gray-600">{article.date}</span>
+        <span className="text-sm text-gray-600">{formatNewsDate(article.publishedAt)}</span>
       ),
     },
     {

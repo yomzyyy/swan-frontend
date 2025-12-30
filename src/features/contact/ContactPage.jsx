@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import FormInput from '../../components/forms/FormInput';
 import FormTextarea from '../../components/forms/FormTextarea';
 import FormSelect from '../../components/forms/FormSelect';
@@ -11,11 +11,20 @@ import {
 } from '../../utils/formValidation';
 
 const ContactPage = () => {
-  const [activeTab, setActiveTab] = useState('contact');
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get('tab') || 'contact';
+  const [activeTab, setActiveTab] = useState(tabFromUrl);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['contact', 'jobs', 'quote'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,16 +74,6 @@ const ContactPage = () => {
       setIsSubmitting(false);
     }
   };
-
-  const positionOptions = [
-    'Marine Engineer',
-    'Fleet Manager',
-    'Safety Officer',
-    'Deck Officer',
-    'Chief Engineer',
-    'Port Captain',
-    'Other',
-  ];
 
   const serviceOptions = [
     'Vessel Chartering',
@@ -225,13 +224,14 @@ const ContactPage = () => {
                         error={errors.phone}
                         required
                       />
-                      <FormSelect
+                      <FormInput
                         label="Position Applied For"
                         name="position"
+                        type="text"
                         value={formData.position || ''}
                         onChange={handleChange}
                         error={errors.position}
-                        options={positionOptions}
+                        placeholder="e.g., Marine Engineer, Fleet Manager, Deck Officer"
                         required
                       />
                       <FormTextarea

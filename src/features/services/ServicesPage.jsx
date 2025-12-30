@@ -268,9 +268,12 @@ const ServicesPage = () => {
           <p className="text-xl mb-8 opacity-95">
             Contact our team today to discuss your LPG transportation needs.
           </p>
-          <button className="bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300">
+          <Link
+            to="/contact?tab=contact"
+            className="inline-block bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300"
+          >
             Get in Touch
-          </button>
+          </Link>
         </div>
       </div>
     </div>

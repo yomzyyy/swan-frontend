@@ -1,7 +1,45 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { newsArticles } from './data/articles';
+import { api } from '../../services/api';
+import { formatNewsDate } from '../../utils/dateFormatter';
 
 const NewsPage = () => {
+  const [newsArticles, setNewsArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await api.news.getAll();
+        setNewsArticles(response.data.data);
+      } catch (err) {
+        setError('Failed to load news articles');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Loading news...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-red-600">{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
@@ -35,7 +73,7 @@ const NewsPage = () => {
                 <div className="p-8 flex flex-col flex-grow">
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="text-gray-500 text-xs font-semibold uppercase">
-                      {article.date}
+                      {formatNewsDate(article.publishedAt)}
                     </span>
                     {article.category && (
                       <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold uppercase">
