@@ -1,13 +1,12 @@
-const AdminCard = ({ title, value, icon, color = 'blue', link }) => {
+const AdminCard = ({ title, value, icon, color = 'navy', link }) => {
   const colorClasses = {
-    blue: 'from-blue-500 to-blue-600',
-    green: 'from-green-500 to-green-600',
-    purple: 'from-purple-500 to-purple-600',
-    orange: 'from-orange-500 to-orange-600',
+    navy: 'bg-navy-800 border-navy-700 border-l-gold-500',
+    grey: 'bg-grey-800 border-grey-700 border-l-gold-500',
+    gold: 'bg-gold-600 border-gold-500 border-l-navy-800',
   };
 
   const CardContent = () => (
-    <div className={`bg-gradient-to-br ${colorClasses[color]} rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300`}>
+    <div className={`${colorClasses[color]} p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4`}>
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium opacity-90">{title}</p>

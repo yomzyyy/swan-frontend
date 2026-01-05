@@ -108,7 +108,8 @@ const FeaturedFleet = () => {
         <div className="text-center">
           <Link
             to="/fleet"
-            className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+            style={{backgroundColor: '#003366'}}
+            className="inline-block text-white px-10 py-4 font-bold text-lg hover:shadow-lg transition-all duration-300 shadow-md"
           >
             View Full Fleet
           </Link>

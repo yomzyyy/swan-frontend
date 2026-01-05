@@ -10,8 +10,23 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Lato', system-ui, -apple-system, sans-serif;
+  color: #2d3748;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Professional Maritime Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 700;
+  color: inherit; /* Inherit from parent for flexibility */
+}
+
+/* Professional Focus States for Accessibility */
+*:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
 }

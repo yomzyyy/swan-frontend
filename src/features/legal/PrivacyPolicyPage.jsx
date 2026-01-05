@@ -160,7 +160,8 @@ const PrivacyPolicy = () => {
         <div className="mt-12 text-center">
           <a
             href="/"
-            className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+            style={{backgroundColor: '#003366'}}
+            className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 shadow-md"
           >
             Back to Home
           </a>

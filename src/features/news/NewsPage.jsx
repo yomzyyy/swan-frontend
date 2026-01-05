@@ -42,12 +42,12 @@ const NewsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
+      <div style={{backgroundColor: '#003366'}} className="text-white py-24 pt-32">
         <div className="max-w-7xl mx-auto px-8">
-          <h1 className="text-6xl font-extrabold mb-6">
+          <h1 className="text-6xl font-extrabold mb-6 text-white">
             News & Updates
           </h1>
-          <p className="text-xl opacity-95 max-w-3xl leading-relaxed">
+          <p className="text-xl opacity-95 max-w-3xl leading-relaxed text-white">
             Stay informed with the latest news, announcements, and milestones
             from SWAN Shipping Corporation.
           </p>
@@ -60,7 +60,7 @@ const NewsPage = () => {
             {newsArticles.map((article) => (
               <div
                 key={article.id}
-                className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="bg-white overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
                 <div className="h-48 overflow-hidden">
                   <img
@@ -76,7 +76,7 @@ const NewsPage = () => {
                       {formatNewsDate(article.publishedAt)}
                     </span>
                     {article.category && (
-                      <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                      <span className="bg-navy-800 text-white px-3 py-1 border-l-4 border-gold-500 text-xs font-semibold uppercase">
                         {article.category}
                       </span>
                     )}
@@ -92,7 +92,8 @@ const NewsPage = () => {
 
                   <Link
                     to={`/news/${article.slug}`}
-                    className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 text-center"
+                    style={{backgroundColor: '#003366'}}
+                    className="inline-block text-white px-6 py-3 font-semibold hover:shadow-lg transition-all duration-300 text-center shadow-md"
                   >
                     Read more
                   </Link>
@@ -106,7 +107,8 @@ const NewsPage = () => {
       <div className="py-12 text-center bg-white">
         <Link
           to="/"
-          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+          style={{backgroundColor: '#003366'}}
+          className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 shadow-md"
         >
           Back to Home
         </Link>

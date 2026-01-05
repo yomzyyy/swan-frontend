@@ -40,8 +40,14 @@ const LoginPage = () => {
       <div className="w-full max-w-md">
         
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">SWAN Shipping</h1>
-          <p className="text-gray-400">Admin System Access</p>
+          <div className="flex justify-center mb-4">
+            <img
+              src="/swan-logo.png"
+              alt="SWAN Shipping Corporation"
+              className="h-16 w-auto"
+            />
+          </div>
+          <p className="text-gray-400 text-lg">Admin System Access</p>
         </div>
 
         

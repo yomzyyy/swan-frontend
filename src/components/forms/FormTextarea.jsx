@@ -28,11 +28,11 @@ const FormTextarea = ({
         rows={rows}
         disabled={disabled}
         className={`
-          w-full px-6 py-3 rounded-2xl border-2 transition-colors duration-300
-          focus:outline-none placeholder-gray-400 resize-none
+          w-full px-6 py-3 border-2 transition-colors duration-300
+          focus:outline-none placeholder-gray-400 resize-none text-gray-900
           ${error
             ? 'border-red-500 focus:border-red-500'
-            : 'border-gray-200 focus:border-[#207dff]'
+            : 'border-gray-300 focus:border-navy-700'
           }
           ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
         `}

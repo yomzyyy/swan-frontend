@@ -11,9 +11,11 @@ const Footer = () => {
           <div className="lg:col-span-1">
 
             <div className="flex items-center mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#207dff] to-[#00bfff] flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <span className="text-white font-bold text-base">SWAN</span>
-              </div>
+              <img
+                src="/swan-logo.png"
+                alt="SWAN Shipping Corporation"
+                className="h-12 w-auto"
+              />
             </div>
 
 

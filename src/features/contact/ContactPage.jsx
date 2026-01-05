@@ -86,7 +86,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
+      <div className="bg-navy-900 text-white py-24 pt-32">
         <div className="max-w-7xl mx-auto px-8">
           <h1 className="text-6xl font-extrabold mb-6">
             Get in Touch
@@ -102,13 +102,13 @@ const ContactPage = () => {
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-3xl shadow-xl p-12">
+              <div className="bg-white shadow-xl p-12">
                 <div className="flex flex-wrap gap-4 mb-8 border-b border-gray-200 pb-6">
                   <button
                     onClick={() => setActiveTab('contact')}
-                    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                    className={`px-6 py-3 font-semibold transition-all duration-300 ${
                       activeTab === 'contact'
-                        ? 'bg-[#207dff] text-white shadow-lg'
+                        ? 'bg-navy-800 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -116,9 +116,9 @@ const ContactPage = () => {
                   </button>
                   <button
                     onClick={() => setActiveTab('jobs')}
-                    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                    className={`px-6 py-3 font-semibold transition-all duration-300 ${
                       activeTab === 'jobs'
-                        ? 'bg-[#207dff] text-white shadow-lg'
+                        ? 'bg-navy-800 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -126,9 +126,9 @@ const ContactPage = () => {
                   </button>
                   <button
                     onClick={() => setActiveTab('quote')}
-                    className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                    className={`px-6 py-3 font-semibold transition-all duration-300 ${
                       activeTab === 'quote'
-                        ? 'bg-[#207dff] text-white shadow-lg'
+                        ? 'bg-navy-800 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -137,13 +137,13 @@ const ContactPage = () => {
                 </div>
 
                 {submitSuccess && (
-                  <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-2xl mb-6">
+                  <div className="bg-green-100 border-l-4 border-green-500 text-green-700 px-6 py-4 mb-6 shadow-md">
                     Thank you! Your message has been sent successfully.
                   </div>
                 )}
 
                 {errors.submit && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-2xl mb-6">
+                  <div className="bg-red-100 border-l-4 border-red-500 text-red-700 px-6 py-4 mb-6 shadow-md">
                     {errors.submit}
                   </div>
                 )}
@@ -314,7 +314,8 @@ const ContactPage = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{backgroundColor: '#003366'}}
+                    className="w-full text-white px-8 py-4 font-bold text-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
@@ -323,7 +324,7 @@ const ContactPage = () => {
             </div>
 
             <div className="space-y-6">
-              <div className="bg-white rounded-3xl p-8 shadow-lg">
+              <div className="bg-white p-8 shadow-lg">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
                   Contact Information
                 </h3>
@@ -348,7 +349,7 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] rounded-3xl p-8 text-white">
+              <div className="bg-navy-800 p-8 text-white shadow-lg">
                 <h3 className="text-2xl font-bold mb-4">
                   Business Hours
                 </h3>
@@ -366,7 +367,8 @@ const ContactPage = () => {
       <div className="py-12 text-center bg-white">
         <Link
           to="/"
-          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+          style={{backgroundColor: '#003366'}}
+          className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 shadow-md"
         >
           Back to Home
         </Link>

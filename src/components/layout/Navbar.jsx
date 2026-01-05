@@ -16,19 +16,18 @@ const Navbar = () => {
   return (
     <nav
       className={`
-        fixed top-0 left-0 w-full z-50
+        fixed top-0 left-0 w-full z-50 bg-white py-3
         transition-all duration-300 ease-in-out
-        ${isScrolled
-          ? 'bg-white shadow-md py-4'
-          : 'bg-transparent py-6'
-        }
+        ${isScrolled ? 'shadow-md' : ''}
       `}
     >
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <Link to="/" className="flex items-center cursor-pointer">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#207dff] to-[#00bfff] flex items-center justify-center shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-shadow duration-300">
-            <span className="text-white font-bold text-base">SWAN</span>
-          </div>
+        <Link to="/" className="flex items-center cursor-pointer group">
+          <img
+            src="/swan-logo.png"
+            alt="SWAN Shipping Corporation"
+            className="h-10 w-auto group-hover:opacity-80 transition-all duration-300"
+          />
         </Link>
 
         <div className="flex items-center gap-8">
@@ -36,11 +35,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/about"
-                className={`
-                  no-underline font-medium transition-colors duration-300
-                  ${isScrolled ? 'text-gray-800' : 'text-white'}
-                  hover:text-[#207dff]
-                `}
+                className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
               >
                 About Us
               </Link>
@@ -48,11 +43,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/services"
-                className={`
-                  no-underline font-medium transition-colors duration-300
-                  ${isScrolled ? 'text-gray-800' : 'text-white'}
-                  hover:text-[#207dff]
-                `}
+                className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
               >
                 Services
               </Link>
@@ -60,11 +51,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/fleet"
-                className={`
-                  no-underline font-medium transition-colors duration-300
-                  ${isScrolled ? 'text-gray-800' : 'text-white'}
-                  hover:text-[#207dff]
-                `}
+                className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
               >
                 Fleet
               </Link>
@@ -72,11 +59,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/careers"
-                className={`
-                  no-underline font-medium transition-colors duration-300
-                  ${isScrolled ? 'text-gray-800' : 'text-white'}
-                  hover:text-[#207dff]
-                `}
+                className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
               >
                 Careers
               </Link>
@@ -84,11 +67,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/news"
-                className={`
-                  no-underline font-medium transition-colors duration-300
-                  ${isScrolled ? 'text-gray-800' : 'text-white'}
-                  hover:text-[#207dff]
-                `}
+                className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
               >
                 News
               </Link>
@@ -96,7 +75,7 @@ const Navbar = () => {
           </ul>
 
           <Link to="/contact">
-            <button className="bg-gradient-to-r from-[#207dff] to-[#00bfff] px-8 py-3 rounded-full text-white font-semibold transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/50 cursor-pointer border-none">
+            <button className="bg-blue-500 px-6 py-2 rounded-full text-white font-semibold hover:bg-blue-600 hover:shadow-lg transition-all duration-300 cursor-pointer">
               Contact Us
             </button>
           </Link>

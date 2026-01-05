@@ -120,13 +120,15 @@ const ArticlePage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/news"
-              className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 text-center"
+              style={{backgroundColor: '#003366'}}
+              className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 text-center shadow-md"
             >
               ← Back to News
             </Link>
             <Link
               to="/"
-              className="inline-block bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-300 transition-all duration-300 text-center"
+              style={{backgroundColor: '#003366'}}
+              className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 text-center shadow-md"
             >
               Back to Home
             </Link>

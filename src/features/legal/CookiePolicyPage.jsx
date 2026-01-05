@@ -137,7 +137,7 @@ const CookiePolicy = () => {
                 <p className="text-sm text-gray-700 mb-3">
                   You can manage your cookie preferences through our Cookie Preference Center:
                 </p>
-                <button className="bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-6 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300">
+                <button style={{backgroundColor: '#003366'}} className="text-white px-6 py-2 text-sm font-semibold hover:shadow-lg transition-all duration-300 shadow-md">
                   Manage Cookie Preferences
                 </button>
               </div>
@@ -216,7 +216,8 @@ const CookiePolicy = () => {
         <div className="mt-12 text-center">
           <a
             href="/"
-            className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+            style={{backgroundColor: '#003366'}}
+            className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 shadow-md"
           >
             Back to Home
           </a>

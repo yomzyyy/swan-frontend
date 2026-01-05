@@ -148,7 +148,8 @@ const CareersPage = () => {
                   <div>
                     <Link
                       to={`/careers/apply/${job.id}`}
-                      className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 whitespace-nowrap"
+                      style={{backgroundColor: '#003366'}}
+                      className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 whitespace-nowrap shadow-md"
                     >
                       Apply Now
                     </Link>
@@ -164,7 +165,8 @@ const CareersPage = () => {
       <div className="py-12 text-center bg-white">
         <Link
           to="/"
-          className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+          style={{backgroundColor: '#003366'}}
+          className="inline-block text-white px-8 py-3 font-semibold hover:shadow-lg transition-all duration-300 shadow-md"
         >
           Back to Home
         </Link>
@@ -181,7 +183,8 @@ const CareersPage = () => {
           </p>
           <Link
             to="/contact"
-            className="inline-block bg-white text-[#207dff] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300"
+            style={{backgroundColor: 'white', color: '#003366'}}
+            className="inline-block px-10 py-4 font-bold text-lg hover:shadow-xl transition-all duration-300 shadow-md"
           >
             Submit Resume
           </Link>

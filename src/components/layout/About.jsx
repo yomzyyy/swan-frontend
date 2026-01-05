@@ -39,14 +39,7 @@ const About = () => {
 
         
         <div className="text-center mb-16">
-          {/*
-            TEXT GRADIENT HEADING:
-            - text-5xl: Large font size
-            - font-extrabold: Very bold
-            - bg-gradient-to-r: Horizontal gradient
-            - bg-clip-text text-transparent: Makes gradient visible as text
-          */}
-          <h2 className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-[#001E3C] to-[#003C78] bg-clip-text text-transparent">
+          <h2 className="text-5xl font-extrabold mb-4 text-navy-900 border-b-4 border-gold-500 inline-block pb-2">
             MARITIME EXCELLENCE
             <br />
             SINCE 1994
@@ -61,20 +54,13 @@ const About = () => {
           - mb-12: Margin bottom
         */}
         <div className="flex justify-center gap-4 mb-12">
-          {/*
-            TAB BUTTON:
-            - px-8 py-3: Padding
-            - rounded-full: Fully rounded
-            - font-semibold: Bold text
-            - transition-all: Smooth transitions
-            - Conditional styling: Changes based on activeTab state
-          */}
           <button
             onClick={() => setActiveTab('heritage')}
-            className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+            style={activeTab === 'heritage' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
+            className={`px-8 py-3 font-semibold transition-all duration-300 ${
               activeTab === 'heritage'
-                ? 'bg-[#001E3C] text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                ? 'shadow-lg'
+                : 'hover:bg-gray-100 shadow-md'
             }`}
           >
             HERITAGE
@@ -82,10 +68,11 @@ const About = () => {
 
           <button
             onClick={() => setActiveTab('innovation')}
-            className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+            style={activeTab === 'innovation' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
+            className={`px-8 py-3 font-semibold transition-all duration-300 ${
               activeTab === 'innovation'
-                ? 'bg-[#001E3C] text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                ? 'shadow-lg'
+                : 'hover:bg-gray-100 shadow-md'
             }`}
           >
             INNOVATION
@@ -93,10 +80,11 @@ const About = () => {
 
           <button
             onClick={() => setActiveTab('sustainability')}
-            className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
+            style={activeTab === 'sustainability' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
+            className={`px-8 py-3 font-semibold transition-all duration-300 ${
               activeTab === 'sustainability'
-                ? 'bg-[#001E3C] text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                ? 'shadow-lg'
+                : 'hover:bg-gray-100 shadow-md'
             }`}
           >
             SUSTAINABILITY
@@ -114,75 +102,47 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
 
           
-          {/*
-            IMAGE CONTAINER:
-            - rounded-3xl: Large border radius
-            - overflow-hidden: Clips content to rounded corners
-            - shadow-2xl: Large shadow
-            - relative: For absolute positioning of badges
-            - h-full: Match height of adjacent column
-          */}
-          <div className="rounded-3xl overflow-hidden shadow-2xl relative h-full">
+          <div className="overflow-hidden shadow-2xl relative h-full">
             <img
               src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800"
               alt="Modern building"
               className="w-full h-full object-cover"
             />
-            {/*
-              BADGES:
-              - absolute positioning overlay on image
-              - top-6 left-6: Equal padding from top and left
-            */}
             <div className="absolute top-6 left-6 flex gap-3">
-                <span className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-gray-800">
+                <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-gold-600 text-sm font-semibold text-gray-800">
                   EST. 1994
                 </span>
-                <span className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-gray-800">
+                <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-gold-600 text-sm font-semibold text-gray-800">
                   ISO CERTIFIED
                 </span>
               </div>
           </div>
 
           
-          {/*
-            CONTENT CARD:
-            - bg-[#1a2332]: Dark navy background
-            - rounded-3xl: Large border radius
-            - p-12: Padding all sides
-            - text-white: White text
-            - shadow-xl: Extra large shadow
-            - flex flex-col: Enables vertical flexbox layout
-            - h-full: Match height of adjacent column
-          */}
-          <div className="bg-[#1a2332] rounded-3xl p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
-            
-            <span className="bg-[#207dff] px-4 py-2 rounded-full text-xs font-bold mb-6 uppercase tracking-wide shadow-lg shadow-blue-500/30 self-start">
+          <div style={{backgroundColor: '#0D2136'}} className="p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
+
+            <span style={{backgroundColor: '#d4af37'}} className="px-4 py-2 border-l-4 border-gold-500 text-xs font-bold mb-6 uppercase tracking-wide self-start text-navy-900">
               {tabContent[activeTab].badge}
             </span>
 
-            
-            <h3 className="text-4xl font-bold mb-6 leading-tight">
+
+            <h3 className="text-4xl font-bold mb-6 leading-tight text-white">
               {tabContent[activeTab].title}
             </h3>
 
-            
+
             <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
               {tabContent[activeTab].body}
             </p>
 
-            
-            {/*
-              STATS GRID:
-              - grid grid-cols-2: 2 equal columns
-              - gap-8: Space between items
-            */}
+
             <div className="grid grid-cols-2 gap-8 mt-8">
               {tabContent[activeTab].stats.map((stat, index) => (
                 <div key={index}>
-                  <div className="text-4xl font-extrabold text-[#207dff] mb-2">
+                  <div className="text-4xl font-extrabold text-gold-500 mb-2">
                     {stat.number}
                   </div>
-                  <div className="text-gray-400 text-sm">
+                  <div className="text-gray-300 text-sm">
                     {stat.label}
                   </div>
                 </div>

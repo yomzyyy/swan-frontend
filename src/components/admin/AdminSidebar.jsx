@@ -73,9 +73,16 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     >
       {/* Header with close button for mobile */}
       <div className="p-6 border-b border-gray-700 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">SWAN Admin</h1>
-          <p className="text-xs text-gray-400 mt-1">Content Management</p>
+        <div className="flex items-center gap-3">
+          <img
+            src="/swan-logo.png"
+            alt="SWAN Shipping"
+            className="h-10 w-auto"
+          />
+          <div>
+            <h1 className="text-lg font-bold">Admin Panel</h1>
+            <p className="text-xs text-gray-400 mt-1">Content Management</p>
+          </div>
         </div>
         <button
           onClick={onClose}
