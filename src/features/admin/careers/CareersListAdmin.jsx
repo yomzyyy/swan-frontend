@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCareers, deleteCareer } from './careersAdminService';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
+import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const CareersListAdmin = () => {
   const [careers, setCareers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [careerToDelete, setCareerToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,11 +19,14 @@ const CareersListAdmin = () => {
 
   const loadCareers = async () => {
     try {
+      setLoading(true);
       const allCareers = await getAllCareers();
       setCareers(allCareers);
     } catch (error) {
       console.error('Failed to load careers:', error);
       setCareers([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,6 +63,23 @@ const CareersListAdmin = () => {
       career.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
       career.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Manage Careers</h1>
+          <button
+            onClick={() => navigate('/admin/careers/new')}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          >
+            Add Job Opening
+          </button>
+        </div>
+        <SkeletonTable columns={4} rows={7} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">

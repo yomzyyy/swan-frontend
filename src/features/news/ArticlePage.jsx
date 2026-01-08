@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { formatNewsDate } from '../../utils/dateFormatter';
+import SkeletonArticle from '../../components/skeletons/SkeletonArticle';
 
 const ArticlePage = () => {
   const { slug } = useParams();
@@ -37,11 +38,7 @@ const ArticlePage = () => {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading article...</div>
-      </div>
-    );
+    return <SkeletonArticle />;
   }
 
   if (error || !article) {
@@ -70,7 +67,7 @@ const ArticlePage = () => {
 
       <div className="py-24">
         <div className="max-w-4xl mx-auto px-8">
-          <div className="rounded-3xl overflow-hidden shadow-2xl mb-12">
+          <div className="overflow-hidden shadow-2xl mb-12">
             <img
               src={article.image}
               alt={article.title}
@@ -78,7 +75,7 @@ const ArticlePage = () => {
             />
           </div>
 
-          <div className="bg-white rounded-3xl p-12 shadow-lg mb-12">
+          <div className="bg-white p-12 shadow-lg mb-12">
             <div className="prose prose-lg max-w-none">
               {article.content.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="text-gray-700 leading-relaxed mb-6 text-lg">
@@ -90,7 +87,7 @@ const ArticlePage = () => {
             {article.images && article.images.length > 0 && (
               <div className="mt-12 space-y-8">
                 {article.images.map((image, index) => (
-                  <div key={index} className="rounded-2xl overflow-hidden shadow-lg">
+                  <div key={index} className="overflow-hidden shadow-lg">
                     <img
                       src={image}
                       alt={`${article.title} - Image ${index + 1}`}
@@ -151,7 +148,7 @@ const ArticlePage = () => {
                   <Link
                     key={relatedArticle.id}
                     to={`/news/${relatedArticle.slug}`}
-                    className="bg-gray-50 rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    className="bg-gray-50 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   >
                     <div className="h-48 overflow-hidden">
                       <img

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { FLEET_STATS } from '../../constants/metadata';
 import { DirectionsBoat, Language, Public } from '@mui/icons-material';
+import FleetGrid from '../../components/layout/FleetGrid';
 
 const FleetPage = () => {
   const [vessels, setVessels] = useState([]);
@@ -27,8 +28,70 @@ const FleetPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading fleet data...</div>
+      <div className="min-h-screen bg-gray-50">
+        <div style={{backgroundColor: '#003366'}} className="text-white py-24 pt-32">
+          <div className="max-w-7xl mx-auto px-8">
+            <h1 className="text-6xl font-extrabold mb-6 text-white">
+              Our Fleet
+            </h1>
+            <p className="text-xl opacity-95 max-w-3xl leading-relaxed text-white">
+              Modern, efficient, and environmentally responsible LPG carriers
+              equipped with cutting-edge technology and safety systems.
+            </p>
+          </div>
+        </div>
+
+        <div className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-5xl font-extrabold text-gold-600 mb-4">
+                  {FLEET_STATS.totalVessels}
+                </div>
+                <div className="text-gray-700 font-semibold text-lg">
+                  Total Vessels
+                </div>
+              </div>
+
+              <div>
+                <div className="text-5xl font-extrabold text-gold-600 mb-4">
+                  {FLEET_STATS.maxCapacity}
+                </div>
+                <div className="text-gray-700 font-semibold text-lg">
+                  Max Capacity CBM
+                </div>
+              </div>
+
+              <div>
+                <div className="text-5xl font-extrabold text-gold-600 mb-4">
+                  {FLEET_STATS.avgFleetAge}
+                </div>
+                <div className="text-gray-700 font-semibold text-lg">
+                  Avg Fleet Age
+                </div>
+              </div>
+
+              <div>
+                <div className="text-5xl font-extrabold text-gold-600 mb-4">
+                  {FLEET_STATS.safetyCompliance}
+                </div>
+                <div className="text-gray-700 font-semibold text-lg">
+                  Safety Compliance
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-8">
+            <FleetGrid
+              vessels={Array(9).fill(null)}
+              loading={true}
+              title="Our Vessels"
+            />
+          </div>
+        </section>
       </div>
     );
   }
@@ -99,64 +162,12 @@ const FleetPage = () => {
 
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12">
-            Our Vessels
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {vessels.map((vessel) => (
-              <div
-                key={vessel.id}
-                className="bg-white overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={vessel.image}
-                    alt={vessel.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                    {vessel.name}
-                  </h3>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm">Trade Area:</span>
-                      <span className="font-semibold text-gray-900">{vessel.tradeArea}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm">CBM:</span>
-                      <span className="font-semibold text-gold-600">{vessel.capacity}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm">Type:</span>
-                      <span className="font-semibold text-gray-900">{vessel.type}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm">Built:</span>
-                      <span className="font-semibold text-gray-900">{vessel.year}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm">Flag:</span>
-                      <span className="font-semibold text-gray-900">{vessel.flag}</span>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-200 pt-4">
-                    <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
-                      Shipyard
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {vessel.yard}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FleetGrid
+            vessels={vessels}
+            loading={false}
+            showTitle={true}
+            title="Our Vessels"
+          />
         </div>
       </section>
 

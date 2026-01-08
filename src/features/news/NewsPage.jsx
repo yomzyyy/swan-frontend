@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { formatNewsDate } from '../../utils/dateFormatter';
+import SkeletonCard from '../../components/skeletons/SkeletonCard';
 
 const NewsPage = () => {
   const [newsArticles, setNewsArticles] = useState([]);
@@ -26,8 +27,28 @@ const NewsPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading news...</div>
+      <div className="min-h-screen bg-gray-50">
+        <div style={{backgroundColor: '#003366'}} className="text-white py-24 pt-32">
+          <div className="max-w-7xl mx-auto px-8">
+            <h1 className="text-6xl font-extrabold mb-6 text-white">
+              News & Updates
+            </h1>
+            <p className="text-xl opacity-95 max-w-3xl leading-relaxed text-white">
+              Stay informed with the latest news, announcements, and milestones
+              from SWAN Shipping Corporation.
+            </p>
+          </div>
+        </div>
+
+        <div className="py-24">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array(9).fill(0).map((_, i) => (
+                <SkeletonCard key={i} variant="news" />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

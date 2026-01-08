@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { Shield } from '@mui/icons-material';
+import SkeletonHero from '../skeletons/SkeletonHero';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -68,7 +69,7 @@ const Hero = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-gray-900" />;
+    return <SkeletonHero />;
   }
 
   return (

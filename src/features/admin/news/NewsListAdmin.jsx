@@ -4,9 +4,11 @@ import AdminTable from '../../../components/admin/AdminTable';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
 import { getAllArticles, deleteArticle } from './newsAdminService';
 import { formatNewsDate } from '../../../utils/dateFormatter';
+import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const NewsListAdmin = () => {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,11 +21,14 @@ const NewsListAdmin = () => {
 
   const loadArticles = async () => {
     try {
+      setLoading(true);
       const allArticles = await getAllArticles();
       setArticles(allArticles);
     } catch (error) {
       console.error('Failed to load articles:', error);
       setArticles([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,9 +104,29 @@ const NewsListAdmin = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">News Articles</h1>
+            <p className="text-gray-600 mt-1">Manage your news content</p>
+          </div>
+          <button
+            onClick={() => navigate('/admin/news/create')}
+            className="bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
+          >
+            + Create Article
+          </button>
+        </div>
+        <SkeletonTable columns={4} rows={8} />
+      </div>
+    );
+  }
+
   return (
     <div>
-      
+
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">News Articles</h1>
@@ -115,7 +140,7 @@ const NewsListAdmin = () => {
         </button>
       </div>
 
-      
+
       <div className="mb-6">
         <input
           type="text"
@@ -126,7 +151,7 @@ const NewsListAdmin = () => {
         />
       </div>
 
-      
+
       <AdminTable
         columns={columns}
         data={filteredArticles}

@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import AdminTable from '../../../components/admin/AdminTable';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
 import { getAllVessels, deleteVessel } from './fleetAdminService';
+import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const FleetListAdmin = () => {
   const [vessels, setVessels] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [vesselToDelete, setVesselToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,11 +20,14 @@ const FleetListAdmin = () => {
 
   const loadVessels = async () => {
     try {
+      setLoading(true);
       const allVessels = await getAllVessels();
       setVessels(allVessels);
     } catch (error) {
       console.error('Failed to load vessels:', error);
       setVessels([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,9 +108,29 @@ const FleetListAdmin = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Fleet Vessels</h1>
+            <p className="text-gray-600 mt-1">Manage your fleet</p>
+          </div>
+          <button
+            onClick={() => navigate('/admin/fleet/create')}
+            className="bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
+          >
+            + Add Vessel
+          </button>
+        </div>
+        <SkeletonTable columns={5} rows={6} />
+      </div>
+    );
+  }
+
   return (
     <div>
-      
+
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Fleet Vessels</h1>
@@ -119,7 +144,7 @@ const FleetListAdmin = () => {
         </button>
       </div>
 
-      
+
       <div className="mb-6">
         <input
           type="text"
@@ -130,7 +155,7 @@ const FleetListAdmin = () => {
         />
       </div>
 
-      
+
       <AdminTable
         columns={columns}
         data={filteredVessels}

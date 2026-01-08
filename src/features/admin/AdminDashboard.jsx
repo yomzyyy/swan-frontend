@@ -4,6 +4,7 @@ import AdminCard from '../../components/admin/AdminCard';
 import { getStorageData } from '../../utils/localStorage';
 import { getAllVessels } from '../admin/fleet/fleetAdminService';
 import { getAllCareers } from '../admin/careers/careersAdminService';
+import SkeletonStats from '../../components/skeletons/SkeletonStats';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -69,9 +70,28 @@ const AdminDashboard = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.name || user?.username}!
+          </h1>
+          <p className="text-gray-600">Here's what's happening with your content today.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array(3).fill(0).map((_, i) => (
+            <SkeletonStats key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Welcome back, {user?.name || user?.username}!
@@ -79,7 +99,7 @@ const AdminDashboard = () => {
         <p className="text-gray-600">Here's what's happening with your content today.</p>
       </div>
 
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
           <AdminCard key={index} {...stat} />
@@ -87,12 +107,12 @@ const AdminDashboard = () => {
       </div>
 
       
-      <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+      <div className="bg-white shadow-sm p-6 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a
             href="/admin/news/create"
-            className="flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-[#207dff] hover:shadow-md transition-all duration-200"
+            className="flex items-center p-4 border-2 border-gray-200 hover:border-[#207dff] hover:shadow-md transition-all duration-200"
           >
             <div className="w-10 h-10 mr-3 flex-shrink-0">
               <svg viewBox="0 0 24 24" fill="black">
@@ -107,7 +127,7 @@ const AdminDashboard = () => {
 
           <a
             href="/admin/fleet/create"
-            className="flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-[#207dff] hover:shadow-md transition-all duration-200"
+            className="flex items-center p-4 border-2 border-gray-200 hover:border-[#207dff] hover:shadow-md transition-all duration-200"
           >
             <div className="w-10 h-10 mr-3 flex-shrink-0">
               <svg viewBox="0 0 24 24" fill="black">
@@ -122,7 +142,7 @@ const AdminDashboard = () => {
 
           <a
             href="/admin/careers/create"
-            className="flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-[#207dff] hover:shadow-md transition-all duration-200"
+            className="flex items-center p-4 border-2 border-gray-200 hover:border-[#207dff] hover:shadow-md transition-all duration-200"
           >
             <div className="w-10 h-10 mr-3 flex-shrink-0">
               <svg viewBox="0 0 24 24" fill="black">
@@ -138,7 +158,7 @@ const AdminDashboard = () => {
       </div>
 
       
-      <div className="bg-white rounded-2xl shadow-sm p-6">
+      <div className="bg-white shadow-sm p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
         <p className="text-gray-500">No recent activity to display.</p>
       </div>
