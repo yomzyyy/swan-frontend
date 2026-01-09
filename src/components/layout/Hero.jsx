@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { Shield } from '@mui/icons-material';
 import SkeletonHero from '../skeletons/SkeletonHero';
+import { ROUTES } from '../../config/routes';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [animateContent, setAnimateContent] = useState(false);
 
   const fallbackImages = [
     {
@@ -64,6 +67,12 @@ const Hero = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
+  useEffect(() => {
+    if (!loading) {
+      setAnimateContent(true);
+    }
+  }, [loading]);
+
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
@@ -88,41 +97,25 @@ const Hero = () => {
         />
       ))}
 
-      <div className="absolute inset-0 bg-navy-900/85 z-10"></div>
+      <div className="absolute inset-0 bg-black/70 z-10"></div>
 
       <div className="relative z-20 max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-white">
-            <h1 className="text-6xl font-extrabold leading-tight mb-6 tracking-tight">
-              SAFE MARITIME
-              <br />
-              <span className="text-blue-400">
-                LPG TRANSPORT
-              </span>
-              <br />
-              SOLUTIONS
-            </h1>
+        <div className="text-white max-w-6xl mx-auto">
+          <h1 className={`text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight uppercase transition-all duration-1000 ease-out ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            Safety-Driven. Technically Disciplined. Proven in Gas Operations.
+          </h1>
 
-            <p className="text-lg leading-relaxed mb-8 opacity-95 max-w-lg">
-              Backed by decades of experience, Swan Shipping Corporation provides end-to-end ship management services—delivering safe, efficient, and well-coordinated maritime operations for clients around the world.
-            </p>
-          </div>
+          <p className={`text-sm leading-relaxed mb-8 transition-all duration-1000 delay-200 ease-out ${animateContent ? 'opacity-95 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            With over 30 years of ship management experience, SWAN Shipping Corporation provides reliable < br/> and compliant management for LPG carriers, ensuring safe cargo operations, strong vetting < br/>performance, and stable operating costs.
+          </p>
+
+          <Link
+            to={ROUTES.SERVICES}
+            className={`inline-block bg-blue-600 text-white font-semibold text-sm uppercase px-6 py-3 rounded-md cursor-pointer transition-all duration-1000 delay-400 ease-out hover:bg-blue-700 hover:scale-105 ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          >
+            Discover Our Services
+          </Link>
         </div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex gap-3">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 transition-all duration-300 ${
-              index === currentSlide
-                ? 'bg-gold-500 w-8'
-                : 'bg-white/50 hover:bg-white/80'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
       </div>
     </section>
   );
