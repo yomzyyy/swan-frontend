@@ -26,11 +26,6 @@ export default {
           200: '#edf2f7',  // Subtle backgrounds
           100: '#f7fafc',  // Off-white
         },
-        gold: {
-          600: '#b8860b',  // Dark gold (minimal use for highlights)
-          500: '#d4af37',  // Standard gold (accents)
-          400: '#daa520',  // Light gold
-        },
         // Functional colors
         success: '#2f855a',
         warning: '#c05621',

@@ -78,7 +78,7 @@ const FleetGrid = ({
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 text-sm">CBM:</span>
-                  <span className="font-semibold text-gold-600">{vessel.capacity}</span>
+                  <span className="font-semibold text-blue-600">{vessel.capacity}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 text-sm">Type:</span>

@@ -41,7 +41,7 @@ const AboutContentSection = ({
     <div className={containerClassName}>
       {showSectionTitle && sectionTitle && (
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-extrabold mb-4 text-navy-900 border-b-4 border-gold-500 inline-block pb-2">
+          <h2 className="text-5xl font-extrabold mb-4 text-navy-900 border-b-4 border-blue-600 inline-block pb-2">
             {sectionTitle}
           </h2>
         </div>
@@ -86,24 +86,26 @@ const AboutContentSection = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-        <div className="overflow-hidden shadow-2xl relative h-full">
-          <img
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800"
-            alt="Modern building"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute top-6 left-6 flex gap-3">
-            <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-gold-600 text-sm font-semibold text-gray-800">
-              EST. 1994
-            </span>
-            <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-gold-600 text-sm font-semibold text-gray-800">
-              ISO CERTIFIED
-            </span>
+        <div className="h-full">
+          <div className="overflow-hidden shadow-2xl relative h-full">
+            <img
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800"
+              alt="Modern building"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-6 left-6 flex gap-3">
+              <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold text-gray-800">
+                EST. 1994
+              </span>
+              <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold text-gray-800">
+                ISO CERTIFIED
+              </span>
+            </div>
           </div>
         </div>
 
         <div style={{backgroundColor: '#0D2136'}} className="p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
-          <span style={{backgroundColor: '#d4af37'}} className="px-4 py-2 border-l-4 border-gold-500 text-xs font-bold mb-6 uppercase tracking-wide self-start text-navy-900">
+          <span className="bg-white px-4 py-2 border-l-4 border-blue-600 text-xs font-bold mb-6 uppercase tracking-wide self-start text-navy-900">
             {tabContent[activeTab].badge}
           </span>
 
@@ -118,7 +120,7 @@ const AboutContentSection = ({
           <div className="grid grid-cols-2 gap-8 mt-8">
             {tabContent[activeTab].stats.map((stat, index) => (
               <div key={index}>
-                <div className="text-4xl font-extrabold text-gold-500 mb-2">
+                <div className="text-4xl font-extrabold text-blue-500 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-300 text-sm">
