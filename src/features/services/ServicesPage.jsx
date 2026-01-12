@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import GetInTouch from '../../components/layout/GetInTouch';
 
 const ServicesPage = () => {
   const services = [
@@ -131,23 +132,8 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <div className="py-16 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Work With Us?
-          </h2>
-          <p className="text-xl mb-8 opacity-95">
-            Contact our team today to discuss your LPG transportation needs.
-          </p>
-          <Link
-            to="/contact?tab=contact"
-            className="inline-block bg-white text-blue-600 px-10 py-4 font-bold text-lg hover:shadow-xl transition-all duration-300 shadow-md"
-          >
-            Get in Touch
-          </Link>
-        </div>
-      </div>
+      {/* Get In Touch Section */}
+      <GetInTouch bgColor="bg-white" />
     </div>
   );
 };

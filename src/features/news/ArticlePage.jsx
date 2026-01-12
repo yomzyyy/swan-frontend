@@ -46,74 +46,70 @@ const ArticlePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-24 pt-32">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex flex-wrap gap-3 mb-6">
-            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-              {formatNewsDate(article.publishedAt)}
-            </span>
-            {article.category && (
-              <span className="bg-[#207dff] px-4 py-2 rounded-full text-sm font-semibold">
-                {article.category}
-              </span>
-            )}
-          </div>
-          <h1 className="text-5xl font-extrabold mb-6 leading-tight">
+    <div className="min-h-screen bg-white">
+      <div className="pt-32 pb-12">
+        <div className="max-w-4xl mx-auto px-8">
+          {/* Title */}
+          <h1 className="text-2xl md:text-3xl font-black uppercase mb-8 leading-tight">
             {article.title}
           </h1>
-        </div>
-      </div>
 
-      <div className="py-24">
-        <div className="max-w-4xl mx-auto px-8">
-          <div className="overflow-hidden shadow-2xl mb-12">
+          {/* Featured Image */}
+          <div className="mb-8">
             <img
               src={article.image}
               alt={article.title}
-              className="w-full h-96 object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
 
-          <div className="bg-white p-12 shadow-lg mb-12">
-            <div className="prose prose-lg max-w-none">
-              {article.content.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="text-gray-700 leading-relaxed mb-6 text-lg">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            {article.images && article.images.length > 0 && (
-              <div className="mt-12 space-y-8">
-                {article.images.map((image, index) => (
-                  <div key={index} className="overflow-hidden shadow-lg">
-                    <img
-                      src={image}
-                      alt={`${article.title} - Image ${index + 1}`}
-                      className="w-full h-auto object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {article.hashtags && article.hashtags.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-gray-200">
-                <div className="flex flex-wrap gap-3">
-                  {article.hashtags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-100 text-[#207dff] px-4 py-2 rounded-full text-sm font-semibold"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Article Content */}
+          <div className="prose prose-lg max-w-none mb-12">
+            {article.content.split('\n\n').map((paragraph, index) => (
+              <p key={index} className="text-gray-800 leading-relaxed mb-6 text-base">
+                {paragraph}
+              </p>
+            ))}
           </div>
 
+          {/* Additional Images */}
+          {article.images && article.images.length > 0 && (
+            <div className="mb-12 space-y-8">
+              {article.images.map((image, index) => (
+                <div key={index}>
+                  <img
+                    src={image}
+                    alt={`${article.title} - Image ${index + 1}`}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Metadata: Author and Date */}
+          <div className="mb-4">
+            <p className="text-sm text-gray-700">
+              by admin, {formatNewsDate(article.publishedAt)}
+            </p>
+          </div>
+
+          {/* Tags */}
+          {article.hashtags && article.hashtags.length > 0 && (
+            <div className="mb-12">
+              <p className="text-sm font-semibold text-gray-900">
+                <span className="font-bold">Tags:</span>{' '}
+                {article.hashtags.map((tag, index) => (
+                  <span key={index}>
+                    <span className="text-blue-600">#{tag}</span>
+                    {index < article.hashtags.length - 1 && ' '}
+                  </span>
+                ))}
+              </p>
+            </div>
+          )}
+
+          {/* Navigation Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/news"

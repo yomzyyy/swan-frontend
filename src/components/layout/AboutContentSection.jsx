@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const AboutContentSection = ({
   sectionTitle,
@@ -6,6 +6,20 @@ const AboutContentSection = ({
   containerClassName = ''
 }) => {
   const [activeTab, setActiveTab] = useState('heritage');
+
+  // Auto-rotate tabs every 5 seconds
+  useEffect(() => {
+    const tabs = ['heritage', 'innovation', 'sustainability'];
+    const interval = setInterval(() => {
+      setActiveTab(current => {
+        const currentIndex = tabs.indexOf(current);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        return tabs[nextIndex];
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const tabContent = {
     heritage: {
@@ -41,7 +55,7 @@ const AboutContentSection = ({
     <div className={containerClassName}>
       {showSectionTitle && sectionTitle && (
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-extrabold mb-4 text-navy-900 border-b-4 border-blue-600 inline-block pb-2">
+          <h2 className="text-5xl font-extrabold mb-4 text-navy-900 inline-block pb-2" style={{borderBottom: '4px solid #0D2136'}}>
             {sectionTitle}
           </h2>
         </div>
@@ -104,30 +118,32 @@ const AboutContentSection = ({
           </div>
         </div>
 
-        <div style={{backgroundColor: '#0D2136'}} className="p-12 text-white shadow-xl flex flex-col h-[650px] transition-all duration-300">
-          <span className="bg-white px-4 py-2 border-l-4 border-blue-600 text-xs font-bold mb-6 uppercase tracking-wide self-start text-navy-900">
-            {tabContent[activeTab].badge}
-          </span>
+        <div style={{backgroundColor: '#0D2136'}} className="px-12 pt-6 pb-12 text-white shadow-xl flex flex-col h-[650px] overflow-hidden">
+          <div key={activeTab} className="flex flex-col h-full animate-fadeInSlide">
+            <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold mb-6 uppercase tracking-wide self-start text-gray-800">
+              {tabContent[activeTab].badge}
+            </span>
 
-          <h3 className="text-4xl font-bold mb-6 leading-tight text-white">
-            {tabContent[activeTab].title}
-          </h3>
+            <h3 className="text-4xl font-bold mb-6 leading-tight text-white">
+              {tabContent[activeTab].title}
+            </h3>
 
-          <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
-            {tabContent[activeTab].body}
-          </p>
+            <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
+              {tabContent[activeTab].body}
+            </p>
 
-          <div className="grid grid-cols-2 gap-8 mt-8">
-            {tabContent[activeTab].stats.map((stat, index) => (
-              <div key={index}>
-                <div className="text-4xl font-extrabold text-blue-500 mb-2">
-                  {stat.number}
+            <div className="grid grid-cols-2 gap-8 mt-8">
+              {tabContent[activeTab].stats.map((stat, index) => (
+                <div key={index}>
+                  <div className="text-4xl font-extrabold text-blue-500 mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-300 text-sm">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-gray-300 text-sm">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

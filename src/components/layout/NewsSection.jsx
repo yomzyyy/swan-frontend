@@ -30,7 +30,7 @@ const NewsSection = () => {
 
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <p className="text-sm text-blue-600 uppercase tracking-wider mb-4 font-semibold">

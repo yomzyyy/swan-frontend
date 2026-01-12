@@ -30,3 +30,19 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
+
+/* Tab Content Animation */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeInSlide {
+  animation: fadeInSlide 0.6s ease-out;
+}
