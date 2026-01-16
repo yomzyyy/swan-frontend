@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { formatNewsDate } from '../../utils/dateFormatter';
+import ActionButton from '../common/ActionButton';
 
 const NewsSection = () => {
   const [newsArticles, setNewsArticles] = useState([]);
@@ -88,11 +89,9 @@ const NewsSection = () => {
 
         {/* Go To Blog Button */}
         <div className="flex justify-center">
-          <Link to="/news">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm uppercase px-10 py-4 transition-all duration-300">
-              GO TO BLOG +
-            </button>
-          </Link>
+          <ActionButton to="/news" size="lg">
+            Go To Blog
+          </ActionButton>
         </div>
       </div>
     </section>

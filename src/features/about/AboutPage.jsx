@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Check, ArrowBackIos, ArrowForwardIos, HealthAndSafety, Groups, Build, FactCheck } from '@mui/icons-material';
 import { useInView } from '../../hooks/useInView';
@@ -146,22 +145,12 @@ const AboutPage = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="relative h-96 bg-cover bg-center pt-24"
+        className="relative h-96 bg-cover bg-center"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1600)',
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
-
-        {/* Breadcrumb */}
-        <div className="relative max-w-7xl mx-auto px-8 pt-8">
-          <Link to="/" className="text-white/80 hover:text-white text-sm transition-colors">
-            Home
-          </Link>
-          <span className="text-white/80 mx-2">&gt;</span>
-          <span className="text-white text-sm">About Us</span>
-        </div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Main Title + Circular Stats Section - Combined */}

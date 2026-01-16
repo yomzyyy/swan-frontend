@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Shield } from '@mui/icons-material';
 import SkeletonHero from '../skeletons/SkeletonHero';
 import { ROUTES } from '../../config/routes';
+import ActionButton from '../common/ActionButton';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -109,12 +108,11 @@ const Hero = () => {
             With over 30 years of ship management experience, SWAN Shipping Corporation provides reliable < br/> and compliant management for LPG carriers, ensuring safe cargo operations, strong vetting < br/>performance, and stable operating costs.
           </p>
 
-          <Link
-            to={ROUTES.SERVICES}
-            className={`inline-block bg-blue-600 text-white font-semibold text-sm uppercase px-6 py-3 rounded-md cursor-pointer transition-all duration-1000 delay-400 ease-out hover:bg-blue-700 hover:scale-105 ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            Discover Our Services
-          </Link>
+          <div className={`transition-all duration-1000 delay-400 ease-out ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <ActionButton to={ROUTES.SERVICES}>
+              Discover Our Services
+            </ActionButton>
+          </div>
         </div>
       </div>
     </section>

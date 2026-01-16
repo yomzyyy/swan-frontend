@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import FleetGrid from '../../components/layout/FleetGrid';
 
@@ -28,30 +27,13 @@ const FleetPage = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
-        <div className="relative text-white py-32 pt-40">
-          {/* Background Image */}
-          <img
-            src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920"
-            alt="LPG Fleet"
-            className="absolute inset-0 w-full h-full object-cover z-0"
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/50 z-10"></div>
-
-          {/* Content */}
-          <div className="relative z-20 max-w-7xl mx-auto px-8">
-            {/* Breadcrumb */}
-            <div className="mb-6">
-              <Link to="/" className="text-white hover:text-gray-300">Home</Link>
-              <span className="text-white mx-2">&gt;</span>
-              <span className="text-white">Fleet</span>
-            </div>
-
-            {/* Heading */}
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white uppercase leading-tight max-w-5xl">
-              Modern, Efficient, And Environmentally Responsible LPG Carriers
-            </h1>
-          </div>
+        <div
+          className="relative h-96 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920)',
+          }}
+        >
+          <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
         {/* Our Vessels Section */}
@@ -83,30 +65,13 @@ const FleetPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative text-white py-32 pt-40">
-        {/* Background Image */}
-        <img
-          src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920"
-          alt="LPG Fleet"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
-
-        {/* Content */}
-        <div className="relative z-20 max-w-7xl mx-auto px-8">
-          {/* Breadcrumb */}
-          <div className="mb-6">
-            <Link to="/" className="text-white hover:text-gray-300">Home</Link>
-            <span className="text-white mx-2">&gt;</span>
-            <span className="text-white">Fleet</span>
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white uppercase leading-tight max-w-5xl">
-            Modern, Efficient, And Environmentally Responsible LPG Carriers
-          </h1>
-        </div>
+      <div
+        className="relative h-96 bg-cover bg-center"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920)',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Our Vessels Section */}

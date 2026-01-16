@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ActionButton from '../common/ActionButton';
 
 const Services = () => {
   const services = [
@@ -106,11 +107,9 @@ const Services = () => {
 
         {/* Discover Services Button */}
         <div className="flex justify-center">
-          <Link to="/services">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm uppercase px-10 py-4 transition-all duration-300">
-              Discover Our Services +
-            </button>
-          </Link>
+          <ActionButton to="/services" size="lg">
+            Discover Our Services
+          </ActionButton>
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { LocationOn, Phone, Email } from '@mui/icons-material';
 import FormInput from '../../components/forms/FormInput';
 import FormTextarea from '../../components/forms/FormTextarea';
@@ -89,30 +89,12 @@ const ContactPage = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="relative h-96 bg-cover bg-center pt-24 flex items-center"
+        className="relative h-96 bg-cover bg-center"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600)',
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
-
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-8 w-full">
-          {/* Breadcrumb */}
-          <div className="mb-6">
-            <Link to="/" className="text-white/80 hover:text-white text-sm transition-colors">
-              Home
-            </Link>
-            <span className="text-white/80 mx-2">&gt;</span>
-            <span className="text-white text-sm">Contact</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-6xl md:text-7xl font-black uppercase" style={{ color: 'white' }}>
-            Get In Touch
-          </h1>
-        </div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* About Section */}

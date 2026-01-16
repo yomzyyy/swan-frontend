@@ -45,30 +45,12 @@ const ServicesPage = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="relative h-96 bg-cover bg-center pt-24"
+        className="relative h-96 bg-cover bg-center"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1600)',
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
-
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-8 h-full flex flex-col justify-center">
-          {/* Breadcrumb */}
-          <div className="mb-6">
-            <Link to="/" className="text-white/80 hover:text-white text-sm transition-colors">
-              Home
-            </Link>
-            <span className="text-white/80 mx-2">&gt;</span>
-            <span className="text-white text-sm">Services</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-5xl md:text-6xl font-black text-white leading-tight uppercase" style={{ color: 'white' }}>
-            Innovating For A Sustainable<br />Tomorrow In LPG Shipping
-          </h1>
-        </div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Services Grid Section */}
