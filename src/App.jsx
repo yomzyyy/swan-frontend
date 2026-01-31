@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -23,15 +24,16 @@ import FleetListAdmin from './features/admin/fleet/FleetListAdmin';
 import FleetFormAdmin from './features/admin/fleet/FleetFormAdmin';
 import CareersListAdmin from './features/admin/careers/CareersListAdmin';
 import CareersFormAdmin from './features/admin/careers/CareersFormAdmin';
-import HeroImagesAdmin from './features/admin/hero/HeroImagesAdmin';
-import HeroImageFormAdmin from './features/admin/hero/HeroImageFormAdmin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
+import AboutContentAdmin from './features/admin/content/AboutContentAdmin';
+import HomeContentAdmin from './features/admin/content/HomeContentAdmin';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <Toaster position="top-right" richColors closeButton />
         <ScrollToTop />
         <Routes>
           
@@ -183,11 +185,8 @@ function App() {
                     <Route path="careers/new" element={<CareersFormAdmin />} />
                     <Route path="careers/edit/:id" element={<CareersFormAdmin />} />
 
-                    
-                    <Route path="hero" element={<HeroImagesAdmin />} />
-                    <Route path="hero/edit/:position" element={<HeroImageFormAdmin />} />
-
-                    
+                    <Route path="content/home" element={<HomeContentAdmin />} />
+                    <Route path="content/about" element={<AboutContentAdmin />} />
                   </Routes>
                 </AdminLayout>
               </ProtectedRoute>

@@ -2,7 +2,7 @@ import AboutContentSection from './AboutContentSection';
 
 const About = () => {
   return (
-    <section id="about" className="py-24 bg-gray-50">
+    <section id="about" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-8">
         <AboutContentSection
           sectionTitle={

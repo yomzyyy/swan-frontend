@@ -1,264 +1,267 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAboutContent, saveAboutContent, clearAboutContent } from './contentAdminService';
+import { toast } from 'sonner';
+import { Edit, OpenInNew } from '@mui/icons-material';
+import { getAboutContent, saveAboutContent } from './contentAdminService';
+import { aboutDefaults } from '../../../constants/aboutDefaults';
+import { deepMerge } from '../../../utils/deepMerge';
+import EditSectionModal from '../../../components/admin/EditSectionModal';
+
+const TAB_FIELDS = [
+  { key: 'badge', label: 'Badge Text', type: 'text' },
+  { key: 'title', label: 'Title', type: 'text' },
+  { key: 'body', label: 'Body Text', type: 'textarea', rows: 6 },
+  {
+    key: 'stats', label: 'Statistics', type: 'array-objects', itemLabel: 'Stat',
+    fields: [
+      { key: 'number', label: 'Number', type: 'text' },
+      { key: 'label', label: 'Label', type: 'text' }
+    ]
+  }
+];
+
+const SECTIONS = [
+  {
+    key: 'hero',
+    title: 'Hero Section',
+    description: 'Background image for the hero banner',
+    fields: [
+      { key: 'backgroundImage', label: 'Background Image', type: 'image' }
+    ]
+  },
+  {
+    key: 'intro',
+    title: 'Introduction',
+    description: 'Badge, title, paragraphs, and statistics',
+    fields: [
+      { key: 'badge', label: 'Badge Text', type: 'text' },
+      { key: 'title', label: 'Title', type: 'text' },
+      { key: 'paragraphs', label: 'Paragraphs', type: 'array-text', itemLabel: 'Paragraph' },
+      {
+        key: 'stats', label: 'Statistics', type: 'array-objects', itemLabel: 'Stat',
+        fields: [
+          { key: 'number', label: 'Number', type: 'text' },
+          { key: 'category', label: 'Category', type: 'text' },
+          { key: 'label', label: 'Label', type: 'text' },
+          { key: 'description', label: 'Description', type: 'text' }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'whyChooseUs',
+    title: 'Why Choose SWAN',
+    description: 'Badge, title, description, bullet items, and image',
+    fields: [
+      { key: 'badge', label: 'Badge Text', type: 'text' },
+      { key: 'title', label: 'Title', type: 'text' },
+      { key: 'description', label: 'Description', type: 'textarea' },
+      { key: 'bulletItems', label: 'Bullet Items', type: 'array-text', itemLabel: 'Item' },
+      { key: 'image', label: 'Image', type: 'image' }
+    ]
+  },
+  {
+    key: 'lgpPillars',
+    title: 'LPG Pillars',
+    description: 'Title, image, and pillar cards (icons stay hardcoded)',
+    fields: [
+      { key: 'title', label: 'Section Title', type: 'text' },
+      { key: 'image', label: 'Image', type: 'image' },
+      {
+        key: 'pillars', label: 'Pillars', type: 'array-objects', itemLabel: 'Pillar',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'description', label: 'Description', type: 'textarea' }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'missionVision',
+    title: 'Mission & Vision',
+    description: 'Mission and vision statements with images',
+    arrayWrap: true,
+    fields: [
+      {
+        key: 'items', label: 'Statements', type: 'array-objects', itemLabel: 'Statement',
+        fields: [
+          { key: 'title', label: 'Title', type: 'text' },
+          { key: 'subtitle', label: 'Subtitle', type: 'text' },
+          { key: 'description', label: 'Description', type: 'textarea' },
+          { key: 'image', label: 'Image', type: 'image' }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'managementTeam',
+    title: 'Management Team',
+    description: 'President and team member profiles',
+    fields: [
+      {
+        key: 'president', label: 'President', type: 'object',
+        fields: [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'position', label: 'Position', type: 'text' },
+          { key: 'image', label: 'Image', type: 'image' }
+        ]
+      },
+      {
+        key: 'members', label: 'Team Members', type: 'array-objects', itemLabel: 'Member',
+        fields: [
+          { key: 'name', label: 'Name', type: 'text' },
+          { key: 'position', label: 'Position', type: 'text' },
+          { key: 'image', label: 'Image', type: 'image' }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'clients',
+    title: 'Our Clients',
+    description: 'Client names and logos',
+    arrayWrap: true,
+    fields: [
+      {
+        key: 'items', label: 'Clients', type: 'array-objects', itemLabel: 'Client',
+        fields: [
+          { key: 'name', label: 'Client Name', type: 'text' },
+          { key: 'logo', label: 'Logo', type: 'image' }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'contentTabs',
+    title: 'Content Tabs',
+    description: 'Heritage, Innovation, and Sustainability tabs',
+    useTabs: true,
+    tabs: [
+      { key: 'heritage', label: 'Heritage', fields: TAB_FIELDS },
+      { key: 'innovation', label: 'Innovation', fields: TAB_FIELDS },
+      { key: 'sustainability', label: 'Sustainability', fields: TAB_FIELDS }
+    ]
+  }
+];
 
 const AboutContentAdmin = () => {
-  const navigate = useNavigate();
-
-  const defaultContent = {
-    heritage: {
-      badge: 'Our Story',
-      title: 'Delivering Trusted LPG Maritime Services for Over 30 Years',
-      body: 'For over three decades, Swan Shipping Corporation has been committed to providing safe, efficient, and cost-effective LPG maritime services to customers worldwide.\n\nBacked by experienced maritime professionals and a strong technical foundation, we specialize in ship management, vessel operations, and LPG transport support — ensuring reliability, compliance, and operational excellence at every stage.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    },
-    innovation: {
-      badge: 'Our Approach',
-      title: 'Modern Solutions for Evolving Maritime Needs',
-      body: 'We continuously adapt to changing maritime regulations and industry standards by integrating modern ship management practices, technical expertise, and operational efficiency to support safe LPG transport worldwide.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    },
-    sustainability: {
-      badge: 'Our Commitment',
-      title: 'Responsible Operations for Safer Seas',
-      body: 'Swan Shipping Corporation is committed to responsible maritime operations by promoting safety, regulatory compliance, and environmentally conscious practices across all vessel management activities.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    }
-  };
-
-  const [formData, setFormData] = useState(defaultContent);
-  const [activeTab, setActiveTab] = useState('heritage');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [editingSection, setEditingSection] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const savedContent = getAboutContent();
-    if (savedContent) {
-      setFormData(savedContent);
-    }
+    loadContent();
   }, []);
 
-  const handleChange = (tab, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [tab]: {
-        ...prev[tab],
-        [field]: value
-      }
-    }));
+  const loadContent = async () => {
+    setLoading(true);
+    const data = await getAboutContent();
+    setContent(data);
+    setLoading(false);
   };
 
-  const handleStatChange = (tab, index, field, value) => {
-    setFormData(prev => {
-      const newStats = [...prev[tab].stats];
-      newStats[index] = { ...newStats[index], [field]: value };
-      return {
-        ...prev,
-        [tab]: {
-          ...prev[tab],
-          stats: newStats
-        }
-      };
-    });
+  const getMergedContent = () => {
+    return deepMerge(aboutDefaults, content);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccessMessage('');
-    setIsSubmitting(true);
+  const getModalData = () => {
+    if (!editingSection) return {};
+    const merged = getMergedContent();
+    const sectionData = merged[editingSection.key];
 
-    try {
-      const result = saveAboutContent(formData);
-      if (result.success) {
-        setSuccessMessage('About page content saved successfully!');
-        setTimeout(() => setSuccessMessage(''), 3000);
-      } else {
-        setError('Failed to save content');
-      }
-    } catch (err) {
-      setError('An error occurred while saving');
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
+    if (editingSection.arrayWrap) {
+      return { items: sectionData };
     }
+    return sectionData || {};
   };
 
-  const handleReset = () => {
-    if (confirm('Are you sure you want to reset to default content? This will remove any custom changes.')) {
-      clearAboutContent();
-      setFormData(defaultContent);
-      setSuccessMessage('Content reset to defaults!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+  const handleEdit = (section) => {
+    setEditingSection(section);
+  };
+
+  const handleSave = async (editedData) => {
+    setIsSaving(true);
+
+    let dataToSave;
+    if (editingSection.arrayWrap) {
+      dataToSave = { [editingSection.key]: editedData.items };
+    } else {
+      dataToSave = { [editingSection.key]: editedData };
     }
+
+    const result = await saveAboutContent(dataToSave);
+
+    if (result.success) {
+      await loadContent();
+      toast.success(`${editingSection.title} updated successfully!`);
+      setEditingSection(null);
+    } else {
+      toast.error(result.error || 'Failed to save');
+    }
+
+    setIsSaving(false);
   };
 
-  const currentTab = formData[activeTab];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500">Loading content...</div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      
+      {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">About Page Content</h1>
-          <p className="text-gray-600 mt-1">Edit the three tabs on the About page</p>
+          <p className="text-gray-600 mt-1">Manage all sections of the About page</p>
         </div>
         <a
           href="/about"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#207dff] hover:underline"
+          className="flex items-center gap-1 text-[#207dff] hover:underline"
         >
-          View Page →
+          View Page <OpenInNew sx={{ fontSize: 16 }} />
         </a>
       </div>
 
-      
-      {successMessage && (
-        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-          {successMessage}
-        </div>
-      )}
-
-      
-      {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {error}
-        </div>
-      )}
-
-      
-      <div className="mb-6">
-        <div className="flex space-x-2">
-          {['heritage', 'innovation', 'sustainability'].map((tab) => (
+      {/* Section Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {SECTIONS.map(section => (
+          <div
+            key={section.key}
+            className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-between"
+          >
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">{section.title}</h3>
+              <p className="text-sm text-gray-500 mt-1">{section.description}</p>
+            </div>
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === tab
-                  ? 'bg-[#207dff] text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
+              onClick={() => handleEdit(section)}
+              className="flex items-center gap-1 px-4 py-2 bg-[#207dff] text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium shrink-0 ml-4"
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              <Edit sx={{ fontSize: 16 }} /> Edit
             </button>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
-      
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
-        <div className="space-y-6">
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Badge Text
-            </label>
-            <input
-              type="text"
-              value={currentTab.badge}
-              onChange={(e) => handleChange(activeTab, 'badge', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
-              placeholder="e.g., Our Story"
-            />
-          </div>
-
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title
-            </label>
-            <input
-              type="text"
-              value={currentTab.title}
-              onChange={(e) => handleChange(activeTab, 'title', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
-              placeholder="Section title"
-            />
-          </div>
-
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Body Text
-            </label>
-            <textarea
-              value={currentTab.body}
-              onChange={(e) => handleChange(activeTab, 'body', e.target.value)}
-              rows={8}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
-              placeholder="Main content (use \n\n for paragraphs)"
-            />
-            <p className="text-xs text-gray-500 mt-1">Use \n\n to separate paragraphs</p>
-          </div>
-
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Statistics
-            </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {currentTab.stats.map((stat, index) => (
-                <div key={index} className="border border-gray-300 rounded-lg p-4">
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Number</label>
-                  <input
-                    type="text"
-                    value={stat.number}
-                    onChange={(e) => handleStatChange(activeTab, index, 'number', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent mb-2"
-                    placeholder="19"
-                  />
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Label</label>
-                  <input
-                    type="text"
-                    value={stat.label}
-                    onChange={(e) => handleStatChange(activeTab, index, 'label', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
-                    placeholder="Modern Vessels"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        
-        <div className="mt-6 flex justify-between">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-6 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
-          >
-            Reset to Defaults
-          </button>
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              onClick={() => navigate('/admin/dashboard')}
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-6 py-2 bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
-            >
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
-            </button>
-          </div>
-        </div>
-      </form>
+      {/* Edit Modal */}
+      {editingSection && (
+        <EditSectionModal
+          isOpen={!!editingSection}
+          onClose={() => setEditingSection(null)}
+          title={`Edit ${editingSection.title}`}
+          fields={editingSection.useTabs ? undefined : editingSection.fields}
+          tabs={editingSection.useTabs ? editingSection.tabs : undefined}
+          data={getModalData()}
+          onSave={handleSave}
+          isSaving={isSaving}
+        />
+      )}
     </div>
   );
 };

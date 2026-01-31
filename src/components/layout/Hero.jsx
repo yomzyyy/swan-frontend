@@ -4,7 +4,7 @@ import SkeletonHero from '../skeletons/SkeletonHero';
 import { ROUTES } from '../../config/routes';
 import ActionButton from '../common/ActionButton';
 
-const Hero = () => {
+const Hero = ({ heroText = {} }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ const Hero = () => {
   const loadHeroImages = async () => {
     try {
       const response = await api.hero.getAll();
-      const heroImages = response.data.data;
+      const heroImages = response.data?.data || [];
 
       if (heroImages && heroImages.length > 0) {
         const sortedImages = heroImages
@@ -101,16 +101,16 @@ const Hero = () => {
       <div className="relative z-20 max-w-7xl mx-auto px-8">
         <div className="text-white max-w-6xl mx-auto">
           <h1 className={`text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight uppercase transition-all duration-1000 ease-out ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Safety-Driven. Technically Disciplined. Proven in Gas Operations.
+            {heroText.title || 'Safety-Driven. Technically Disciplined. Proven in Gas Operations.'}
           </h1>
 
           <p className={`text-sm leading-relaxed mb-8 transition-all duration-1000 delay-200 ease-out ${animateContent ? 'opacity-95 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            With over 30 years of ship management experience, SWAN Shipping Corporation provides reliable < br/> and compliant management for LPG carriers, ensuring safe cargo operations, strong vetting < br/>performance, and stable operating costs.
+            {heroText.description || 'With over 30 years of ship management experience, SWAN Shipping Corporation provides reliable and compliant management for LPG carriers, ensuring safe cargo operations, strong vetting performance, and stable operating costs.'}
           </p>
 
           <div className={`transition-all duration-1000 delay-400 ease-out ${animateContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <ActionButton to={ROUTES.SERVICES}>
-              Discover Our Services
+              {heroText.ctaText || 'Discover Our Services'}
             </ActionButton>
           </div>
         </div>

@@ -1,24 +1,34 @@
 import { LocationOn, Phone, Email } from '@mui/icons-material';
+import { homeDefaults } from '../../constants/homeDefaults';
 
-const GetInTouch = ({ bgColor = 'bg-gray-50' }) => {
+const GetInTouch = ({ bgColor = 'bg-gray-50', getInTouch: contactProp = {} }) => {
+  const d = homeDefaults.getInTouch;
+  const badge = contactProp.badge || d.badge;
+  const title = contactProp.title || d.title;
+  const description = contactProp.description || d.description;
+  const address = contactProp.address || d.address;
+  const phone = contactProp.phone || d.phone;
+  const phone2 = contactProp.phone2 || d.phone2;
+  const email = contactProp.email || d.email;
+
   return (
     <section className={`py-12 ${bgColor}`}>
       <div className="max-w-5xl mx-auto px-8">
         {/* Badge */}
         <div className="text-center mb-6">
           <span className="text-sm font-bold uppercase tracking-wider" style={{color: '#2563eb'}}>
-            Get In Touch
+            {badge}
           </span>
         </div>
 
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-center" style={{color: '#0D2136'}}>
-          We Are Your Reliable Partners for the Best LPG Maritime Solutions
+          {title}
         </h2>
 
         {/* Description */}
         <p className="text-gray-900 text-base leading-relaxed mb-8 text-center">
-          From ship management and technical operations to crew training and safety compliance, we offer a wide range of services that meet the unique needs of the LPG maritime industry.
+          {description}
         </p>
 
         {/* Contact Info - All in one row */}
@@ -30,7 +40,7 @@ const GetInTouch = ({ bgColor = 'bg-gray-50' }) => {
             </div>
             <div>
               <p className="text-gray-900 text-base leading-relaxed">
-                3F S&L Building, 1500 Roxas Boulevard, Ermita, Manila 1000, Philippines
+                {address}
               </p>
             </div>
           </div>
@@ -42,7 +52,7 @@ const GetInTouch = ({ bgColor = 'bg-gray-50' }) => {
             </div>
             <div>
               <p className="text-gray-900 text-base leading-relaxed">
-                +63-2-85268718 to 19, +63-2-85239830
+                {phone}{phone2 ? `, ${phone2}` : ''}
               </p>
             </div>
           </div>
@@ -54,7 +64,7 @@ const GetInTouch = ({ bgColor = 'bg-gray-50' }) => {
             </div>
             <div>
               <p className="text-gray-900 text-base leading-relaxed">
-                info@swan-manila.com
+                {email}
               </p>
             </div>
           </div>

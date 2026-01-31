@@ -19,7 +19,7 @@ const CareersPage = () => {
       try {
         setLoading(true);
         const response = await api.careers.getAll();
-        setJobOpenings(response.data.data);
+        setJobOpenings(response.data?.data || []);
       } catch (err) {
         setError('Failed to load career opportunities');
         console.error(err);

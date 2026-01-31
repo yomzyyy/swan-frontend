@@ -1,8 +1,8 @@
-const AdminCard = ({ title, value, icon, color = 'navy', link }) => {
+const AdminCard = ({ title, value, icon, color = 'blue', link }) => {
   const colorClasses = {
-    navy: 'bg-navy-800 border-navy-700 border-l-blue-600',
-    grey: 'bg-grey-800 border-grey-700 border-l-blue-600',
-    blue: 'bg-blue-600 border-blue-500 border-l-navy-800',
+    blue: 'bg-blue-600 border-blue-500 border-l-blue-800',
+    green: 'bg-emerald-600 border-emerald-500 border-l-emerald-800',
+    purple: 'bg-purple-600 border-purple-500 border-l-purple-800',
   };
 
   const CardContent = () => (

@@ -56,51 +56,47 @@ const FleetGrid = ({
         {vessels.map((vessel) => (
           <div
             key={vessel.id}
-            className="bg-white overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            className="group bg-white overflow-hidden shadow-sm
+                       hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
           >
-            <div className="h-48 overflow-hidden">
+            {/* Image with type badge overlay */}
+            <div className="relative h-52 overflow-hidden">
               <img
                 src={vessel.image}
                 alt={vessel.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105
+                           transition-transform duration-500"
               />
+              <span className="absolute top-4 left-4 px-4 py-2 bg-white
+                               text-navy-900 text-xs font-semibold uppercase tracking-wide
+                               shadow-md border-l-4 border-l-navy-900">
+                {vessel.type}
+              </span>
             </div>
 
+            {/* Content */}
             <div className="p-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl font-bold text-gray-900 mb-4
+                             group-hover:text-blue-600 transition-colors">
                 {vessel.name}
               </h3>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Trade Area:</span>
-                  <span className="font-semibold text-gray-900">{vessel.tradeArea}</span>
+              {/* Key stats in 2-column grid */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Capacity</p>
+                  <p className="text-sm font-semibold text-blue-600">{vessel.capacity}</p>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">CBM:</span>
-                  <span className="font-semibold text-blue-600">{vessel.capacity}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Type:</span>
-                  <span className="font-semibold text-gray-900">{vessel.type}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Built:</span>
-                  <span className="font-semibold text-gray-900">{vessel.year}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 text-sm">Flag:</span>
-                  <span className="font-semibold text-gray-900">{vessel.flag}</span>
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Built</p>
+                  <p className="text-sm font-semibold text-gray-900">{vessel.year}</p>
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 pt-4">
-                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
-                  Shipyard
-                </p>
-                <p className="text-sm text-gray-600">
-                  {vessel.yard}
-                </p>
+              {/* Footer */}
+              <div className="border-t border-gray-200 pt-4 flex justify-between text-sm text-gray-600">
+                <span>{vessel.flag}</span>
+                <span>{vessel.tradeArea}</span>
               </div>
             </div>
           </div>

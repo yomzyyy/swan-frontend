@@ -14,7 +14,7 @@ const NewsSection = () => {
         setLoading(true);
         const response = await api.news.getAll();
         // Get only the 4 most recent articles
-        const recentArticles = response.data.data.slice(0, 4);
+        const recentArticles = (response.data?.data || []).slice(0, 4);
         setNewsArticles(recentArticles);
       } catch (err) {
         console.error('Failed to load news articles:', err);

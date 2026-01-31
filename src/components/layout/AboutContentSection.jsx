@@ -1,11 +1,36 @@
 import { useState, useEffect } from 'react';
+import { aboutDefaults } from '../../constants/aboutDefaults';
+import { deepMerge } from '../../utils/deepMerge';
+import { api } from '../../services/api';
 
 const AboutContentSection = ({
   sectionTitle,
   showSectionTitle = true,
-  containerClassName = ''
+  containerClassName = '',
+  tabContent: tabContentProp
 }) => {
   const [activeTab, setActiveTab] = useState('heritage');
+  const [tabContent, setTabContent] = useState(aboutDefaults.contentTabs);
+
+  useEffect(() => {
+    if (tabContentProp) {
+      setTabContent(tabContentProp);
+      return;
+    }
+
+    const fetchContent = async () => {
+      try {
+        const response = await api.content.get('about');
+        const apiData = response.data.data;
+        if (apiData?.contentTabs) {
+          setTabContent(deepMerge(aboutDefaults.contentTabs, apiData.contentTabs));
+        }
+      } catch {
+        // Silently fall back to defaults
+      }
+    };
+    fetchContent();
+  }, [tabContentProp]);
 
   // Auto-rotate tabs every 5 seconds
   useEffect(() => {
@@ -21,47 +46,17 @@ const AboutContentSection = ({
     return () => clearInterval(interval);
   }, []);
 
-  const tabContent = {
-    heritage: {
-      badge: 'Our Story',
-      title: 'Delivering Trusted LPG Maritime Services for Over 30 Years',
-      body: 'For over three decades, Swan Shipping Corporation has been committed to providing safe, efficient, and cost-effective LPG maritime services to customers worldwide.\n\nBacked by experienced maritime professionals and a strong technical foundation, we specialize in ship management, vessel operations, and LPG transport support — ensuring reliability, compliance, and operational excellence at every stage.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    },
-    innovation: {
-      badge: 'Our Approach',
-      title: 'Modern Solutions for Evolving Maritime Needs',
-      body: 'We continuously adapt to changing maritime regulations and industry standards by integrating modern ship management practices, technical expertise, and operational efficiency to support safe LPG transport worldwide.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    },
-    sustainability: {
-      badge: 'Our Commitment',
-      title: 'Responsible Operations for Safer Seas',
-      body: 'Swan Shipping Corporation is committed to responsible maritime operations by promoting safety, regulatory compliance, and environmentally conscious practices across all vessel management activities.',
-      stats: [
-        { number: '19', label: 'Modern Vessels' },
-        { number: '50+', label: 'Global Ports' }
-      ]
-    }
-  };
-
   return (
     <div className={containerClassName}>
       {showSectionTitle && sectionTitle && (
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <h2 className="text-5xl font-extrabold mb-4 text-navy-900 inline-block pb-2" style={{borderBottom: '4px solid #0D2136'}}>
             {sectionTitle}
           </h2>
         </div>
       )}
 
-      <div className="flex justify-center gap-4 mb-12">
+      <div className="flex justify-center gap-4 mb-8">
         <button
           onClick={() => setActiveTab('heritage')}
           style={activeTab === 'heritage' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
@@ -99,7 +94,7 @@ const AboutContentSection = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         <div className="h-full">
           <div className="overflow-hidden shadow-2xl relative h-full">
             <img
@@ -118,7 +113,7 @@ const AboutContentSection = ({
           </div>
         </div>
 
-        <div style={{backgroundColor: '#0D2136'}} className="px-12 pt-6 pb-12 text-white shadow-xl flex flex-col h-[650px] overflow-hidden">
+        <div style={{backgroundColor: '#0D2136'}} className="px-10 pt-6 pb-10 text-white shadow-xl flex flex-col h-[520px] overflow-hidden">
           <div key={activeTab} className="flex flex-col h-full animate-fadeInSlide">
             <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold mb-6 uppercase tracking-wide self-start text-gray-800">
               {tabContent[activeTab].badge}

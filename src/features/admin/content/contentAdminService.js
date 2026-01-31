@@ -1,56 +1,118 @@
-import { getStorageData, setStorageData } from '../../../utils/localStorage';
+import { api } from '../../../services/api';
 
-const ABOUT_STORAGE_KEY = 'swan_admin_content_about';
-const SERVICES_STORAGE_KEY = 'swan_admin_content_services';
-const HOME_STORAGE_KEY = 'swan_admin_content_home';
-
-export const getAboutContent = () => {
-  return getStorageData(ABOUT_STORAGE_KEY);
+export const getAboutContent = async () => {
+  try {
+    const response = await api.content.get('about');
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch about content:', error);
+    return null;
+  }
 };
 
-export const saveAboutContent = (content) => {
-  const success = setStorageData(ABOUT_STORAGE_KEY, {
-    ...content,
-    updatedAt: new Date().toISOString(),
-  });
-  return { success, data: content };
+export const saveAboutContent = async (content) => {
+  try {
+    const response = await api.content.update('about', content);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to save about content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to save content'
+    };
+  }
 };
 
-export const getServicesContent = () => {
-  return getStorageData(SERVICES_STORAGE_KEY);
+export const clearAboutContent = async () => {
+  try {
+    const response = await api.content.update('about', {
+      hero: null,
+      intro: null,
+      whyChooseUs: null,
+      lgpPillars: null,
+      missionVision: null,
+      managementTeam: null,
+      clients: null,
+      contentTabs: null
+    });
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to clear about content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to clear content'
+    };
+  }
 };
 
-export const saveServicesContent = (content) => {
-  const success = setStorageData(SERVICES_STORAGE_KEY, {
-    ...content,
-    updatedAt: new Date().toISOString(),
-  });
-  return { success, data: content };
+export const getServicesContent = async () => {
+  try {
+    const response = await api.content.get('services');
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch services content:', error);
+    return null;
+  }
 };
 
-export const getHomeContent = () => {
-  return getStorageData(HOME_STORAGE_KEY);
+export const saveServicesContent = async (content) => {
+  try {
+    const response = await api.content.update('services', content);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to save services content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to save content'
+    };
+  }
 };
 
-export const saveHomeContent = (content) => {
-  const success = setStorageData(HOME_STORAGE_KEY, {
-    ...content,
-    updatedAt: new Date().toISOString(),
-  });
-  return { success, data: content };
+export const clearServicesContent = async () => {
+  try {
+    const response = await api.content.update('services', {});
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to clear services content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to clear content'
+    };
+  }
 };
 
-export const clearAboutContent = () => {
-  localStorage.removeItem(ABOUT_STORAGE_KEY);
-  return { success: true };
+export const getHomeContent = async () => {
+  try {
+    const response = await api.content.get('home');
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch home content:', error);
+    return null;
+  }
 };
 
-export const clearServicesContent = () => {
-  localStorage.removeItem(SERVICES_STORAGE_KEY);
-  return { success: true };
+export const saveHomeContent = async (content) => {
+  try {
+    const response = await api.content.update('home', content);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to save home content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to save content'
+    };
+  }
 };
 
-export const clearHomeContent = () => {
-  localStorage.removeItem(HOME_STORAGE_KEY);
-  return { success: true };
+export const clearHomeContent = async () => {
+  try {
+    const response = await api.content.update('home', {});
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to clear home content:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to clear content'
+    };
+  }
 };

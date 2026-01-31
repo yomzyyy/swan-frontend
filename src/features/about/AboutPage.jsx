@@ -4,6 +4,12 @@ import { useInView } from '../../hooks/useInView';
 import { useCountingAnimation } from '../../hooks/useCountingAnimation';
 import { parseStatNumber } from '../../utils/numberParser';
 import GetInTouch from '../../components/layout/GetInTouch';
+import { aboutDefaults } from '../../constants/aboutDefaults';
+import { deepMerge } from '../../utils/deepMerge';
+import { api } from '../../services/api';
+
+// Hardcoded icons mapped by pillar index (MUI components can't serialize to DB)
+const PILLAR_ICONS = [HealthAndSafety, Groups, Build, FactCheck];
 
 // StatItem Component - Displays animated statistics
 const StatItem = ({ stat, shouldAnimate }) => {
@@ -39,40 +45,43 @@ const StatItem = ({ stat, shouldAnimate }) => {
 };
 
 const AboutPage = () => {
-  const circularStats = [
-    {
-      number: '19',
-      category: 'LPG SHIPPING',
-      label: 'Fleet Management',
-      description: 'We\'re leading the industry in LPG vessel management'
-    },
-    {
-      number: '30+',
-      category: 'LPG SHIPPING',
-      label: 'Years of Experience',
-      description: 'We\'re helping you navigate maritime excellence'
-    },
-    {
-      number: '100%',
-      category: 'LPG SHIPPING',
-      label: 'Safety Compliance',
-      description: 'We\'re maintaining the highest industry standards'
-    }
-  ];
+  const [content, setContent] = useState(aboutDefaults);
 
-  const whyChooseUs = [
-    '30+ years of continuous ship management experience',
-    'Strong safety culture with disciplined shore & shipboard operations',
-    'Proven cost control & OPEX predictability',
-    'Japanese-built vessel expertise',
-    'Long-term owner focused partnerships'
-  ];
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.content.get('about');
+        const apiData = response.data.data;
+        if (apiData) {
+          setContent(deepMerge(aboutDefaults, apiData));
+        }
+      } catch {
+        // Silently fall back to defaults
+      }
+    };
+    fetchContent();
+  }, []);
+
+  // Derived data from content
+  const heroImage = content.hero.backgroundImage;
+  const intro = content.intro;
+  const whyChooseUs = content.whyChooseUs;
+  const missionVisionData = content.missionVision;
+  const president = content.managementTeam.president;
+  const teamMembers = content.managementTeam.members;
+  const clients = content.clients;
+
+  // Map pillar data with hardcoded icons
+  const lgpPillars = content.lgpPillars.pillars.map((pillar, i) => ({
+    ...pillar,
+    icon: PILLAR_ICONS[i] || PILLAR_ICONS[0]
+  }));
 
   // Intersection observer for scroll-triggered animation
   const [statsRef, statsInView] = useInView({ threshold: 0.3 });
 
   // Mission/Vision state
-  const [currentView, setCurrentView] = useState(0); // 0 = Mission, 1 = Vision
+  const [currentView, setCurrentView] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleViewChange = (newView) => {
@@ -84,44 +93,6 @@ const AboutPage = () => {
       setIsTransitioning(false);
     }, 300);
   };
-
-  const missionVisionData = [
-    {
-      title: 'Our Mission',
-      subtitle: 'Empowering Global LPG Trade',
-      description: 'To provide efficient, reliable, and tailored ship management solutions that facilitate the safe movement of LPG across the globe, ensuring operational excellence and environmental stewardship.',
-      image: 'https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800'
-    },
-    {
-      title: 'Our Vision',
-      subtitle: 'Leading the Future of LPG Shipping',
-      description: 'To be the most trusted and innovative LPG ship management partner, recognized globally for our commitment to safety, sustainability, and delivering exceptional value to vessel owners.',
-      image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800'
-    }
-  ];
-
-  const lgpPillars = [
-    {
-      title: 'LPG Safety Culture',
-      description: 'Strict adherence to gas safety procedures, permits to work, and emergency preparedness.',
-      icon: HealthAndSafety
-    },
-    {
-      title: 'Experienced LPG Crew & Management Team',
-      description: 'Filipino officers and crew trained and experienced in LPG cargo handling and gas operations.',
-      icon: Groups
-    },
-    {
-      title: 'Cargo System Integrity & Readiness',
-      description: 'Continuous monitoring and maintenance of cargo tanks, reliquefaction systems, valves, and safety devices.',
-      icon: Build
-    },
-    {
-      title: 'Vetting & Terminal Readiness',
-      description: 'Strong preparation for OCIMF, CDI, terminal inspections, and charterer requirements.',
-      icon: FactCheck
-    }
-  ];
 
   // Carousel state for LPG pillars
   const [currentPillarIndex, setCurrentPillarIndex] = useState(0);
@@ -147,7 +118,7 @@ const AboutPage = () => {
       <div
         className="relative h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1600)',
+          backgroundImage: `url(${heroImage})`,
         }}
       >
         <div className="absolute inset-0 bg-black/30"></div>
@@ -159,7 +130,7 @@ const AboutPage = () => {
           {/* Label - Outside Grid */}
           <div className="mb-6">
             <span className="text-sm font-bold uppercase tracking-wider" style={{color: '#2563eb'}}>
-              About Us
+              {intro.badge}
             </span>
           </div>
 
@@ -168,21 +139,17 @@ const AboutPage = () => {
             {/* Left Column - Heading */}
             <div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 uppercase leading-tight">
-                LPG SHIPPING INNOVATORS: DRIVING PROGRESS IN THE INDUSTRY
+                {intro.title}
               </h1>
             </div>
 
             {/* Right Column - Description */}
             <div className="space-y-4">
-              <p className="text-base text-gray-900 leading-relaxed">
-                From ship management and crew operations to technical services and safety compliance, we offer a wide range of products and services that meet the unique needs of the LPG shipping industry.
-              </p>
-              <p className="text-base text-gray-900 leading-relaxed">
-                With over three decades of specialized experience, SWAN has established itself as a trusted partner in LPG vessel management. Our commitment to operational excellence, safety, and environmental stewardship sets us apart in the maritime industry.
-              </p>
-              <p className="text-base text-gray-900 leading-relaxed">
-                We combine deep technical expertise with a culture of continuous improvement, ensuring our clients benefit from industry-leading standards and innovative solutions tailored to the unique challenges of LPG shipping.
-              </p>
+              {intro.paragraphs.map((paragraph, index) => (
+                <p key={index} className="text-base text-gray-900 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
 
@@ -191,7 +158,7 @@ const AboutPage = () => {
             ref={statsRef}
             className="grid grid-cols-1 md:grid-cols-3 gap-16"
           >
-            {circularStats.map((stat, index) => (
+            {intro.stats.map((stat, index) => (
               <StatItem
                 key={index}
                 stat={stat}
@@ -211,23 +178,23 @@ const AboutPage = () => {
               {/* Label */}
               <div className="mb-4">
                 <span className="text-sm font-bold uppercase tracking-wider" style={{color: '#2563eb'}}>
-                  Why Choose Us
+                  {whyChooseUs.badge}
                 </span>
               </div>
 
               {/* Heading */}
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 uppercase">
-                Why Owners Choose SWAN
+                {whyChooseUs.title}
               </h2>
 
               {/* Intro Text */}
               <p className="text-base text-gray-600 leading-relaxed mb-6">
-                With over three decades of specialized experience in LPG ship management, we deliver operational excellence and safety leadership for vessel owners worldwide.
+                {whyChooseUs.description}
               </p>
 
               {/* Achievement List */}
               <div className="space-y-3">
-                {whyChooseUs.map((item, index) => (
+                {whyChooseUs.bulletItems.map((item, index) => (
                   <div key={index} className="flex items-start gap-4">
                     <div className="flex-shrink-0 mt-1">
                       <div className="w-6 h-6 rounded flex items-center justify-center" style={{backgroundColor: '#2563eb'}}>
@@ -246,7 +213,7 @@ const AboutPage = () => {
             <div>
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600"
+                  src={whyChooseUs.image}
                   alt="Maritime Professional"
                   className="w-full h-96 object-cover shadow-lg"
                 />
@@ -263,7 +230,7 @@ const AboutPage = () => {
             {/* Left Column - Image */}
             <div className="order-2 lg:order-1">
               <img
-                src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800"
+                src={content.lgpPillars.image}
                 alt="LPG Vessel"
                 className="w-full h-[500px] object-cover shadow-lg"
               />
@@ -273,7 +240,7 @@ const AboutPage = () => {
             <div className="order-1 lg:order-2">
               {/* Main Heading */}
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-12">
-                Our LPG Management Pillars
+                {content.lgpPillars.title}
               </h2>
 
               {/* Cards Carousel */}
@@ -286,6 +253,7 @@ const AboutPage = () => {
                   for (let i = 0; i < 3; i++) {
                     const index = (currentPillarIndex + i) % lgpPillars.length;
                     const pillar = lgpPillars[index];
+                    const IconComponent = pillar.icon;
                     visibleCards.push(
                       <div
                         key={index}
@@ -306,7 +274,7 @@ const AboutPage = () => {
                               backgroundColor: hoveredCard === index ? 'white' : '#2563eb'
                             }}
                           >
-                            <pillar.icon
+                            <IconComponent
                               sx={{
                                 fontSize: 24,
                                 color: hoveredCard === index ? '#2563eb' : 'white'
@@ -400,6 +368,55 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Management Team Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-12 text-center uppercase">
+            Management Team
+          </h2>
+
+          {/* President - Prominent Display */}
+          <div className="text-center mb-12 group">
+            <div className="mb-4 overflow-hidden inline-block relative">
+              <img
+                src={president.image}
+                alt={president.name}
+                className="w-64 h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* Shine overlay */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
+                              transition-transform duration-700 ease-out
+                              bg-gradient-to-r from-transparent via-white/30 to-transparent
+                              skew-x-12 pointer-events-none" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900">{president.name}</h3>
+            <p className="text-gray-500 font-medium">{president.position}</p>
+          </div>
+
+          {/* Team Members Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {teamMembers.map((member, index) => (
+              <div key={index} className="text-center group">
+                <div className="mb-4 overflow-hidden relative">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Shine overlay */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
+                                  transition-transform duration-700 ease-out
+                                  bg-gradient-to-r from-transparent via-white/30 to-transparent
+                                  skew-x-12 pointer-events-none" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">{member.name}</h3>
+                <p className="text-gray-500 font-medium">{member.position}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Clients Section */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-8">
@@ -410,20 +427,27 @@ const AboutPage = () => {
 
           {/* Logo Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {/* Placeholder Logos */}
-            {[1, 2, 3, 4, 5, 6].map((item) => (
+            {clients.map((client, index) => (
               <div
-                key={item}
+                key={index}
                 className="flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
               >
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-gray-400">
-                    LOGO
+                {client.logo ? (
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="max-h-16 object-contain"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-gray-400">
+                      LOGO
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {client.name}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    Client {item}
-                  </div>
-                </div>
+                )}
               </div>
             ))}
           </div>

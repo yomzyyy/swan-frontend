@@ -41,10 +41,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       path: '/admin/careers',
     },
     {
-      title: 'Hero Images',
-      path: '/admin/hero',
-    },
-    {
       title: 'Page Content',
       isSection: true,
     },

@@ -97,7 +97,11 @@ export const api = {
 
   content: {
     get: (pageId) => apiClient.get(`/api/content/${pageId}`),
-    update: (pageId, data) => apiClient.put(`/api/content/${pageId}`, data)
+    update: (pageId, data) => apiClient.put(`/api/content/${pageId}`, data),
+    uploadImage: (formData) =>
+      apiClient.post('/api/content/images/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
   },
 
   contact: {

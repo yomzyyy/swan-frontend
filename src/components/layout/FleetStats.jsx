@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { DirectionsBoat, Language, Public } from '@mui/icons-material';
-import { FLEET_STATS } from '../../constants/metadata';
+import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
 
-const FleetStats = () => {
+const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
+  const FLEET_STATS = {
+    totalVessels: Number(fleetStatsProp.totalVessels) || DEFAULT_FLEET_STATS.totalVessels,
+    maxCapacity: fleetStatsProp.maxCapacity || DEFAULT_FLEET_STATS.maxCapacity,
+    avgFleetAge: Number(fleetStatsProp.avgFleetAge) || DEFAULT_FLEET_STATS.avgFleetAge,
+    safetyCompliance: fleetStatsProp.safetyCompliance || DEFAULT_FLEET_STATS.safetyCompliance
+  };
   const [animatedValues, setAnimatedValues] = useState({
     totalVessels: 0,
     maxCapacity: 0,

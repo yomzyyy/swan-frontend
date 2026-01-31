@@ -28,7 +28,7 @@ const JobApplicationForm = () => {
       try {
         setLoading(true);
         const response = await api.careers.getById(id);
-        setJob(response.data.data);
+        setJob(response.data?.data || null);
       } catch (err) {
         setError('Job opening not found');
         console.error(err);
