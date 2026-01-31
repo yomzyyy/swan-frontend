@@ -58,6 +58,16 @@ export const getServicesContent = async () => {
 export const saveServicesContent = async (content) => {
   try {
     const response = await api.content.update('services', content);
+
+    // Sync service items to homepage if services section was edited
+    if (content.services?.items) {
+      try {
+        await api.content.update('home', { services: { items: content.services.items } });
+      } catch {
+        console.warn('Failed to sync service items to homepage');
+      }
+    }
+
     return { success: true, data: response.data.data };
   } catch (error) {
     console.error('Failed to save services content:', error);
@@ -94,6 +104,16 @@ export const getHomeContent = async () => {
 export const saveHomeContent = async (content) => {
   try {
     const response = await api.content.update('home', content);
+
+    // Sync service items to services page if services section was edited
+    if (content.services?.items) {
+      try {
+        await api.content.update('services', { services: { items: content.services.items } });
+      } catch {
+        console.warn('Failed to sync service items to services page');
+      }
+    }
+
     return { success: true, data: response.data.data };
   } catch (error) {
     console.error('Failed to save home content:', error);

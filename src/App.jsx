@@ -27,6 +27,7 @@ import CareersFormAdmin from './features/admin/careers/CareersFormAdmin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import AboutContentAdmin from './features/admin/content/AboutContentAdmin';
 import HomeContentAdmin from './features/admin/content/HomeContentAdmin';
+import ServicesContentAdmin from './features/admin/content/ServicesContentAdmin';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -187,6 +188,7 @@ function App() {
 
                     <Route path="content/home" element={<HomeContentAdmin />} />
                     <Route path="content/about" element={<AboutContentAdmin />} />
+                    <Route path="content/services" element={<ServicesContentAdmin />} />
                   </Routes>
                 </AdminLayout>
               </ProtectedRoute>

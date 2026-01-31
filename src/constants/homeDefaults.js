@@ -7,9 +7,14 @@ export const homeDefaults = {
   },
   fleetStats: {
     totalVessels: '19',
+    totalVesselsLabel: 'Total Vessels',
     maxCapacity: '15K',
+    maxCapacityLabel: 'Max Capacity CBM',
     avgFleetAge: '2017',
-    safetyCompliance: '100%'
+    avgFleetAgeLabel: 'Avg Fleet Age',
+    safetyCompliance: '100%',
+    safetyComplianceLabel: 'Safety Compliance',
+    backgroundImage: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920'
   },
   services: {
     badge: 'Services We Provide',

@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { DirectionsBoat, Language, Public } from '@mui/icons-material';
 import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
 
+const DEFAULT_BG_IMAGE = 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920';
+
 const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
+  const backgroundImage = fleetStatsProp.backgroundImage || DEFAULT_BG_IMAGE;
   const FLEET_STATS = {
     totalVessels: Number(fleetStatsProp.totalVessels) || DEFAULT_FLEET_STATS.totalVessels,
     maxCapacity: fleetStatsProp.maxCapacity || DEFAULT_FLEET_STATS.maxCapacity,
@@ -84,7 +87,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
       {/* Optional background image overlay */}
       <div className="absolute inset-0 opacity-20">
         <img
-          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920"
+          src={backgroundImage}
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -99,7 +102,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
               {animatedValues.totalVessels}
             </div>
             <div className="text-white font-semibold text-base">
-              Total Vessels
+              {fleetStatsProp.totalVesselsLabel || 'Total Vessels'}
             </div>
           </div>
 
@@ -110,7 +113,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
               {Math.floor(animatedValues.maxCapacity / 1000)}K
             </div>
             <div className="text-white font-semibold text-base">
-              Max Capacity CBM
+              {fleetStatsProp.maxCapacityLabel || 'Max Capacity CBM'}
             </div>
           </div>
 
@@ -121,7 +124,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
               {animatedValues.avgFleetAge}
             </div>
             <div className="text-white font-semibold text-base">
-              Avg Fleet Age
+              {fleetStatsProp.avgFleetAgeLabel || 'Avg Fleet Age'}
             </div>
           </div>
 
@@ -132,7 +135,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
               {animatedValues.safetyCompliance}%
             </div>
             <div className="text-white font-semibold text-base">
-              Safety Compliance
+              {fleetStatsProp.safetyComplianceLabel || 'Safety Compliance'}
             </div>
           </div>
         </div>

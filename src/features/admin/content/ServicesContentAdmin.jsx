@@ -1,78 +1,44 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Edit, OpenInNew } from '@mui/icons-material';
-import { getHomeContent, saveHomeContent } from './contentAdminService';
-import { homeDefaults } from '../../../constants/homeDefaults';
+import { getServicesContent, saveServicesContent } from './contentAdminService';
+import { servicesDefaults } from '../../../constants/servicesDefaults';
 import { deepMerge } from '../../../utils/deepMerge';
 import EditSectionModal from '../../../components/admin/EditSectionModal';
-import HeroSectionModal from '../../../components/admin/HeroSectionModal';
 
 const SECTIONS = [
   {
     key: 'hero',
     title: 'Hero Section',
-    description: 'Hero banner text and carousel images',
-    isCustomModal: true
-  },
-  {
-    key: 'fleetStats',
-    title: 'Fleet Stats',
-    description: 'Total vessels, max capacity, avg fleet age, safety compliance',
+    description: 'Background image for the hero banner',
     fields: [
-      { key: 'totalVesselsLabel', label: '1st Stat Title', type: 'text' },
-      { key: 'totalVessels', label: '1st Stat Value', type: 'text' },
-      { key: 'maxCapacityLabel', label: '2nd Stat Title', type: 'text' },
-      { key: 'maxCapacity', label: '2nd Stat Value', type: 'text' },
-      { key: 'avgFleetAgeLabel', label: '3rd Stat Title', type: 'text' },
-      { key: 'avgFleetAge', label: '3rd Stat Value', type: 'text' },
-      { key: 'safetyComplianceLabel', label: '4th Stat Title', type: 'text' },
-      { key: 'safetyCompliance', label: '4th Stat Value', type: 'text' },
       { key: 'backgroundImage', label: 'Background Image', type: 'image' }
     ]
   },
   {
     key: 'services',
-    title: 'Services',
-    description: 'Badge, title, and service cards with images',
+    title: 'Service Cards',
+    description: 'Section title and service card items',
     fields: [
-      { key: 'badge', label: 'Badge Text', type: 'text' },
       { key: 'title', label: 'Section Title', type: 'text' },
       {
-        key: 'items',
-        label: 'Services',
-        type: 'array-objects',
-        itemLabel: 'Service',
+        key: 'items', label: 'Services', type: 'array-objects', itemLabel: 'Service',
         fields: [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'description', label: 'Description', type: 'textarea' },
-          { key: 'image', label: 'Image URL', type: 'text' },
+          { key: 'image', label: 'Image', type: 'image' },
           { key: 'category', label: 'Category', type: 'text' }
         ]
       }
     ]
-  },
-  {
-    key: 'getInTouch',
-    title: 'Get In Touch',
-    description: 'Contact information displayed on the homepage',
-    fields: [
-      { key: 'badge', label: 'Badge Text', type: 'text' },
-      { key: 'title', label: 'Title', type: 'text' },
-      { key: 'description', label: 'Description', type: 'textarea', rows: 4 },
-      { key: 'address', label: 'Address', type: 'text' },
-      { key: 'phone', label: 'Phone', type: 'text' },
-      { key: 'phone2', label: 'Phone 2', type: 'text' },
-      { key: 'email', label: 'Email', type: 'text' }
-    ]
   }
 ];
 
-const HomeContentAdmin = () => {
+const ServicesContentAdmin = () => {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [heroSectionOpen, setHeroSectionOpen] = useState(false);
 
   useEffect(() => {
     loadContent();
@@ -80,13 +46,13 @@ const HomeContentAdmin = () => {
 
   const loadContent = async () => {
     setLoading(true);
-    const data = await getHomeContent();
+    const data = await getServicesContent();
     setContent(data);
     setLoading(false);
   };
 
   const getMergedContent = () => {
-    return deepMerge(homeDefaults, content);
+    return deepMerge(servicesDefaults, content);
   };
 
   const getModalData = () => {
@@ -96,30 +62,14 @@ const HomeContentAdmin = () => {
   };
 
   const handleEdit = (section) => {
-    if (section.isCustomModal) {
-      setHeroSectionOpen(true);
-    } else {
-      setEditingSection(section);
-    }
-  };
-
-  const handleSaveHeroText = async (textData) => {
-    setIsSaving(true);
-    const result = await saveHomeContent({ heroText: textData });
-    if (result.success) {
-      await loadContent();
-      toast.success('Hero text updated successfully!');
-    } else {
-      toast.error(result.error || 'Failed to save hero text');
-    }
-    setIsSaving(false);
+    setEditingSection(section);
   };
 
   const handleSave = async (editedData) => {
     setIsSaving(true);
 
     const dataToSave = { [editingSection.key]: editedData };
-    const result = await saveHomeContent(dataToSave);
+    const result = await saveServicesContent(dataToSave);
 
     if (result.success) {
       await loadContent();
@@ -145,11 +95,11 @@ const HomeContentAdmin = () => {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Home Page Content</h1>
-          <p className="text-gray-600 mt-1">Manage all sections of the Home page</p>
+          <h1 className="text-3xl font-bold text-gray-900">Services Page Content</h1>
+          <p className="text-gray-600 mt-1">Manage all sections of the Services page</p>
         </div>
         <a
-          href="/"
+          href="/services"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#207dff] hover:underline"
@@ -179,7 +129,7 @@ const HomeContentAdmin = () => {
         ))}
       </div>
 
-      {/* Edit Modal (text sections) */}
+      {/* Edit Modal */}
       {editingSection && (
         <EditSectionModal
           isOpen={!!editingSection}
@@ -191,17 +141,8 @@ const HomeContentAdmin = () => {
           isSaving={isSaving}
         />
       )}
-
-      {/* Hero Section Modal */}
-      <HeroSectionModal
-        isOpen={heroSectionOpen}
-        onClose={() => setHeroSectionOpen(false)}
-        contentData={getMergedContent().heroText}
-        onSaveContent={handleSaveHeroText}
-        isSaving={isSaving}
-      />
     </div>
   );
 };
 
-export default HomeContentAdmin;
+export default ServicesContentAdmin;
