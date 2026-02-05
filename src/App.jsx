@@ -1,200 +1,83 @@
+import { lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import ScrollToTop from './components/ScrollToTop';
-import HomePage from './features/home/HomePage';
-import AboutPage from './features/about/AboutPage';
-import ServicesPage from './features/services/ServicesPage';
-import FleetPage from './features/fleet/FleetPage';
-import CareersPage from './features/careers/CareersPage';
-import JobApplicationForm from './features/careers/JobApplicationForm';
-import ContactPage from './features/contact/ContactPage';
-import NewsPage from './features/news/NewsPage';
-import ArticlePage from './features/news/ArticlePage';
-import PrivacyPolicy from './features/legal/PrivacyPolicyPage';
-import TermsConditions from './features/legal/TermsPage';
-import CookiePolicy from './features/legal/CookiePolicyPage';
-import LoginPage from './features/admin/LoginPage';
-import AdminLayout from './features/admin/AdminLayout';
-import AdminDashboard from './features/admin/AdminDashboard';
-import NewsListAdmin from './features/admin/news/NewsListAdmin';
-import NewsFormAdmin from './features/admin/news/NewsFormAdmin';
-import FleetListAdmin from './features/admin/fleet/FleetListAdmin';
-import FleetFormAdmin from './features/admin/fleet/FleetFormAdmin';
-import CareersListAdmin from './features/admin/careers/CareersListAdmin';
-import CareersFormAdmin from './features/admin/careers/CareersFormAdmin';
-import ProtectedRoute from './components/admin/ProtectedRoute';
-import AboutContentAdmin from './features/admin/content/AboutContentAdmin';
-import HomeContentAdmin from './features/admin/content/HomeContentAdmin';
-import ServicesContentAdmin from './features/admin/content/ServicesContentAdmin';
 import { AuthProvider } from './context/AuthContext';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import PublicLayout from './app/layouts/PublicLayout';
+import AdminLayout from './app/layouts/AdminLayout';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+
+// Public pages - lazy loaded
+const HomePage = lazy(() => import('./features/home/HomePage'));
+const AboutPage = lazy(() => import('./features/about/AboutPage'));
+const ServicesPage = lazy(() => import('./features/services/ServicesPage'));
+const FleetPage = lazy(() => import('./features/fleet/FleetPage'));
+const CareersPage = lazy(() => import('./features/careers/CareersPage'));
+const JobApplicationForm = lazy(() => import('./features/careers/JobApplicationForm'));
+const ContactPage = lazy(() => import('./features/contact/ContactPage'));
+const NewsPage = lazy(() => import('./features/news/NewsPage'));
+const ArticlePage = lazy(() => import('./features/news/ArticlePage'));
+const PrivacyPolicy = lazy(() => import('./features/legal/PrivacyPolicyPage'));
+const TermsConditions = lazy(() => import('./features/legal/TermsPage'));
+const CookiePolicy = lazy(() => import('./features/legal/CookiePolicyPage'));
+
+// Admin pages - lazy loaded
+const LoginPage = lazy(() => import('./features/admin/LoginPage'));
+const AdminDashboard = lazy(() => import('./features/admin/AdminDashboard'));
+const NewsListAdmin = lazy(() => import('./features/admin/news/NewsListAdmin'));
+const NewsFormAdmin = lazy(() => import('./features/admin/news/NewsFormAdmin'));
+const FleetListAdmin = lazy(() => import('./features/admin/fleet/FleetListAdmin'));
+const FleetFormAdmin = lazy(() => import('./features/admin/fleet/FleetFormAdmin'));
+const CareersListAdmin = lazy(() => import('./features/admin/careers/CareersListAdmin'));
+const CareersFormAdmin = lazy(() => import('./features/admin/careers/CareersFormAdmin'));
+const AboutContentAdmin = lazy(() => import('./features/admin/content/AboutContentAdmin'));
+const HomeContentAdmin = lazy(() => import('./features/admin/content/HomeContentAdmin'));
+const ServicesContentAdmin = lazy(() => import('./features/admin/content/ServicesContentAdmin'));
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Toaster position="top-right" richColors closeButton />
-        <ScrollToTop />
-        <Routes>
-          
-          <Route
-            path="/"
-            element={
-              <>
-                <Navbar />
-                <HomePage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <>
-                <Navbar />
-                <AboutPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/services"
-            element={
-              <>
-                <Navbar />
-                <ServicesPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/fleet"
-            element={
-              <>
-                <Navbar />
-                <FleetPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/careers"
-            element={
-              <>
-                <Navbar />
-                <CareersPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/careers/apply/:id"
-            element={
-              <>
-                <Navbar />
-                <JobApplicationForm />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <>
-                <Navbar />
-                <ContactPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/news"
-            element={
-              <>
-                <Navbar />
-                <NewsPage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/news/:slug"
-            element={
-              <>
-                <Navbar />
-                <ArticlePage />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/privacy-policy"
-            element={
-              <>
-                <Navbar />
-                <PrivacyPolicy />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/terms-conditions"
-            element={
-              <>
-                <Navbar />
-                <TermsConditions />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/cookie-policy"
-            element={
-              <>
-                <Navbar />
-                <CookiePolicy />
-                <Footer />
-              </>
-            }
-          />
+        <ErrorBoundary>
+          <Toaster position="top-right" richColors closeButton />
+          <Routes>
+            {/* Public routes - shared Navbar + Footer via PublicLayout */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/fleet" element={<FleetPage />} />
+              <Route path="/careers" element={<CareersPage />} />
+              <Route path="/careers/apply/:id" element={<JobApplicationForm />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/news/:slug" element={<ArticlePage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+            </Route>
 
-          
-          <Route path="/system-access" element={<LoginPage />} />
+            {/* Login - no layout */}
+            <Route path="/system-access" element={<LoginPage />} />
 
-          
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <Routes>
-                    <Route path="dashboard" element={<AdminDashboard />} />
-
-                    
-                    <Route path="news" element={<NewsListAdmin />} />
-                    <Route path="news/create" element={<NewsFormAdmin />} />
-                    <Route path="news/edit/:id" element={<NewsFormAdmin />} />
-
-                    
-                    <Route path="fleet" element={<FleetListAdmin />} />
-                    <Route path="fleet/create" element={<FleetFormAdmin />} />
-                    <Route path="fleet/edit/:id" element={<FleetFormAdmin />} />
-
-                    
-                    <Route path="careers" element={<CareersListAdmin />} />
-                    <Route path="careers/new" element={<CareersFormAdmin />} />
-                    <Route path="careers/edit/:id" element={<CareersFormAdmin />} />
-
-                    <Route path="content/home" element={<HomeContentAdmin />} />
-                    <Route path="content/about" element={<AboutContentAdmin />} />
-                    <Route path="content/services" element={<ServicesContentAdmin />} />
-                  </Routes>
-                </AdminLayout>
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+            {/* Admin routes - shared AdminLayout with Outlet */}
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="news" element={<NewsListAdmin />} />
+              <Route path="news/create" element={<NewsFormAdmin />} />
+              <Route path="news/edit/:id" element={<NewsFormAdmin />} />
+              <Route path="fleet" element={<FleetListAdmin />} />
+              <Route path="fleet/create" element={<FleetFormAdmin />} />
+              <Route path="fleet/edit/:id" element={<FleetFormAdmin />} />
+              <Route path="careers" element={<CareersListAdmin />} />
+              <Route path="careers/new" element={<CareersFormAdmin />} />
+              <Route path="careers/edit/:id" element={<CareersFormAdmin />} />
+              <Route path="content/home" element={<HomeContentAdmin />} />
+              <Route path="content/about" element={<AboutContentAdmin />} />
+              <Route path="content/services" element={<ServicesContentAdmin />} />
+            </Route>
+          </Routes>
+        </ErrorBoundary>
       </AuthProvider>
     </BrowserRouter>
   );

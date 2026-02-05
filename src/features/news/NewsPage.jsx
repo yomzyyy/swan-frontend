@@ -3,32 +3,18 @@ import { Link } from 'react-router-dom';
 import { Search, Instagram, Twitter, Facebook, LinkedIn, Close } from '@mui/icons-material';
 import { Pagination } from '@mui/material';
 import { api } from '../../services/api';
+import useApiQuery from '../../hooks/useApiQuery';
 import { formatNewsDate } from '../../utils/dateFormatter';
 import SkeletonCard from '../../components/skeletons/SkeletonCard';
 
 const NewsPage = () => {
-  const [newsArticles, setNewsArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: newsArticles, loading, error } = useApiQuery(
+    () => api.news.getAll().then(r => r.data?.data || []),
+    { initialData: [] }
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
-
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        setLoading(true);
-        const response = await api.news.getAll();
-        setNewsArticles(response.data?.data || []);
-      } catch (err) {
-        setError('Failed to load news articles');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
-  }, []);
 
   // Filter articles based on search query
   const filteredArticles = newsArticles.filter(article =>

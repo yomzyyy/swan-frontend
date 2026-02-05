@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { api } from '../../services/api';
+import useApiQuery from '../../hooks/useApiQuery';
 import Search from '@mui/icons-material/Search';
 import Close from '@mui/icons-material/Close';
 import SkeletonCard from '../../components/skeletons/SkeletonCard';
@@ -12,9 +13,10 @@ const parseCapacity = (capacityStr) => {
 };
 
 const FleetPage = () => {
-  const [vessels, setVessels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: vessels, loading, error } = useApiQuery(
+    () => api.fleet.getAll().then(r => r.data?.data || []),
+    { initialData: [] }
+  );
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,22 +24,6 @@ const FleetPage = () => {
   const [selectedTradeArea, setSelectedTradeArea] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
-
-  useEffect(() => {
-    const fetchVessels = async () => {
-      try {
-        setLoading(true);
-        const response = await api.fleet.getAll();
-        setVessels(response.data?.data || []);
-      } catch (err) {
-        setError('Failed to load fleet data');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchVessels();
-  }, []);
 
   // Derived options from data
   const vesselTypes = useMemo(() =>

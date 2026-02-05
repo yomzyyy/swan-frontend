@@ -1,36 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminTable from '../../../components/admin/AdminTable';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
 import { getAllArticles, deleteArticle } from './newsAdminService';
+import useApiQuery from '../../../hooks/useApiQuery';
 import { formatNewsDate } from '../../../utils/dateFormatter';
 import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const NewsListAdmin = () => {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: articles, loading, refetch } = useApiQuery(
+    () => getAllArticles(),
+    { initialData: [] }
+  );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loadArticles();
-  }, []);
-
-  const loadArticles = async () => {
-    try {
-      setLoading(true);
-      const allArticles = await getAllArticles();
-      setArticles(allArticles);
-    } catch (error) {
-      console.error('Failed to load articles:', error);
-      setArticles([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEdit = (article) => {
     navigate(`/admin/news/edit/${article.id}`);
@@ -45,7 +31,7 @@ const NewsListAdmin = () => {
     if (articleToDelete) {
       const result = await deleteArticle(articleToDelete.id);
       if (result.success) {
-        loadArticles();
+        refetch();
         setDeleteConfirmOpen(false);
         setArticleToDelete(null);
       } else {

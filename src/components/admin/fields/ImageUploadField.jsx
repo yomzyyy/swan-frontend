@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { CloudUpload, Link, CheckCircle, Error as ErrorIcon, BrokenImage, Close } from '@mui/icons-material';
-import { uploadContentImage, validateImageFile, formatFileSize } from '../../../utils/imageUploadService';
+import { uploadContentImage, validateImageFile, formatFileSize } from '../../../services/imageService';
 
 const ImageUploadField = ({ field, value, onChange }) => {
   const isUploadedUrl = value && value.startsWith('/api/');

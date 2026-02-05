@@ -1,69 +1,47 @@
-import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import AdminCard from '../../components/admin/AdminCard';
-import { getStorageData } from '../../utils/localStorage';
-import { getAllVessels } from '../admin/fleet/fleetAdminService';
-import { getAllCareers } from '../admin/careers/careersAdminService';
+import { fleetService, careersService } from '../../services/adminCrudService';
+import { api } from '../../services/api';
+import useApiQuery from '../../hooks/useApiQuery';
 import SkeletonStats from '../../components/skeletons/SkeletonStats';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
 
-  const [newsCount, setNewsCount] = useState(0);
-  const [fleetCount, setFleetCount] = useState(0);
-  const [careersCount, setCareersCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCounts = async () => {
-      try {
-        setLoading(true);
-
-        // Fetch all data in parallel
-        const [vessels, careers] = await Promise.all([
-          getAllVessels(),
-          getAllCareers()
-        ]);
-
-        // News still uses localStorage (not connected to DB yet)
-        const newsArticles = getStorageData('swan_admin_news') || [];
-
-        // Set counts
-        setFleetCount(vessels.length);
-        setCareersCount(careers.length);
-        setNewsCount(newsArticles.length);
-
-      } catch (error) {
-        console.error('Failed to load dashboard counts:', error);
-        // Set to 0 on error
-        setFleetCount(0);
-        setCareersCount(0);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCounts();
-  }, []);
+  const { data: counts, loading } = useApiQuery(
+    async () => {
+      const [vessels, careers, newsResponse] = await Promise.all([
+        fleetService.getAll(),
+        careersService.getAll(),
+        api.news.getAllAdmin()
+      ]);
+      return {
+        fleet: vessels.length,
+        careers: careers.length,
+        news: (newsResponse.data?.data || []).length,
+      };
+    },
+    { initialData: { fleet: 0, careers: 0, news: 0 } }
+  );
 
   const stats = [
     {
       title: 'News Articles',
-      value: newsCount,
+      value: counts.news,
       icon: '📰',
       color: 'blue',
       link: '/admin/news',
     },
     {
       title: 'Fleet Vessels',
-      value: fleetCount,
+      value: counts.fleet,
       icon: '🚢',
       color: 'green',
       link: '/admin/fleet',
     },
     {
       title: 'Job Postings',
-      value: careersCount,
+      value: counts.careers,
       icon: '💼',
       color: 'purple',
       link: '/admin/careers',

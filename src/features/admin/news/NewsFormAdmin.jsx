@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createArticle, updateArticle, getArticleById, uploadNewsImage, validateImageFile } from './newsAdminService';
+import { createArticle, updateArticle, getArticleById } from './newsAdminService';
+import { uploadNewsImage, validateImageFile } from '../../../services/imageService';
 import FormFileUpload from '../../../components/forms/FormFileUpload';
 
 const NewsFormAdmin = () => {

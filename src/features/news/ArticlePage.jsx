@@ -1,41 +1,31 @@
-import { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { api } from '../../services/api';
+import useApiQuery from '../../hooks/useApiQuery';
 import { formatNewsDate } from '../../utils/dateFormatter';
 import SkeletonArticle from '../../components/skeletons/SkeletonArticle';
 
 const ArticlePage = () => {
   const { slug } = useParams();
-  const [article, setArticle] = useState(null);
-  const [recentArticles, setRecentArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        setLoading(true);
+  const { data: articleData, loading, error } = useApiQuery(
+    async () => {
+      const [articleResponse, allArticlesResponse] = await Promise.all([
+        api.news.getBySlug(slug),
+        api.news.getAll(),
+      ]);
 
-        // Fetch current article by slug
-        const articleResponse = await api.news.getBySlug(slug);
-        setArticle(articleResponse.data.data);
+      const article = articleResponse.data.data;
+      const recentArticles = allArticlesResponse.data.data
+        .sort((a, b) => b.publishedAt - a.publishedAt)
+        .slice(0, 4);
 
-        // Fetch all articles for "Recent News" section
-        const allArticlesResponse = await api.news.getAll();
-        const allArticles = allArticlesResponse.data.data
-          .sort((a, b) => b.publishedAt - a.publishedAt);
-        setRecentArticles(allArticles.slice(0, 4));
+      return { article, recentArticles };
+    },
+    { deps: [slug] }
+  );
 
-      } catch (err) {
-        setError('Failed to load article');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArticle();
-  }, [slug]);
+  const article = articleData?.article || null;
+  const recentArticles = articleData?.recentArticles || [];
 
   if (loading) {
     return <SkeletonArticle />;

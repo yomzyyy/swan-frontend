@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createVessel, updateVessel, getVesselById } from './fleetAdminService';
+import { fleetService } from '../../../services/adminCrudService';
 
 const FleetFormAdmin = () => {
   const { id } = useParams();
@@ -25,7 +25,7 @@ const FleetFormAdmin = () => {
     const fetchVessel = async () => {
       if (isEditMode) {
         try {
-          const vessel = await getVesselById(id);
+          const vessel = await fleetService.getById(id);
           if (vessel) {
             setFormData(vessel);
           } else {
@@ -52,8 +52,8 @@ const FleetFormAdmin = () => {
 
     try {
       const result = isEditMode
-        ? await updateVessel(id, formData)
-        : await createVessel(formData);
+        ? await fleetService.update(id, formData)
+        : await fleetService.create(formData);
 
       if (result.success) {
         navigate('/admin/fleet');

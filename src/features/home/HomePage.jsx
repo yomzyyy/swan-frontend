@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { homeDefaults } from '../../constants/homeDefaults';
 import { deepMerge } from '../../utils/deepMerge';
+import useApiQuery from '../../hooks/useApiQuery';
 import Hero from '../../components/layout/Hero';
 import About from '../../components/layout/About';
 import Services from '../../components/layout/Services';
@@ -11,22 +11,19 @@ import GetInTouch from '../../components/layout/GetInTouch';
 import FleetStats from '../../components/layout/FleetStats';
 
 const HomePage = () => {
-  const [homeContent, setHomeContent] = useState(homeDefaults);
-
-  useEffect(() => {
-    const fetchContent = async () => {
+  const { data: homeContent } = useApiQuery(
+    async () => {
       try {
         const response = await api.content.get('home');
         const data = response.data?.data;
-        if (data) {
-          setHomeContent(deepMerge(homeDefaults, data));
-        }
+        if (data) return deepMerge(homeDefaults, data);
       } catch {
         // Silently fall back to defaults
       }
-    };
-    fetchContent();
-  }, []);
+      return homeDefaults;
+    },
+    { initialData: homeDefaults }
+  );
 
   return (
     <>

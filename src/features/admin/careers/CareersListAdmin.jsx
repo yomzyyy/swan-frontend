@@ -1,34 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllCareers, deleteCareer } from './careersAdminService';
+import { careersService } from '../../../services/adminCrudService';
+import useApiQuery from '../../../hooks/useApiQuery';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
 import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const CareersListAdmin = () => {
-  const [careers, setCareers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: careers, loading, refetch } = useApiQuery(
+    () => careersService.getAll(),
+    { initialData: [] }
+  );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [careerToDelete, setCareerToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loadCareers();
-  }, []);
-
-  const loadCareers = async () => {
-    try {
-      setLoading(true);
-      const allCareers = await getAllCareers();
-      setCareers(allCareers);
-    } catch (error) {
-      console.error('Failed to load careers:', error);
-      setCareers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEdit = (career) => {
     navigate(`/admin/careers/edit/${career.id}`);
@@ -41,9 +27,9 @@ const CareersListAdmin = () => {
 
   const handleDeleteConfirm = async () => {
     if (careerToDelete) {
-      const result = await deleteCareer(careerToDelete.id);
+      const result = await careersService.remove(careerToDelete.id);
       if (result.success) {
-        loadCareers();
+        refetch();
         setDeleteConfirmOpen(false);
         setCareerToDelete(null);
       } else {

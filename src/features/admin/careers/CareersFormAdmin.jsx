@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCareerById, createCareer, updateCareer } from './careersAdminService';
+import { careersService } from '../../../services/adminCrudService';
 
 const CareersFormAdmin = () => {
   const { id } = useParams();
@@ -22,7 +22,7 @@ const CareersFormAdmin = () => {
     const fetchCareer = async () => {
       if (isEditMode) {
         try {
-          const career = await getCareerById(id);
+          const career = await careersService.getById(id);
           if (career) {
             setFormData(career);
           } else {
@@ -51,8 +51,8 @@ const CareersFormAdmin = () => {
 
     try {
       const result = isEditMode
-        ? await updateCareer(id, formData)
-        : await createCareer(formData);
+        ? await careersService.update(id, formData)
+        : await careersService.create(formData);
 
       if (result.success) {
         navigate('/admin/careers');

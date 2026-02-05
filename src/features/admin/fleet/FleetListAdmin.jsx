@@ -1,35 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminTable from '../../../components/admin/AdminTable';
 import ConfirmDialog from '../../../components/admin/ConfirmDialog';
-import { getAllVessels, deleteVessel } from './fleetAdminService';
+import { fleetService } from '../../../services/adminCrudService';
+import useApiQuery from '../../../hooks/useApiQuery';
 import SkeletonTable from '../../../components/skeletons/SkeletonTable';
 
 const FleetListAdmin = () => {
-  const [vessels, setVessels] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: vessels, loading, refetch } = useApiQuery(
+    () => fleetService.getAll(),
+    { initialData: [] }
+  );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [vesselToDelete, setVesselToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loadVessels();
-  }, []);
-
-  const loadVessels = async () => {
-    try {
-      setLoading(true);
-      const allVessels = await getAllVessels();
-      setVessels(allVessels);
-    } catch (error) {
-      console.error('Failed to load vessels:', error);
-      setVessels([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEdit = (vessel) => {
     navigate(`/admin/fleet/edit/${vessel.id}`);
@@ -42,9 +28,9 @@ const FleetListAdmin = () => {
 
   const handleDeleteConfirm = async () => {
     if (vesselToDelete) {
-      const result = await deleteVessel(vesselToDelete.id);
+      const result = await fleetService.remove(vesselToDelete.id);
       if (result.success) {
-        loadVessels();
+        refetch();
         setDeleteConfirmOpen(false);
         setVesselToDelete(null);
       } else {

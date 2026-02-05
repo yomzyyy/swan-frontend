@@ -1,34 +1,20 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
+import useApiQuery from '../../hooks/useApiQuery';
 import SkeletonCard from '../../components/skeletons/SkeletonCard';
 import ActionButton from '../../components/common/ActionButton';
 
 const CareersPage = () => {
-  const [jobOpenings, setJobOpenings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: jobOpenings, loading, error } = useApiQuery(
+    () => api.careers.getAll().then(r => r.data?.data || []),
+    { initialData: [] }
+  );
 
   // Filter states
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedType, setSelectedType] = useState('');
-
-  useEffect(() => {
-    const fetchCareers = async () => {
-      try {
-        setLoading(true);
-        const response = await api.careers.getAll();
-        setJobOpenings(response.data?.data || []);
-      } catch (err) {
-        setError('Failed to load career opportunities');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCareers();
-  }, []);
 
   // Extract unique values for filters
   const locations = useMemo(() => {

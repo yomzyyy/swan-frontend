@@ -49,46 +49,6 @@ export const updateHeroAltText = async (position, altText) => {
   }
 };
 
-export const formatFileSize = (bytes) => {
-  if (bytes === 0) return '0 Bytes';
-
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  const size = (bytes / Math.pow(k, i)).toFixed(2);
-
-  const formattedSize = size.endsWith('.00')
-    ? size.slice(0, -3)
-    : size;
-
-  return `${formattedSize} ${sizes[i]}`;
-};
-
-export const validateImageFile = (file) => {
-  if (!file) {
-    return { valid: false, error: 'Please select a file' };
-  }
-
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-  if (!allowedTypes.includes(file.type)) {
-    return {
-      valid: false,
-      error: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.'
-    };
-  }
-
-  const maxSize = 5 * 1024 * 1024;
-  if (file.size > maxSize) {
-    return {
-      valid: false,
-      error: `File too large. Maximum size is 5MB. Your file is ${formatFileSize(file.size)}.`
-    };
-  }
-
-  return { valid: true };
-};
-
 export const deleteHeroImage = async (position) => {
   try {
     const response = await api.hero.delete(position);

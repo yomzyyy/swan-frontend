@@ -6,9 +6,8 @@ import {
   uploadHeroImage,
   updateHeroAltText,
   deleteHeroImage,
-  formatFileSize,
-  validateImageFile
 } from '../../features/admin/hero/heroAdminService';
+import { formatFileSize, validateImageFile } from '../../services/imageService';
 import FormFileUpload from '../forms/FormFileUpload';
 import ConfirmDialog from './ConfirmDialog';
 
