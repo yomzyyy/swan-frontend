@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import useApiQuery from '../../hooks/useApiQuery';
-import SkeletonCard from '../../components/skeletons/SkeletonCard';
-import ActionButton from '../../components/common/ActionButton';
+import { useApiQuery } from '../../hooks';
+import { SkeletonCard } from '../../components/skeletons';
+import { ActionButton } from '../../components/common';
 
 const CareersPage = () => {
   const { data: jobOpenings, loading, error } = useApiQuery(

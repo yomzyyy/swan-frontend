@@ -1,5 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { CloudUpload, Link, CheckCircle, Error as ErrorIcon, BrokenImage, Close } from '@mui/icons-material';
+import CloudUpload from '@mui/icons-material/CloudUpload';
+import Link from '@mui/icons-material/Link';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import BrokenImage from '@mui/icons-material/BrokenImage';
+import Close from '@mui/icons-material/Close';
 import { uploadContentImage, validateImageFile, formatFileSize } from '../../../services/imageService';
 
 const ImageUploadField = ({ field, value, onChange }) => {

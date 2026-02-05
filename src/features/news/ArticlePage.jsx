@@ -1,8 +1,8 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { api } from '../../services/api';
-import useApiQuery from '../../hooks/useApiQuery';
-import { formatNewsDate } from '../../utils/dateFormatter';
-import SkeletonArticle from '../../components/skeletons/SkeletonArticle';
+import { useApiQuery } from '../../hooks';
+import { formatNewsDate } from '../../utils';
+import { SkeletonArticle } from '../../components/skeletons';
 
 const ArticlePage = () => {
   const { slug } = useParams();

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { formatNewsDate } from '../../utils/dateFormatter';
-import ActionButton from '../common/ActionButton';
+import { formatNewsDate } from '../../utils';
+import { ActionButton } from '../common';
 
 const NewsSection = () => {
   const [newsArticles, setNewsArticles] = useState([]);

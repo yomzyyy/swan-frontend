@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminTable from '../../../components/admin/AdminTable';
-import ConfirmDialog from '../../../components/admin/ConfirmDialog';
+import { AdminTable, ConfirmDialog } from '../../../components/admin';
+import { SkeletonTable } from '../../../components/skeletons';
 import { getAllArticles, deleteArticle } from './newsAdminService';
-import useApiQuery from '../../../hooks/useApiQuery';
-import { formatNewsDate } from '../../../utils/dateFormatter';
-import SkeletonTable from '../../../components/skeletons/SkeletonTable';
+import { useApiQuery } from '../../../hooks';
+import { formatNewsDate } from '../../../utils';
 
 const NewsListAdmin = () => {
   const { data: articles, loading, refetch } = useApiQuery(

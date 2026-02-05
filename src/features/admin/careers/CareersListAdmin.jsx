@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ConfirmDialog } from '../../../components/admin';
+import { SkeletonTable } from '../../../components/skeletons';
 import { careersService } from '../../../services/adminCrudService';
-import useApiQuery from '../../../hooks/useApiQuery';
-import ConfirmDialog from '../../../components/admin/ConfirmDialog';
-import SkeletonTable from '../../../components/skeletons/SkeletonTable';
+import { useApiQuery } from '../../../hooks';
 
 const CareersListAdmin = () => {
   const { data: careers, loading, refetch } = useApiQuery(

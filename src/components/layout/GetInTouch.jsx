@@ -1,4 +1,6 @@
-import { LocationOn, Phone, Email } from '@mui/icons-material';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Phone from '@mui/icons-material/Phone';
+import Email from '@mui/icons-material/Email';
 import { homeDefaults } from '../../constants/homeDefaults';
 
 const GetInTouch = ({ bgColor = 'bg-gray-50', getInTouch: contactProp = {} }) => {

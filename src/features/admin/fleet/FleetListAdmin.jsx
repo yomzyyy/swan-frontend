@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminTable from '../../../components/admin/AdminTable';
-import ConfirmDialog from '../../../components/admin/ConfirmDialog';
+import { AdminTable, ConfirmDialog } from '../../../components/admin';
+import { SkeletonTable } from '../../../components/skeletons';
 import { fleetService } from '../../../services/adminCrudService';
-import useApiQuery from '../../../hooks/useApiQuery';
-import SkeletonTable from '../../../components/skeletons/SkeletonTable';
+import { useApiQuery } from '../../../hooks';
 
 const FleetListAdmin = () => {
   const { data: vessels, loading, refetch } = useApiQuery(

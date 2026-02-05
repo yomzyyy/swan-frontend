@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import FormFileUpload from '../../components/forms/FormFileUpload';
+import { FormFileUpload } from '../../components/forms';
 
 const JobApplicationForm = () => {
   const { id } = useParams();

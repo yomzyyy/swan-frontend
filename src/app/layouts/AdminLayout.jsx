@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-import AdminSidebar from '../../components/admin/AdminSidebar';
-import AdminHeader from '../../components/admin/AdminHeader';
-import PageLoader from '../../components/common/PageLoader';
+import { AdminSidebar, AdminHeader } from '../../components/admin';
+import { PageLoader } from '../../components/common';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { aboutDefaults } from '../../constants/aboutDefaults';
-import { deepMerge } from '../../utils/deepMerge';
+import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
 
 const AboutContentSection = ({

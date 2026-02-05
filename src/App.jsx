@@ -2,10 +2,10 @@ import { lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './context/AuthContext';
-import ErrorBoundary from './components/common/ErrorBoundary';
+import { ErrorBoundary } from './components/common';
+import { ProtectedRoute } from './components/admin';
 import PublicLayout from './app/layouts/PublicLayout';
 import AdminLayout from './app/layouts/AdminLayout';
-import ProtectedRoute from './components/admin/ProtectedRoute';
 
 // Public pages - lazy loaded
 const HomePage = lazy(() => import('./features/home/HomePage'));

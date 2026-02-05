@@ -1,4 +1,5 @@
-import { Add, Delete } from '@mui/icons-material';
+import Add from '@mui/icons-material/Add';
+import Delete from '@mui/icons-material/Delete';
 
 const ArrayObjectsField = ({ field, value, onChange, renderField }) => {
   const items = value || [];

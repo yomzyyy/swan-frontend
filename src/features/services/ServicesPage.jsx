@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { servicesDefaults } from '../../constants/servicesDefaults';
-import { deepMerge } from '../../utils/deepMerge';
+import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
 
 const ServicesPage = () => {

@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Check, ArrowBackIos, ArrowForwardIos, HealthAndSafety, Groups, Build, FactCheck } from '@mui/icons-material';
-import { useInView } from '../../hooks/useInView';
-import { useCountingAnimation } from '../../hooks/useCountingAnimation';
-import { parseStatNumber } from '../../utils/numberParser';
+import Check from '@mui/icons-material/Check';
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
+import HealthAndSafety from '@mui/icons-material/HealthAndSafety';
+import Groups from '@mui/icons-material/Groups';
+import Build from '@mui/icons-material/Build';
+import FactCheck from '@mui/icons-material/FactCheck';
+import { useInView, useCountingAnimation } from '../../hooks';
+import { parseStatNumber, deepMerge } from '../../utils';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { aboutDefaults } from '../../constants/aboutDefaults';
-import { deepMerge } from '../../utils/deepMerge';
 import { api } from '../../services/api';
 
 // Hardcoded icons mapped by pillar index (MUI components can't serialize to DB)

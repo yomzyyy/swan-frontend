@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { DirectionsBoat, Language, Public } from '@mui/icons-material';
+import DirectionsBoat from '@mui/icons-material/DirectionsBoat';
+import Language from '@mui/icons-material/Language';
+import Public from '@mui/icons-material/Public';
 import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
 
 const DEFAULT_BG_IMAGE = 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920';

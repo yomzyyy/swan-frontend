@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import ScrollToTop from '../../components/ScrollToTop';
-import PageLoader from '../../components/common/PageLoader';
+import { PageLoader } from '../../components/common';
 
 const PublicLayout = () => {
   return (

@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { LocationOn, Phone, Email } from '@mui/icons-material';
-import FormInput from '../../components/forms/FormInput';
-import FormTextarea from '../../components/forms/FormTextarea';
-import FormSelect from '../../components/forms/FormSelect';
-import FormFileUpload from '../../components/forms/FormFileUpload';
-import {
-  validateContactForm,
-  validateJobForm,
-  validateQuoteForm
-} from '../../utils/formValidation';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Phone from '@mui/icons-material/Phone';
+import Email from '@mui/icons-material/Email';
+import { validateContactForm, validateJobForm, validateQuoteForm } from '../../utils';
+import GeneralContactForm from './components/GeneralContactForm';
+import ContactJobForm from './components/ContactJobForm';
+import QuoteRequestForm from './components/QuoteRequestForm';
 
 const ContactPage = () => {
   const [searchParams] = useSearchParams();
@@ -76,15 +73,6 @@ const ContactPage = () => {
     }
   };
 
-  const serviceOptions = [
-    'Vessel Chartering',
-    'Terminal Operations',
-    'Fleet Management',
-    'Technical Management',
-    'Newbuilding Supervision',
-    'Other Services',
-  ];
-
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -100,7 +88,6 @@ const ContactPage = () => {
       {/* About Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
-          {/* About Us Label with line */}
           <div className="mb-12">
             <div className="flex items-center gap-4">
               <div className="w-12 h-0.5 bg-gray-900"></div>
@@ -110,16 +97,12 @@ const ContactPage = () => {
             </div>
           </div>
 
-          {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-16">
-            {/* Left - Heading */}
             <div>
               <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight uppercase">
                 Maritime Excellence In LPG Shipping Services
               </h2>
             </div>
-
-            {/* Right - Description */}
             <div className="flex items-center">
               <p className="text-gray-700 text-base leading-relaxed">
                 From safe vessel operations to technical ship management and crew training, we offer
@@ -131,7 +114,6 @@ const ContactPage = () => {
 
           {/* Contact Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Address Card */}
             <div style={{backgroundColor: '#2d3748'}} className="p-10">
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <LocationOn sx={{ fontSize: 24, color: 'white' }} />
@@ -144,7 +126,6 @@ const ContactPage = () => {
               </p>
             </div>
 
-            {/* Phone Card */}
             <div style={{backgroundColor: '#2d3748'}} className="p-10">
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <Phone sx={{ fontSize: 24, color: 'white' }} />
@@ -156,7 +137,6 @@ const ContactPage = () => {
               </p>
             </div>
 
-            {/* Email Card */}
             <div style={{backgroundColor: '#2d3748'}} className="p-10">
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <Email sx={{ fontSize: 24, color: 'white' }} />
@@ -226,165 +206,13 @@ const ContactPage = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {activeTab === 'contact' && (
-                    <>
-                      <FormInput
-                        label="Full Name"
-                        name="name"
-                        value={formData.name || ''}
-                        onChange={handleChange}
-                        error={errors.name}
-                        required
-                      />
-                      <FormInput
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={formData.email || ''}
-                        onChange={handleChange}
-                        error={errors.email}
-                        required
-                      />
-                      <FormInput
-                        label="Phone Number"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone || ''}
-                        onChange={handleChange}
-                        error={errors.phone}
-                      />
-                      <FormInput
-                        label="Subject"
-                        name="subject"
-                        value={formData.subject || ''}
-                        onChange={handleChange}
-                        error={errors.subject}
-                        required
-                      />
-                      <FormTextarea
-                        label="Message"
-                        name="message"
-                        value={formData.message || ''}
-                        onChange={handleChange}
-                        error={errors.message}
-                        rows={6}
-                        required
-                      />
-                    </>
+                    <GeneralContactForm formData={formData} errors={errors} onChange={handleChange} />
                   )}
-
                   {activeTab === 'jobs' && (
-                    <>
-                      <FormInput
-                        label="Full Name"
-                        name="name"
-                        value={formData.name || ''}
-                        onChange={handleChange}
-                        error={errors.name}
-                        required
-                      />
-                      <FormInput
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={formData.email || ''}
-                        onChange={handleChange}
-                        error={errors.email}
-                        required
-                      />
-                      <FormInput
-                        label="Phone Number"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone || ''}
-                        onChange={handleChange}
-                        error={errors.phone}
-                        required
-                      />
-                      <FormInput
-                        label="Position Applied For"
-                        name="position"
-                        type="text"
-                        value={formData.position || ''}
-                        onChange={handleChange}
-                        error={errors.position}
-                        placeholder="e.g., Marine Engineer, Fleet Manager, Deck Officer"
-                        required
-                      />
-                      <FormTextarea
-                        label="Cover Letter"
-                        name="coverLetter"
-                        value={formData.coverLetter || ''}
-                        onChange={handleChange}
-                        error={errors.coverLetter}
-                        rows={6}
-                        required
-                      />
-                      <FormFileUpload
-                        label="Upload Resume (PDF or DOC)"
-                        name="resume"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleChange}
-                        error={errors.resume}
-                        required
-                      />
-                    </>
+                    <ContactJobForm formData={formData} errors={errors} onChange={handleChange} />
                   )}
-
                   {activeTab === 'quote' && (
-                    <>
-                      <FormInput
-                        label="Company Name"
-                        name="company"
-                        value={formData.company || ''}
-                        onChange={handleChange}
-                        error={errors.company}
-                        required
-                      />
-                      <FormInput
-                        label="Contact Person"
-                        name="name"
-                        value={formData.name || ''}
-                        onChange={handleChange}
-                        error={errors.name}
-                        required
-                      />
-                      <FormInput
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={formData.email || ''}
-                        onChange={handleChange}
-                        error={errors.email}
-                        required
-                      />
-                      <FormInput
-                        label="Phone Number"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone || ''}
-                        onChange={handleChange}
-                        error={errors.phone}
-                        required
-                      />
-                      <FormSelect
-                        label="Service Required"
-                        name="service"
-                        value={formData.service || ''}
-                        onChange={handleChange}
-                        error={errors.service}
-                        options={serviceOptions}
-                        required
-                      />
-                      <FormTextarea
-                        label="Project Details"
-                        name="details"
-                        value={formData.details || ''}
-                        onChange={handleChange}
-                        error={errors.details}
-                        rows={6}
-                        required
-                      />
-                    </>
+                    <QuoteRequestForm formData={formData} errors={errors} onChange={handleChange} />
                   )}
 
                   <button

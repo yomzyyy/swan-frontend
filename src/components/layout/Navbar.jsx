@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Close } from '@mui/icons-material';
+import Menu from '@mui/icons-material/Menu';
+import Close from '@mui/icons-material/Close';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

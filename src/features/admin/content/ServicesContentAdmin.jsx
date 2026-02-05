@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { Edit, OpenInNew } from '@mui/icons-material';
+import Edit from '@mui/icons-material/Edit';
+import OpenInNew from '@mui/icons-material/OpenInNew';
 import { getServicesContent, saveServicesContent } from './contentAdminService';
 import { servicesDefaults } from '../../../constants/servicesDefaults';
-import { deepMerge } from '../../../utils/deepMerge';
-import EditSectionModal from '../../../components/admin/EditSectionModal';
+import { deepMerge } from '../../../utils';
+import { EditSectionModal } from '../../../components/admin';
 
 const SECTIONS = [
   {

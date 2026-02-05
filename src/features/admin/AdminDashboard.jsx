@@ -1,9 +1,9 @@
 import { useAuth } from '../../context/AuthContext';
-import AdminCard from '../../components/admin/AdminCard';
+import { AdminCard } from '../../components/admin';
+import { SkeletonStats } from '../../components/skeletons';
 import { fleetService, careersService } from '../../services/adminCrudService';
 import { api } from '../../services/api';
-import useApiQuery from '../../hooks/useApiQuery';
-import SkeletonStats from '../../components/skeletons/SkeletonStats';
+import { useApiQuery } from '../../hooks';
 
 const AdminDashboard = () => {
   const { user } = useAuth();

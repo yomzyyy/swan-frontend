@@ -1,7 +1,7 @@
 import { api } from '../../services/api';
 import { homeDefaults } from '../../constants/homeDefaults';
-import { deepMerge } from '../../utils/deepMerge';
-import useApiQuery from '../../hooks/useApiQuery';
+import { deepMerge } from '../../utils';
+import { useApiQuery } from '../../hooks';
 import Hero from '../../components/layout/Hero';
 import About from '../../components/layout/About';
 import Services from '../../components/layout/Services';

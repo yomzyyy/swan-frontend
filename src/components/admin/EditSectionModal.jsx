@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Close } from '@mui/icons-material';
+import Close from '@mui/icons-material/Close';
 import { FIELD_RENDERERS } from './fields';
 
 const EditSectionModal = ({ isOpen, onClose, title, fields, tabs, data, onSave, isSaving }) => {
