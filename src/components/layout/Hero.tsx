@@ -3,14 +3,24 @@ import { api } from '../../services/api';
 import SkeletonHero from '../skeletons/SkeletonHero';
 import { ROUTES } from '../../config/routes';
 import ActionButton from '../common/ActionButton';
+import type { HeroTextContent } from '../../types';
 
-const Hero = ({ heroText = {} }) => {
+interface HeroSlide {
+  url: string;
+  altText: string;
+}
+
+interface HeroProps {
+  heroText?: Partial<HeroTextContent>;
+}
+
+const Hero = ({ heroText = {} }: HeroProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<HeroSlide[]>([]);
   const [loading, setLoading] = useState(true);
   const [animateContent, setAnimateContent] = useState(false);
 
-  const fallbackImages = [
+  const fallbackImages: HeroSlide[] = [
     {
       url: 'https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80',
       altText: 'Maritime vessel at sea'
@@ -72,7 +82,7 @@ const Hero = ({ heroText = {} }) => {
     }
   }, [loading]);
 
-  const goToSlide = (index) => {
+  const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 

@@ -1,15 +1,37 @@
-const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel, confirmText = 'Confirm', cancelText = 'Cancel', type = 'danger' }) => {
-  if (!isOpen) return null;
+type DialogType = 'danger' | 'warning' | 'info';
 
-  const typeColors = {
-    danger: 'bg-red-600 hover:bg-red-700',
-    warning: 'bg-orange-600 hover:bg-orange-700',
-    info: 'bg-blue-600 hover:bg-blue-700',
-  };
+interface ConfirmDialogProps {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  confirmText?: string;
+  cancelText?: string;
+  type?: DialogType;
+}
+
+const typeColors: Record<DialogType, string> = {
+  danger: 'bg-red-600 hover:bg-red-700',
+  warning: 'bg-orange-600 hover:bg-orange-700',
+  info: 'bg-blue-600 hover:bg-blue-700',
+};
+
+function ConfirmDialog({
+  isOpen,
+  title,
+  message,
+  onConfirm,
+  onCancel,
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  type = 'danger'
+}: ConfirmDialogProps) {
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      
+
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <div
           className="fixed inset-0 transition-opacity"
@@ -17,12 +39,12 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel, confirmTex
           onClick={onCancel}
         ></div>
 
-        
+
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
           &#8203;
         </span>
 
-        
+
         <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
           <div className="bg-white px-6 pt-6 pb-4">
             <div className="sm:flex sm:items-start">
@@ -52,7 +74,7 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel, confirmTex
             </div>
           </div>
 
-          
+
           <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse gap-3">
             <button
               type="button"
@@ -73,6 +95,6 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel, confirmTex
       </div>
     </div>
   );
-};
+}
 
 export default ConfirmDialog;

@@ -3,10 +3,15 @@ import DirectionsBoat from '@mui/icons-material/DirectionsBoat';
 import Language from '@mui/icons-material/Language';
 import Public from '@mui/icons-material/Public';
 import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
+import type { FleetStatsContent } from '../../types';
 
 const DEFAULT_BG_IMAGE = 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920';
 
-const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
+interface FleetStatsProps {
+  fleetStats?: Partial<FleetStatsContent>;
+}
+
+const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
   const backgroundImage = fleetStatsProp.backgroundImage || DEFAULT_BG_IMAGE;
   const FLEET_STATS = {
     totalVessels: Number(fleetStatsProp.totalVessels) || DEFAULT_FLEET_STATS.totalVessels,
@@ -53,7 +58,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }) => {
       const progress = Math.min(elapsed / duration, 1);
 
       // Ease-out function for smooth deceleration
-      const easeOutQuad = (t) => t * (2 - t);
+      const easeOutQuad = (t: number) => t * (2 - t);
       const easedProgress = easeOutQuad(progress);
 
       // Calculate current values

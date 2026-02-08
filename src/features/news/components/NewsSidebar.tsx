@@ -5,7 +5,13 @@ import Twitter from '@mui/icons-material/Twitter';
 import Facebook from '@mui/icons-material/Facebook';
 import LinkedIn from '@mui/icons-material/LinkedIn';
 
-const NewsSidebar = ({ searchQuery, setSearchQuery, allTags }) => (
+interface NewsSidebarProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  allTags: string[];
+}
+
+const NewsSidebar = ({ searchQuery, setSearchQuery, allTags }: NewsSidebarProps) => (
   <aside className="w-full lg:w-64 flex-shrink-0">
     {/* Search Bar */}
     <div className="flex mb-4 items-stretch">

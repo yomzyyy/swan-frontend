@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import ActionButton from '../common/ActionButton';
 import { homeDefaults } from '../../constants/homeDefaults';
+import type { ServicesContent } from '../../types';
 
-const Services = ({ services: servicesProp = {} }) => {
+interface ServicesProps {
+  services?: Partial<ServicesContent>;
+}
+
+const Services = ({ services: servicesProp = {} }: ServicesProps) => {
   const badge = servicesProp.badge || homeDefaults.services.badge;
   const sectionTitle = servicesProp.title || homeDefaults.services.title;
   const services = servicesProp.items || homeDefaults.services.items;

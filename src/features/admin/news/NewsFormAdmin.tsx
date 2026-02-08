@@ -1,15 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent, type SyntheticEvent, type KeyboardEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createArticle, updateArticle, getArticleById } from './newsAdminService';
 import { uploadNewsImage, validateImageFile } from '../../../services/imageService';
 import { FormFileUpload } from '../../../components/forms';
+import type { FileChangeEvent } from '../../../components/forms/FormFileUpload';
 
-const NewsFormAdmin = () => {
+interface NewsFormData {
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  image: string;
+  excerpt: string;
+  content: string;
+  hashtags: string[];
+}
+
+function NewsFormAdmin() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<NewsFormData>({
     title: '',
     slug: '',
     date: new Date().toISOString().split('T')[0],
@@ -24,8 +36,8 @@ const NewsFormAdmin = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [imageMode, setImageMode] = useState('url');
-  const [imageFile, setImageFile] = useState(null);
+  const [imageMode, setImageMode] = useState<'url' | 'upload'>('url');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageAltText, setImageAltText] = useState('');
   const [imageError, setImageError] = useState('');
   const [imageUploading, setImageUploading] = useState(false);
@@ -34,19 +46,20 @@ const NewsFormAdmin = () => {
     const loadArticle = async () => {
       if (isEditMode) {
         try {
-          const article = await getArticleById(id);
+          const article = await getArticleById(id as string);
           if (article) {
             // Convert publishedAt timestamp to date string for input
-            const dateStr = new Date(article.publishedAt).toISOString().split('T')[0];
+            const dateStr = new Date(article.publishedAt!).toISOString().split('T')[0];
             setFormData({
               ...article,
+              image: article.image || '',
               date: dateStr,
             });
           } else {
             setError('Article not found');
           }
         } catch (err) {
-          const errorMessage = err.message || 'Failed to load article';
+          const errorMessage = (err as Error).message || 'Failed to load article';
           setError(`Failed to load article: ${errorMessage}`);
           console.error('Error loading article:', err);
         }
@@ -55,7 +68,7 @@ const NewsFormAdmin = () => {
     loadArticle();
   }, [id, isEditMode]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
@@ -68,13 +81,13 @@ const NewsFormAdmin = () => {
     }
   };
 
-  const handleImageFileChange = (e) => {
+  const handleImageFileChange = (e: FileChangeEvent) => {
     const file = e.target.value;
     if (!file) return;
 
     const validation = validateImageFile(file);
     if (!validation.valid) {
-      setImageError(validation.error);
+      setImageError(validation.error || 'Invalid image');
       setImageFile(null);
       return;
     }
@@ -96,14 +109,14 @@ const NewsFormAdmin = () => {
     }
   };
 
-  const handleRemoveHashtag = (tagToRemove) => {
+  const handleRemoveHashtag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
       hashtags: prev.hashtags.filter(tag => tag !== tagToRemove)
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
@@ -124,8 +137,8 @@ const NewsFormAdmin = () => {
         }
 
         // Use uploaded image URL (full URL from backend)
-        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
-        imageUrl = `${baseUrl}${uploadResult.data.imageUrl}`;
+        const baseUrl = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3001/v1';
+        imageUrl = `${baseUrl}${(uploadResult.data as Record<string, string>).imageUrl}`;
       }
 
       // Convert date string to timestamp for API
@@ -140,11 +153,11 @@ const NewsFormAdmin = () => {
         image: imageUrl,
         hashtags: formData.hashtags,
         publishedAt: publishedAt,
-        status: 'published'
+        status: 'published' as const
       };
 
       const result = isEditMode
-        ? await updateArticle(id, dataToSubmit)
+        ? await updateArticle(id as string, dataToSubmit)
         : await createArticle(dataToSubmit);
 
       if (result.success) {
@@ -163,14 +176,14 @@ const NewsFormAdmin = () => {
 
   return (
     <div>
-      
+
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-2">
           <button
             onClick={() => navigate('/admin/news')}
             className="text-gray-600 hover:text-gray-900"
           >
-            ← Back
+            &larr; Back
           </button>
           <h1 className="text-3xl font-bold text-gray-900">
             {isEditMode ? 'Edit Article' : 'Create New Article'}
@@ -181,17 +194,17 @@ const NewsFormAdmin = () => {
         </p>
       </div>
 
-      
+
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      
+
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title <span className="text-red-500">*</span>
@@ -207,7 +220,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Slug <span className="text-red-500">*</span>
@@ -224,7 +237,7 @@ const NewsFormAdmin = () => {
             <p className="text-xs text-gray-500 mt-1">URL-friendly version of the title</p>
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Date <span className="text-red-500">*</span>
@@ -239,7 +252,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Category <span className="text-red-500">*</span>
@@ -309,8 +322,8 @@ const NewsFormAdmin = () => {
                       src={formData.image}
                       alt="Preview"
                       className="w-32 h-20 object-cover rounded"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
+                      onError={(e: SyntheticEvent<HTMLImageElement>) => {
+                        e.currentTarget.style.display = 'none';
                       }}
                     />
                   </div>
@@ -329,7 +342,7 @@ const NewsFormAdmin = () => {
                   required={imageMode === 'upload' && !formData.image && !imageFile}
                   accept="image/jpeg,image/jpg,image/png,image/webp"
                   file={imageFile}
-                  description="JPEG, PNG, or WebP (max 5MB) | Recommended: 1200×630px for social sharing"
+                  description="JPEG, PNG, or WebP (max 5MB) | Recommended: 1200x630px for social sharing"
                   showImagePreview={true}
                 />
 
@@ -360,7 +373,7 @@ const NewsFormAdmin = () => {
             )}
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Excerpt <span className="text-red-500">*</span>
@@ -376,7 +389,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content <span className="text-red-500">*</span>
@@ -392,7 +405,7 @@ const NewsFormAdmin = () => {
             />
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Hashtags
@@ -402,7 +415,7 @@ const NewsFormAdmin = () => {
                 type="text"
                 value={hashtagInput}
                 onChange={(e) => setHashtagInput(e.target.value)}
-                onKeyPress={(e) => {
+                onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
                     handleAddHashtag();
@@ -431,7 +444,7 @@ const NewsFormAdmin = () => {
                     onClick={() => handleRemoveHashtag(tag)}
                     className="ml-2 text-blue-600 hover:text-blue-800"
                   >
-                    ×
+                    &times;
                   </button>
                 </span>
               ))}
@@ -439,7 +452,7 @@ const NewsFormAdmin = () => {
           </div>
         </div>
 
-        
+
         <div className="mt-6 flex justify-end space-x-4">
           <button
             type="button"
@@ -459,6 +472,6 @@ const NewsFormAdmin = () => {
       </form>
     </div>
   );
-};
+}
 
 export default NewsFormAdmin;

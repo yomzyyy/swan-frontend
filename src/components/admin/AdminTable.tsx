@@ -1,4 +1,15 @@
-const AdminTable = ({ columns, data, onEdit, onDelete, emptyMessage = 'No data available' }) => {
+import type { ReactNode } from 'react';
+import type { TableColumn } from '../../types/components';
+
+interface AdminTableProps<T> {
+  columns: TableColumn<T>[];
+  data: T[];
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
+  emptyMessage?: string;
+}
+
+function AdminTable<T>({ columns, data, onEdit, onDelete, emptyMessage = 'No data available' }: AdminTableProps<T>): ReactNode {
   if (!data || data.length === 0) {
     return (
       <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
@@ -33,7 +44,7 @@ const AdminTable = ({ columns, data, onEdit, onDelete, emptyMessage = 'No data a
               <tr key={rowIndex} className="hover:bg-gray-50 transition-colors duration-150">
                 {columns.map((column, colIndex) => (
                   <td key={colIndex} className="px-6 py-4 whitespace-nowrap">
-                    {column.render ? column.render(row) : row[column.accessor]}
+                    {column.render ? column.render(row) : String(row[column.accessor] ?? '')}
                   </td>
                 ))}
                 {(onEdit || onDelete) && (
@@ -70,6 +81,6 @@ const AdminTable = ({ columns, data, onEdit, onDelete, emptyMessage = 'No data a
       </div>
     </div>
   );
-};
+}
 
 export default AdminTable;

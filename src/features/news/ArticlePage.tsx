@@ -3,20 +3,26 @@ import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
 import { formatNewsDate } from '../../utils';
 import { SkeletonArticle } from '../../components/skeletons';
+import type { News } from '../../types';
+
+interface ArticleData {
+  article: News;
+  recentArticles: News[];
+}
 
 const ArticlePage = () => {
   const { slug } = useParams();
 
-  const { data: articleData, loading, error } = useApiQuery(
+  const { data: articleData, loading, error } = useApiQuery<ArticleData>(
     async () => {
       const [articleResponse, allArticlesResponse] = await Promise.all([
-        api.news.getBySlug(slug),
+        api.news.getBySlug(slug as string),
         api.news.getAll(),
       ]);
 
       const article = articleResponse.data.data;
-      const recentArticles = allArticlesResponse.data.data
-        .sort((a, b) => b.publishedAt - a.publishedAt)
+      const recentArticles = (allArticlesResponse.data.data as News[])
+        .sort((a, b) => (b.publishedAt ?? 0) - (a.publishedAt ?? 0))
         .slice(0, 4);
 
       return { article, recentArticles };
@@ -47,7 +53,7 @@ const ArticlePage = () => {
           {/* Featured Image */}
           <div className="mb-8">
             <img
-              src={article.image}
+              src={article.image || ''}
               alt={article.title}
               className="w-full h-auto object-cover"
             />
@@ -61,21 +67,6 @@ const ArticlePage = () => {
               </p>
             ))}
           </div>
-
-          {/* Additional Images */}
-          {article.images && article.images.length > 0 && (
-            <div className="mb-12 space-y-8">
-              {article.images.map((image, index) => (
-                <div key={index}>
-                  <img
-                    src={image}
-                    alt={`${article.title} - Image ${index + 1}`}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
 
           {/* Metadata: Author and Date */}
           <div className="mb-4">
@@ -138,7 +129,7 @@ const ArticlePage = () => {
                   >
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={relatedArticle.image}
+                        src={relatedArticle.image || ''}
                         alt={relatedArticle.title}
                         className="w-full h-full object-cover"
                       />

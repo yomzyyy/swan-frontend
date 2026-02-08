@@ -1,5 +1,18 @@
+import type { ChangeEvent } from 'react';
 
-const FormInput = ({
+interface FormInputProps {
+  label: string;
+  type?: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+  required?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+}
+
+function FormInput({
   label,
   type = 'text',
   name,
@@ -9,16 +22,16 @@ const FormInput = ({
   required = false,
   placeholder = '',
   disabled = false
-}) => {
+}: FormInputProps) {
   return (
     <div className="mb-6">
-      
+
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      
+
       <input
         type={type}
         id={name}
@@ -38,12 +51,12 @@ const FormInput = ({
         `}
       />
 
-      
+
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}
     </div>
   );
-};
+}
 
 export default FormInput;

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const LoginPage = () => {
+function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,7 +11,7 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#001E3C] via-[#0A2540] to-[#001E3C] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        
+
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img
@@ -50,19 +50,19 @@ const LoginPage = () => {
           <p className="text-gray-400 text-lg">Admin System Access</p>
         </div>
 
-        
+
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Sign In</h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            
+
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            
+
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -79,7 +79,7 @@ const LoginPage = () => {
               />
             </div>
 
-            
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -96,7 +96,7 @@ const LoginPage = () => {
               />
             </div>
 
-            
+
             <button
               type="submit"
               disabled={isLoading}
@@ -106,7 +106,7 @@ const LoginPage = () => {
             </button>
           </form>
 
-          
+
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>Authorized access only</p>
           </div>
@@ -114,6 +114,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LoginPage;

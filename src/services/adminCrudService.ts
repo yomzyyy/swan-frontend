@@ -1,22 +1,26 @@
 import { api } from './api';
+import type { ServiceResult, RemoveResult } from '../types/api';
+import type { Fleet, Career } from '../types/models';
 
-/**
- * Factory that creates a standard CRUD service for any API resource.
- * Eliminates the identical getAll/getById/create/update/delete pattern
- * that was copy-pasted across fleetAdminService, careersAdminService, etc.
- *
- * Usage:
- *   const fleetService = createCrudService('fleet');
- *   const careers = await fleetService.getAll();
- *
- * @param {string} resource - Key on the api object (e.g., 'fleet', 'careers')
- * @param {Object} options
- * @param {string} options.resourceLabel - Human-readable name for error messages (default: resource)
- * @returns {{ getAll, getById, create, update, remove }}
- */
-export const createCrudService = (resource, options = {}) => {
+// The subset of api resources that support standard CRUD operations
+type CrudResource = 'fleet' | 'careers';
+
+interface CrudServiceOptions {
+  resourceLabel?: string;
+}
+
+interface CrudService<T> {
+  getAll: () => Promise<T[]>;
+  getById: (id: string) => Promise<T>;
+  create: (data: Partial<T>) => Promise<ServiceResult<T>>;
+  update: (id: string, data: Partial<T>) => Promise<ServiceResult<T>>;
+  remove: (id: string) => Promise<RemoveResult>;
+}
+
+export const createCrudService = <T>(resource: CrudResource, options: CrudServiceOptions = {}): CrudService<T> => {
   const label = options.resourceLabel || resource;
-  const apiResource = api[resource];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const apiResource = api[resource] as any;
 
   if (!apiResource) {
     throw new Error(`API resource "${resource}" does not exist`);
@@ -33,7 +37,7 @@ export const createCrudService = (resource, options = {}) => {
       }
     },
 
-    getById: async (id) => {
+    getById: async (id: string) => {
       try {
         const response = await apiResource.getById(id);
         return response.data.data;
@@ -43,38 +47,38 @@ export const createCrudService = (resource, options = {}) => {
       }
     },
 
-    create: async (data) => {
+    create: async (data: Partial<T>) => {
       try {
         const response = await apiResource.create(data);
-        return { success: true, data: response.data.data };
+        return { success: true as const, data: response.data.data };
       } catch (error) {
         return {
-          success: false,
-          error: error.message || `Failed to create ${label}`
+          success: false as const,
+          error: (error as Error).message || `Failed to create ${label}`
         };
       }
     },
 
-    update: async (id, data) => {
+    update: async (id: string, data: Partial<T>) => {
       try {
         const response = await apiResource.update(id, data);
-        return { success: true, data: response.data.data };
+        return { success: true as const, data: response.data.data };
       } catch (error) {
         return {
-          success: false,
-          error: error.message || `Failed to update ${label}`
+          success: false as const,
+          error: (error as Error).message || `Failed to update ${label}`
         };
       }
     },
 
-    remove: async (id) => {
+    remove: async (id: string) => {
       try {
         await apiResource.delete(id);
-        return { success: true };
+        return { success: true as const };
       } catch (error) {
         return {
-          success: false,
-          error: error.message || `Failed to delete ${label}`
+          success: false as const,
+          error: (error as Error).message || `Failed to delete ${label}`
         };
       }
     },
@@ -82,5 +86,5 @@ export const createCrudService = (resource, options = {}) => {
 };
 
 // Pre-built service instances for convenience
-export const fleetService = createCrudService('fleet', { resourceLabel: 'vessel' });
-export const careersService = createCrudService('careers', { resourceLabel: 'career' });
+export const fleetService = createCrudService<Fleet>('fleet', { resourceLabel: 'vessel' });
+export const careersService = createCrudService<Career>('careers', { resourceLabel: 'career' });

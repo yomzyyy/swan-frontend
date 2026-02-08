@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ChangeEvent, type DragEvent } from 'react';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Link from '@mui/icons-material/Link';
 import CheckCircle from '@mui/icons-material/CheckCircle';
@@ -6,23 +6,25 @@ import ErrorIcon from '@mui/icons-material/Error';
 import BrokenImage from '@mui/icons-material/BrokenImage';
 import Close from '@mui/icons-material/Close';
 import { uploadContentImage, validateImageFile, formatFileSize } from '../../../services/imageService';
+import type { FieldRendererProps } from './types';
 
-const ImageUploadField = ({ field, value, onChange }) => {
-  const isUploadedUrl = value && value.startsWith('/api/');
-  const [mode, setMode] = useState(isUploadedUrl || !value ? 'upload' : 'url');
+function ImageUploadField({ field, value, onChange }: FieldRendererProps) {
+  const stringValue = (value as string) || '';
+  const isUploadedUrl = stringValue && stringValue.startsWith('/api/');
+  const [mode, setMode] = useState<'upload' | 'url'>(isUploadedUrl || !stringValue ? 'upload' : 'url');
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = async (file) => {
+  const handleFile = async (file: File) => {
     setUploadError('');
     setUploadSuccess('');
 
     const validation = validateImageFile(file);
     if (!validation.valid) {
-      setUploadError(validation.error);
+      setUploadError(validation.error || 'Invalid file');
       return;
     }
 
@@ -34,13 +36,13 @@ const ImageUploadField = ({ field, value, onChange }) => {
       onChange(field.key, result.imageUrl);
       setUploadSuccess(`Uploaded ${file.name} (${formatFileSize(file.size)})`);
     } else {
-      setUploadError(result.error);
+      setUploadError(result.error || 'Upload failed');
     }
 
     setIsUploading(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
 
@@ -48,18 +50,18 @@ const ImageUploadField = ({ field, value, onChange }) => {
     if (file) handleFile(file);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const handleBrowse = (e) => {
-    const file = e.target.files[0];
+  const handleBrowse = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) handleFile(file);
   };
 
@@ -69,15 +71,15 @@ const ImageUploadField = ({ field, value, onChange }) => {
     setImageError(false);
   }, [value]);
 
-  const resolveImageSrc = (url) =>
+  const resolveImageSrc = (url: string) =>
     url.startsWith('/api/')
-      ? `${import.meta.env.VITE_API_BASE_URL?.replace('/v1', '') || 'http://localhost:3001'}/v1${url}`
+      ? `${(import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace('/v1', '') || 'http://localhost:3001'}/v1${url}`
       : url;
 
   const renderPreview = () => {
-    if (!value) return null;
+    if (!stringValue) return null;
 
-    const isUploaded = value.startsWith('/api/');
+    const isUploaded = stringValue.startsWith('/api/');
 
     return (
       <div className="mt-2 relative inline-block">
@@ -88,7 +90,7 @@ const ImageUploadField = ({ field, value, onChange }) => {
           </div>
         ) : (
           <img
-            src={resolveImageSrc(value)}
+            src={resolveImageSrc(stringValue)}
             alt="Preview"
             className="h-20 w-20 object-cover rounded-lg border border-gray-200"
             onError={() => setImageError(true)}
@@ -197,7 +199,7 @@ const ImageUploadField = ({ field, value, onChange }) => {
       {mode === 'url' && (
         <input
           type="url"
-          value={value || ''}
+          value={stringValue}
           onChange={e => onChange(field.key, e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
           placeholder={field.placeholder || 'https://example.com/image.jpg'}
@@ -215,6 +217,6 @@ const ImageUploadField = ({ field, value, onChange }) => {
       {renderPreview()}
     </div>
   );
-};
+}
 
 export default ImageUploadField;

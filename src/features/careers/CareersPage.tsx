@@ -4,12 +4,14 @@ import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
 import { SkeletonCard } from '../../components/skeletons';
 import { ActionButton } from '../../components/common';
+import type { Career } from '../../types';
 
 const CareersPage = () => {
-  const { data: jobOpenings, loading, error } = useApiQuery(
+  const { data, loading, error } = useApiQuery<Career[]>(
     () => api.careers.getAll().then(r => r.data?.data || []),
     { initialData: [] }
   );
+  const jobOpenings = data ?? [];
 
   // Filter states
   const [selectedLocation, setSelectedLocation] = useState('');

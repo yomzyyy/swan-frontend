@@ -1,13 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type RefObject } from 'react';
 
-/**
- * Custom hook to detect when an element scrolls into view using Intersection Observer
- * @param {object} options - Intersection Observer options
- * @returns {array} - [ref, isInView] tuple where ref is attached to the element to observe
- */
-export const useInView = (options = {}) => {
+export const useInView = (options: IntersectionObserverInit = {}): [RefObject<HTMLElement | null>, boolean] => {
   const [isInView, setIsInView] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {

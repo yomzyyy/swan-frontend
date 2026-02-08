@@ -1,9 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import Close from '@mui/icons-material/Close';
 import { FIELD_RENDERERS } from './fields';
+import type { FieldDefinition, FieldChangeHandler } from './fields';
 
-const EditSectionModal = ({ isOpen, onClose, title, fields, tabs, data, onSave, isSaving }) => {
-  const [formData, setFormData] = useState({});
+interface TabDefinition {
+  key: string;
+  label: string;
+  fields: FieldDefinition[];
+}
+
+interface EditSectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  fields?: FieldDefinition[];
+  tabs?: TabDefinition[];
+  data: Record<string, unknown>;
+  onSave: (formData: Record<string, unknown>) => void;
+  isSaving: boolean;
+}
+
+function EditSectionModal({ isOpen, onClose, title, fields, tabs, data, onSave, isSaving }: EditSectionModalProps) {
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [activeTab, setActiveTab] = useState('');
 
   useEffect(() => {
@@ -21,18 +39,18 @@ const EditSectionModal = ({ isOpen, onClose, title, fields, tabs, data, onSave, 
     onSave(formData);
   };
 
-  const handleTopLevelChange = (key, value) => {
+  const handleTopLevelChange: FieldChangeHandler = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleTabLevelChange = (key, value) => {
+  const handleTabLevelChange: FieldChangeHandler = (key, value) => {
     setFormData(prev => ({
       ...prev,
-      [activeTab]: { ...(prev[activeTab] || {}), [key]: value }
+      [activeTab]: { ...((prev[activeTab] as Record<string, unknown>) || {}), [key]: value }
     }));
   };
 
-  const renderField = (field, fieldData, onChange) => {
+  const renderField = (field: FieldDefinition, fieldData: Record<string, unknown>, onChange: FieldChangeHandler): ReactNode => {
     const Component = FIELD_RENDERERS[field.type];
     if (!Component) return null;
 
@@ -49,8 +67,8 @@ const EditSectionModal = ({ isOpen, onClose, title, fields, tabs, data, onSave, 
 
   const currentFields = tabs
     ? (tabs.find(t => t.key === activeTab)?.fields || [])
-    : fields;
-  const currentData = tabs ? (formData[activeTab] || {}) : formData;
+    : (fields || []);
+  const currentData = tabs ? ((formData[activeTab] as Record<string, unknown>) || {}) : formData;
   const currentOnChange = tabs ? handleTabLevelChange : handleTopLevelChange;
 
   return (
@@ -110,6 +128,6 @@ const EditSectionModal = ({ isOpen, onClose, title, fields, tabs, data, onSave, 
       </div>
     </div>
   );
-};
+}
 
 export default EditSectionModal;

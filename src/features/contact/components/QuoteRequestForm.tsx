@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 import { FormInput, FormTextarea, FormSelect } from '../../../components/forms';
 
 const SERVICE_OPTIONS = [
@@ -7,9 +8,15 @@ const SERVICE_OPTIONS = [
   'Technical Management',
   'Newbuilding Supervision',
   'Other Services',
-];
+].map(s => ({ value: s, label: s }));
 
-const QuoteRequestForm = ({ formData, errors, onChange }) => (
+interface QuoteRequestFormProps {
+  formData: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+}
+
+const QuoteRequestForm = ({ formData, errors, onChange }: QuoteRequestFormProps) => (
   <>
     <FormInput
       label="Company Name"

@@ -4,23 +4,24 @@ import { ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { careersService } from '../../../services/adminCrudService';
 import { useApiQuery } from '../../../hooks';
+import type { Career } from '../../../types';
 
-const CareersListAdmin = () => {
-  const { data: careers, loading, refetch } = useApiQuery(
+function CareersListAdmin() {
+  const { data: careers, loading, refetch } = useApiQuery<Career[]>(
     () => careersService.getAll(),
     { initialData: [] }
   );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [careerToDelete, setCareerToDelete] = useState(null);
+  const [careerToDelete, setCareerToDelete] = useState<Career | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
-  const handleEdit = (career) => {
+  const handleEdit = (career: Career) => {
     navigate(`/admin/careers/edit/${career.id}`);
   };
 
-  const handleDeleteClick = (career) => {
+  const handleDeleteClick = (career: Career) => {
     setCareerToDelete(career);
     setDeleteConfirmOpen(true);
   };
@@ -43,7 +44,7 @@ const CareersListAdmin = () => {
     setCareerToDelete(null);
   };
 
-  const filteredCareers = careers.filter(
+  const filteredCareers = careers!.filter(
     (career) =>
       career.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       career.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -171,6 +172,6 @@ const CareersListAdmin = () => {
       />
     </div>
   );
-};
+}
 
 export default CareersListAdmin;

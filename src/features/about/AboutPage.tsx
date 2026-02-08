@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Check from '@mui/icons-material/Check';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
@@ -11,12 +11,25 @@ import { parseStatNumber, deepMerge } from '../../utils';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { aboutDefaults } from '../../constants/aboutDefaults';
 import { api } from '../../services/api';
+import type { RefObject } from 'react';
+import type { AboutContent, IntroStat, Pillar } from '../../types';
+
+type MuiIcon = typeof HealthAndSafety;
+
+interface PillarWithIcon extends Pillar {
+  icon: MuiIcon;
+}
 
 // Hardcoded icons mapped by pillar index (MUI components can't serialize to DB)
-const PILLAR_ICONS = [HealthAndSafety, Groups, Build, FactCheck];
+const PILLAR_ICONS: MuiIcon[] = [HealthAndSafety, Groups, Build, FactCheck];
 
 // StatItem Component - Displays animated statistics
-const StatItem = ({ stat, shouldAnimate }) => {
+interface StatItemProps {
+  stat: IntroStat;
+  shouldAnimate: boolean;
+}
+
+const StatItem = ({ stat, shouldAnimate }: StatItemProps) => {
   const { number: targetNumber, suffix } = parseStatNumber(stat.number);
   const animatedNumber = useCountingAnimation(targetNumber, 2000, shouldAnimate);
 
@@ -49,7 +62,7 @@ const StatItem = ({ stat, shouldAnimate }) => {
 };
 
 const AboutPage = () => {
-  const [content, setContent] = useState(aboutDefaults);
+  const [content, setContent] = useState<AboutContent>(aboutDefaults);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -57,7 +70,7 @@ const AboutPage = () => {
         const response = await api.content.get('about');
         const apiData = response.data.data;
         if (apiData) {
-          setContent(deepMerge(aboutDefaults, apiData));
+          setContent(deepMerge(aboutDefaults, apiData as unknown as Partial<AboutContent>));
         }
       } catch {
         // Silently fall back to defaults
@@ -76,7 +89,7 @@ const AboutPage = () => {
   const clients = content.clients;
 
   // Map pillar data with hardcoded icons
-  const lgpPillars = content.lgpPillars.pillars.map((pillar, i) => ({
+  const lgpPillars: PillarWithIcon[] = content.lgpPillars.pillars.map((pillar, i) => ({
     ...pillar,
     icon: PILLAR_ICONS[i] || PILLAR_ICONS[0]
   }));
@@ -88,7 +101,7 @@ const AboutPage = () => {
   const [currentView, setCurrentView] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const handleViewChange = (newView) => {
+  const handleViewChange = (newView: number) => {
     if (newView === currentView) return;
 
     setIsTransitioning(true);
@@ -100,7 +113,7 @@ const AboutPage = () => {
 
   // Carousel state for LPG pillars
   const [currentPillarIndex, setCurrentPillarIndex] = useState(0);
-  const [hoveredCard, setHoveredCard] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isCarouselTransitioning, setIsCarouselTransitioning] = useState(false);
 
   // Auto-rotate carousel every 4 seconds with fade animation
@@ -159,7 +172,7 @@ const AboutPage = () => {
 
           {/* Bottom Part: Animated Stats */}
           <div
-            ref={statsRef}
+            ref={statsRef as RefObject<HTMLDivElement | null>}
             className="grid grid-cols-1 md:grid-cols-3 gap-16"
           >
             {intro.stats.map((stat, index) => (
@@ -253,7 +266,7 @@ const AboutPage = () => {
                 style={{ opacity: isCarouselTransitioning ? 0 : 1 }}
               >
                 {(() => {
-                  const visibleCards = [];
+                  const visibleCards: React.JSX.Element[] = [];
                   for (let i = 0; i < 3; i++) {
                     const index = (currentPillarIndex + i) % lgpPillars.length;
                     const pillar = lgpPillars[index];

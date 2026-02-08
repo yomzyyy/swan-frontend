@@ -1,14 +1,10 @@
 import { api } from './api';
+import type { ValidationResult, ImageUploadResult } from '../types/api';
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
-/**
- * Formats byte count into a human-readable string.
- * Single canonical implementation — was previously triplicated across
- * newsAdminService, heroAdminService, and imageUploadService.
- */
-export const formatFileSize = (bytes) => {
+export const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes';
 
   const k = 1024;
@@ -21,14 +17,7 @@ export const formatFileSize = (bytes) => {
   return `${formattedSize} ${sizes[i]}`;
 };
 
-/**
- * Validates an image file for type and size.
- * Single canonical implementation — was previously triplicated.
- *
- * @param {File} file
- * @returns {{ valid: boolean, error?: string }}
- */
-export const validateImageFile = (file) => {
+export const validateImageFile = (file: File | null): ValidationResult => {
   if (!file) {
     return { valid: false, error: 'Please select a file' };
   }
@@ -50,10 +39,7 @@ export const validateImageFile = (file) => {
   return { valid: true };
 };
 
-/**
- * Uploads an image for CMS content pages (about, home, services).
- */
-export const uploadContentImage = async (file) => {
+export const uploadContentImage = async (file: File): Promise<ImageUploadResult> => {
   try {
     const formData = new FormData();
     formData.append('image', file);
@@ -68,15 +54,12 @@ export const uploadContentImage = async (file) => {
     console.error('Failed to upload content image:', error);
     return {
       success: false,
-      error: error.message || 'Failed to upload image. Please try again.'
+      error: (error as Error).message || 'Failed to upload image. Please try again.'
     };
   }
 };
 
-/**
- * Uploads an image for news articles.
- */
-export const uploadNewsImage = async (imageFile, altText = '') => {
+export const uploadNewsImage = async (imageFile: File, altText = ''): Promise<ImageUploadResult> => {
   try {
     const formData = new FormData();
     formData.append('image', imageFile);
@@ -85,12 +68,12 @@ export const uploadNewsImage = async (imageFile, altText = '') => {
     const response = await api.news.uploadImage(formData);
     return {
       success: true,
-      data: response.data.data
+      data: response.data.data as Record<string, unknown>
     };
   } catch (error) {
     return {
       success: false,
-      error: error.message || 'Failed to upload image'
+      error: (error as Error).message || 'Failed to upload image'
     };
   }
 };

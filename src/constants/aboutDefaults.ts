@@ -1,4 +1,6 @@
-export const aboutDefaults = {
+import type { AboutContent } from '../types/content';
+
+export const aboutDefaults: AboutContent = {
   hero: {
     backgroundImage: 'https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1600'
   },

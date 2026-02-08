@@ -1,11 +1,30 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const AdminSidebar = ({ isOpen, onClose }) => {
+interface NavLinkItem {
+  title: string;
+  path: string;
+  isSection?: false;
+}
+
+interface NavSectionItem {
+  title: string;
+  isSection: true;
+  path?: undefined;
+}
+
+type NavItem = NavLinkItem | NavSectionItem;
+
+interface AdminSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
   const location = useLocation();
   const { logout } = useAuth();
 
-  const isActive = (path) => {
+  const isActive = (path: string) => {
     if (path === '/admin/dashboard') {
       return location.pathname === path;
     }
@@ -19,7 +38,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     }
   };
 
-  const navItems = [
+  const navItems: NavItem[] = [
     {
       title: 'Dashboard',
       path: '/admin/dashboard',
@@ -91,7 +110,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      
+
       <nav className="flex-1 overflow-y-auto p-4">
         {navItems.map((item, index) => {
           if (item.isSection) {
@@ -123,7 +142,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
         })}
       </nav>
 
-      
+
       <div className="p-4 border-t border-gray-700">
         <button
           onClick={logout}
@@ -147,6 +166,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
-};
+}
 
 export default AdminSidebar;

@@ -1,26 +1,31 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-/**
- * Generic data-fetching hook that replaces the repeated
- * useState + useEffect + try/catch/finally pattern.
- *
- * @param {Function} queryFn - Async function that returns data
- * @param {Object} options
- * @param {Array} options.deps - Dependency array for re-fetching (default: [])
- * @param {*} options.initialData - Initial data value (default: null)
- * @param {boolean} options.enabled - Whether to run the query (default: true)
- * @returns {{ data: *, loading: boolean, error: string|null, refetch: Function }}
- */
-const useApiQuery = (queryFn, options = {}) => {
+interface UseApiQueryOptions<T> {
+  deps?: unknown[];
+  initialData?: T | null;
+  enabled?: boolean;
+}
+
+interface UseApiQueryResult<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>;
+}
+
+const useApiQuery = <T>(
+  queryFn: () => Promise<T>,
+  options: UseApiQueryOptions<T> = {}
+): UseApiQueryResult<T> => {
   const {
     deps = [],
     initialData = null,
     enabled = true,
   } = options;
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<T | null>(initialData);
   const [loading, setLoading] = useState(enabled);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const queryFnRef = useRef(queryFn);
 
   // Keep queryFn ref up to date without triggering re-fetches
@@ -35,7 +40,7 @@ const useApiQuery = (queryFn, options = {}) => {
       const result = await queryFnRef.current();
       setData(result);
     } catch (err) {
-      setError(err.message || 'An error occurred');
+      setError((err as Error).message || 'An error occurred');
       console.error(err);
     } finally {
       setLoading(false);

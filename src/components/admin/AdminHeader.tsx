@@ -1,6 +1,10 @@
 import { useAuth } from '../../context/AuthContext';
 
-const AdminHeader = ({ onMenuClick }) => {
+interface AdminHeaderProps {
+  onMenuClick: () => void;
+}
+
+function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   const { user, logout } = useAuth();
 
   return (
@@ -50,6 +54,6 @@ const AdminHeader = ({ onMenuClick }) => {
       </div>
     </header>
   );
-};
+}
 
 export default AdminHeader;

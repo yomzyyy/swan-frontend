@@ -1,8 +1,9 @@
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
+import type { FieldRendererProps } from './types';
 
-const ArrayTextField = ({ field, value, onChange }) => {
-  const items = value || [];
+function ArrayTextField({ field, value, onChange }: FieldRendererProps) {
+  const items = (value as string[]) || [];
 
   return (
     <div className="mb-4">
@@ -41,6 +42,6 @@ const ArrayTextField = ({ field, value, onChange }) => {
       </button>
     </div>
   );
-};
+}
 
 export default ArrayTextField;

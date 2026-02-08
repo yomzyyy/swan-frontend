@@ -1,14 +1,48 @@
-export const validateEmail = (email) => {
+import type { ValidationResult } from '../types/api';
+
+export interface ContactFormData {
+  fullName: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
+
+export interface JobFormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  position: string;
+  experience: string;
+  resume: File | null;
+  coverLetter?: string;
+}
+
+export interface QuoteFormData {
+  companyName: string;
+  contactPerson: string;
+  email: string;
+  phone: string;
+  serviceType: string;
+  cargoType: string;
+  cargoVolume?: string;
+  originPort: string;
+  destinationPort: string;
+  shippingDate?: string;
+  additionalNotes?: string;
+}
+
+export const validateEmail = (email: string): boolean => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 };
 
-export const validatePhone = (phone) => {
+export const validatePhone = (phone: string): boolean => {
   const regex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
   return regex.test(phone);
 };
 
-export const validateFile = (file, maxSize = 5 * 1024 * 1024) => {
+export const validateFile = (file: File | null, maxSize = 5 * 1024 * 1024): ValidationResult => {
   if (!file) {
     return { valid: false, error: 'Please select a file' };
   }
@@ -30,8 +64,8 @@ export const validateFile = (file, maxSize = 5 * 1024 * 1024) => {
   return { valid: true };
 };
 
-export const validateContactForm = (formData) => {
-  const errors = {};
+export const validateContactForm = (formData: ContactFormData): Record<string, string> => {
+  const errors: Record<string, string> = {};
 
   if (!formData.fullName || formData.fullName.trim() === '') {
     errors.fullName = 'Full name is required';
@@ -60,8 +94,8 @@ export const validateContactForm = (formData) => {
   return errors;
 };
 
-export const validateJobForm = (formData) => {
-  const errors = {};
+export const validateJobForm = (formData: JobFormData): Record<string, string> => {
+  const errors: Record<string, string> = {};
 
   if (!formData.fullName || formData.fullName.trim() === '') {
     errors.fullName = 'Full name is required';
@@ -94,15 +128,15 @@ export const validateJobForm = (formData) => {
   } else {
     const fileValidation = validateFile(formData.resume);
     if (!fileValidation.valid) {
-      errors.resume = fileValidation.error;
+      errors.resume = fileValidation.error!;
     }
   }
 
   return errors;
 };
 
-export const validateQuoteForm = (formData) => {
-  const errors = {};
+export const validateQuoteForm = (formData: QuoteFormData): Record<string, string> => {
+  const errors: Record<string, string> = {};
 
   if (!formData.companyName || formData.companyName.trim() === '') {
     errors.companyName = 'Company name is required';

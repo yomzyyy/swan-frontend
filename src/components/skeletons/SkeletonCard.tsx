@@ -1,6 +1,10 @@
 import SkeletonBase from './SkeletonBase';
 
-const SkeletonCard = ({ variant = 'news' }) => {
+interface SkeletonCardProps {
+  variant?: 'news' | 'fleet' | 'career';
+}
+
+const SkeletonCard = ({ variant = 'news' }: SkeletonCardProps) => {
   if (variant === 'news') {
     return (
       <div className="bg-white overflow-hidden shadow-lg flex flex-col">
@@ -24,20 +28,16 @@ const SkeletonCard = ({ variant = 'news' }) => {
   if (variant === 'fleet') {
     return (
       <div className="bg-white shadow-sm overflow-hidden flex flex-col">
-        {/* Image area with badge placeholder */}
         <div className="relative h-52">
           <SkeletonBase height="h-full" rounded="rounded-none" />
-          {/* Badge placeholder */}
           <div className="absolute top-4 left-4">
             <SkeletonBase width="w-20" height="h-6" rounded="rounded-full" />
           </div>
         </div>
 
         <div className="p-6 flex flex-col flex-grow">
-          {/* Title */}
           <SkeletonBase width="w-3/4" height="h-6" className="mb-4" />
 
-          {/* 2-column stats grid */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <SkeletonBase width="w-16" height="h-3" className="mb-1" />
@@ -49,7 +49,6 @@ const SkeletonCard = ({ variant = 'news' }) => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="mt-auto pt-4 border-t border-gray-200 flex justify-between">
             <SkeletonBase width="w-20" height="h-4" />
             <SkeletonBase width="w-24" height="h-4" />

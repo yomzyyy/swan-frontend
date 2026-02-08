@@ -1,13 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent, type SyntheticEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fleetService } from '../../../services/adminCrudService';
+import type { VesselType } from '../../../types';
 
-const FleetFormAdmin = () => {
+interface VesselFormData {
+  name: string;
+  type: VesselType;
+  capacity: string;
+  year: number;
+  flag: string;
+  tradeArea: string;
+  yard: string;
+  image: string;
+}
+
+function FleetFormAdmin() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<VesselFormData>({
     name: '',
     type: 'LPG Tanker',
     capacity: '',
@@ -25,34 +37,34 @@ const FleetFormAdmin = () => {
     const fetchVessel = async () => {
       if (isEditMode) {
         try {
-          const vessel = await fleetService.getById(id);
+          const vessel = await fleetService.getById(id as string);
           if (vessel) {
-            setFormData(vessel);
+            setFormData(vessel as unknown as VesselFormData);
           } else {
             setError('Vessel not found');
           }
-        } catch (error) {
+        } catch (err) {
           setError('Failed to load vessel');
-          console.error(error);
+          console.error(err);
         }
       }
     };
     fetchVessel();
   }, [id, isEditMode]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
 
     try {
       const result = isEditMode
-        ? await fleetService.update(id, formData)
+        ? await fleetService.update(id as string, formData)
         : await fleetService.create(formData);
 
       if (result.success) {
@@ -70,14 +82,14 @@ const FleetFormAdmin = () => {
 
   return (
     <div>
-      
+
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-2">
           <button
             onClick={() => navigate('/admin/fleet')}
             className="text-gray-600 hover:text-gray-900"
           >
-            ← Back
+            &larr; Back
           </button>
           <h1 className="text-3xl font-bold text-gray-900">
             {isEditMode ? 'Edit Vessel' : 'Add New Vessel'}
@@ -88,17 +100,17 @@ const FleetFormAdmin = () => {
         </p>
       </div>
 
-      
+
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
 
-      
+
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Vessel Name <span className="text-red-500">*</span>
@@ -114,7 +126,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Type <span className="text-red-500">*</span>
@@ -133,7 +145,7 @@ const FleetFormAdmin = () => {
             </select>
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Capacity <span className="text-red-500">*</span>
@@ -149,7 +161,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Year Built <span className="text-red-500">*</span>
@@ -166,7 +178,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Flag <span className="text-red-500">*</span>
@@ -182,7 +194,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Trade Area <span className="text-red-500">*</span>
@@ -198,7 +210,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Shipyard <span className="text-red-500">*</span>
@@ -214,7 +226,7 @@ const FleetFormAdmin = () => {
             />
           </div>
 
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Image URL <span className="text-red-500">*</span>
@@ -234,8 +246,8 @@ const FleetFormAdmin = () => {
                   src={formData.image}
                   alt="Preview"
                   className="w-32 h-20 object-cover rounded"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
+                  onError={(e: SyntheticEvent<HTMLImageElement>) => {
+                    e.currentTarget.style.display = 'none';
                   }}
                 />
               </div>
@@ -243,7 +255,7 @@ const FleetFormAdmin = () => {
           </div>
         </div>
 
-        
+
         <div className="mt-6 flex justify-end space-x-4">
           <button
             type="button"
@@ -263,6 +275,6 @@ const FleetFormAdmin = () => {
       </form>
     </div>
   );
-};
+}
 
 export default FleetFormAdmin;

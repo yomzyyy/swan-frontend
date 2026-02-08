@@ -6,19 +6,21 @@ import { SkeletonCard } from '../../components/skeletons';
 import FleetHero from './components/FleetHero';
 import FleetFilterBar from './components/FleetFilterBar';
 import VesselCard from './components/VesselCard';
+import type { Fleet } from '../../types';
 
 // Helper to parse capacity strings like "5,000 CBM" to numbers for sorting
-const parseCapacity = (capacityStr) => {
+const parseCapacity = (capacityStr: string): number => {
   if (!capacityStr) return 0;
   const match = capacityStr.toString().replace(/,/g, '').match(/[\d.]+/);
   return match ? parseFloat(match[0]) : 0;
 };
 
 const FleetPage = () => {
-  const { data: vessels, loading, error } = useApiQuery(
+  const { data, loading, error } = useApiQuery<Fleet[]>(
     () => api.fleet.getAll().then(r => r.data?.data || []),
     { initialData: [] }
   );
+  const vessels = data ?? [];
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,7 +79,7 @@ const FleetPage = () => {
     setSortOrder('asc');
   };
 
-  const hasActiveFilters = selectedType || selectedTradeArea || searchQuery;
+  const hasActiveFilters = !!(selectedType || selectedTradeArea || searchQuery);
 
   if (loading) {
     return (

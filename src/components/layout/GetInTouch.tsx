@@ -2,8 +2,14 @@ import LocationOn from '@mui/icons-material/LocationOn';
 import Phone from '@mui/icons-material/Phone';
 import Email from '@mui/icons-material/Email';
 import { homeDefaults } from '../../constants/homeDefaults';
+import type { GetInTouchContent } from '../../types';
 
-const GetInTouch = ({ bgColor = 'bg-gray-50', getInTouch: contactProp = {} }) => {
+interface GetInTouchProps {
+  bgColor?: string;
+  getInTouch?: Partial<GetInTouchContent>;
+}
+
+const GetInTouch = ({ bgColor = 'bg-gray-50', getInTouch: contactProp = {} }: GetInTouchProps) => {
   const d = homeDefaults.getInTouch;
   const badge = contactProp.badge || d.badge;
   const title = contactProp.title || d.title;

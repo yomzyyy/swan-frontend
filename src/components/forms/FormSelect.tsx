@@ -1,5 +1,23 @@
+import type { ChangeEvent } from 'react';
 
-const FormSelect = ({
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface FormSelectProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  options?: SelectOption[];
+  error?: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+}
+
+function FormSelect({
   label,
   name,
   value,
@@ -9,16 +27,16 @@ const FormSelect = ({
   required = false,
   disabled = false,
   placeholder = 'Select an option'
-}) => {
+}: FormSelectProps) {
   return (
     <div className="mb-6">
-      
+
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      
+
       <select
         id={name}
         name={name}
@@ -37,18 +55,18 @@ const FormSelect = ({
       >
         <option value="">{placeholder}</option>
         {options.map((option, index) => (
-          <option key={index} value={option.value || option}>
-            {option.label || option}
+          <option key={index} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
 
-      
+
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}
     </div>
   );
-};
+}
 
 export default FormSelect;

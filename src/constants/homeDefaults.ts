@@ -1,4 +1,6 @@
-export const homeDefaults = {
+import type { HomeContent } from '../types/content';
+
+export const homeDefaults: HomeContent = {
   heroText: {
     title: 'Safety-Driven. Technically Disciplined. Proven in Gas Operations.',
     description:

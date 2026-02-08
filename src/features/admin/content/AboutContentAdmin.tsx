@@ -6,8 +6,27 @@ import { getAboutContent, saveAboutContent } from './contentAdminService';
 import { aboutDefaults } from '../../../constants/aboutDefaults';
 import { deepMerge } from '../../../utils';
 import { EditSectionModal } from '../../../components/admin';
+import type { PageContent } from '../../../types';
+import type { AboutContent } from '../../../types';
+import type { FieldDefinition } from '../../../components/admin/fields';
 
-const TAB_FIELDS = [
+interface TabDefinition {
+  key: string;
+  label: string;
+  fields: FieldDefinition[];
+}
+
+interface SectionConfig {
+  key: string;
+  title: string;
+  description: string;
+  fields?: FieldDefinition[];
+  arrayWrap?: boolean;
+  useTabs?: boolean;
+  tabs?: TabDefinition[];
+}
+
+const TAB_FIELDS: FieldDefinition[] = [
   { key: 'badge', label: 'Badge Text', type: 'text' },
   { key: 'title', label: 'Title', type: 'text' },
   { key: 'body', label: 'Body Text', type: 'textarea', rows: 6 },
@@ -20,7 +39,7 @@ const TAB_FIELDS = [
   }
 ];
 
-const SECTIONS = [
+const SECTIONS: SectionConfig[] = [
   {
     key: 'hero',
     title: 'Hero Section',
@@ -144,10 +163,10 @@ const SECTIONS = [
   }
 ];
 
-const AboutContentAdmin = () => {
-  const [content, setContent] = useState(null);
+function AboutContentAdmin() {
+  const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
-  const [editingSection, setEditingSection] = useState(null);
+  const [editingSection, setEditingSection] = useState<SectionConfig | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -161,40 +180,40 @@ const AboutContentAdmin = () => {
     setLoading(false);
   };
 
-  const getMergedContent = () => {
-    return deepMerge(aboutDefaults, content);
+  const getMergedContent = (): AboutContent => {
+    return deepMerge(aboutDefaults, content as Partial<AboutContent> | null);
   };
 
-  const getModalData = () => {
+  const getModalData = (): Record<string, unknown> => {
     if (!editingSection) return {};
     const merged = getMergedContent();
-    const sectionData = merged[editingSection.key];
+    const sectionData = merged[editingSection.key as keyof AboutContent];
 
     if (editingSection.arrayWrap) {
       return { items: sectionData };
     }
-    return sectionData || {};
+    return (sectionData as unknown as Record<string, unknown>) || {};
   };
 
-  const handleEdit = (section) => {
+  const handleEdit = (section: SectionConfig) => {
     setEditingSection(section);
   };
 
-  const handleSave = async (editedData) => {
+  const handleSave = async (editedData: Record<string, unknown>) => {
     setIsSaving(true);
 
-    let dataToSave;
-    if (editingSection.arrayWrap) {
-      dataToSave = { [editingSection.key]: editedData.items };
+    let dataToSave: Record<string, unknown>;
+    if (editingSection!.arrayWrap) {
+      dataToSave = { [editingSection!.key]: editedData.items };
     } else {
-      dataToSave = { [editingSection.key]: editedData };
+      dataToSave = { [editingSection!.key]: editedData };
     }
 
     const result = await saveAboutContent(dataToSave);
 
     if (result.success) {
       await loadContent();
-      toast.success(`${editingSection.title} updated successfully!`);
+      toast.success(`${editingSection!.title} updated successfully!`);
       setEditingSection(null);
     } else {
       toast.error(result.error || 'Failed to save');
@@ -265,6 +284,6 @@ const AboutContentAdmin = () => {
       )}
     </div>
   );
-};
+}
 
 export default AboutContentAdmin;

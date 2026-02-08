@@ -1,13 +1,4 @@
-/**
- * Date formatting utilities for news articles
- */
-
-/**
- * Formats Unix timestamp to "DD MONTH YYYY" format
- * @param {number} timestamp - Unix timestamp in milliseconds
- * @returns {string} Formatted date string (e.g., "23 JUNE 2023")
- */
-export const formatNewsDate = (timestamp) => {
+export const formatNewsDate = (timestamp: number | null | undefined): string => {
   if (!timestamp) return '';
 
   const date = new Date(timestamp);

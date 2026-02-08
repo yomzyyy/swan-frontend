@@ -9,14 +9,15 @@ import FeaturedFleet from '../../components/layout/FeaturedFleet';
 import NewsSection from '../../components/layout/NewsSection';
 import GetInTouch from '../../components/layout/GetInTouch';
 import FleetStats from '../../components/layout/FleetStats';
+import type { HomeContent } from '../../types';
 
 const HomePage = () => {
-  const { data: homeContent } = useApiQuery(
+  const { data } = useApiQuery<HomeContent>(
     async () => {
       try {
         const response = await api.content.get('home');
-        const data = response.data?.data;
-        if (data) return deepMerge(homeDefaults, data);
+        const apiData = response.data?.data;
+        if (apiData) return deepMerge(homeDefaults, apiData as unknown as Partial<HomeContent>);
       } catch {
         // Silently fall back to defaults
       }
@@ -24,6 +25,8 @@ const HomePage = () => {
     },
     { initialData: homeDefaults }
   );
+
+  const homeContent = data ?? homeDefaults;
 
   return (
     <>

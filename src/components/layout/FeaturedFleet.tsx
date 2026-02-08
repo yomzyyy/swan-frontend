@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import FleetGrid from './FleetGrid';
 import ActionButton from '../common/ActionButton';
+import type { Fleet } from '../../types';
 
 const FeaturedFleet = () => {
-  const [vessels, setVessels] = useState([]);
+  const [vessels, setVessels] = useState<Fleet[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,10 +30,11 @@ const FeaturedFleet = () => {
       <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
           <FleetGrid
-            vessels={[null, null, null]}
+            vessels={[]}
             loading={true}
             title="OUR FLEET"
             description="Modern, efficient, and environmentally responsible LPG carriers equipped with cutting-edge technology and safety systems."
+            skeletonCount={3}
           />
         </div>
       </section>

@@ -6,8 +6,18 @@ import { getServicesContent, saveServicesContent } from './contentAdminService';
 import { servicesDefaults } from '../../../constants/servicesDefaults';
 import { deepMerge } from '../../../utils';
 import { EditSectionModal } from '../../../components/admin';
+import type { PageContent } from '../../../types';
+import type { ServicesPageContent } from '../../../types';
+import type { FieldDefinition } from '../../../components/admin/fields';
 
-const SECTIONS = [
+interface SectionConfig {
+  key: string;
+  title: string;
+  description: string;
+  fields: FieldDefinition[];
+}
+
+const SECTIONS: SectionConfig[] = [
   {
     key: 'hero',
     title: 'Hero Section',
@@ -35,10 +45,10 @@ const SECTIONS = [
   }
 ];
 
-const ServicesContentAdmin = () => {
-  const [content, setContent] = useState(null);
+function ServicesContentAdmin() {
+  const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
-  const [editingSection, setEditingSection] = useState(null);
+  const [editingSection, setEditingSection] = useState<SectionConfig | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -52,29 +62,29 @@ const ServicesContentAdmin = () => {
     setLoading(false);
   };
 
-  const getMergedContent = () => {
-    return deepMerge(servicesDefaults, content);
+  const getMergedContent = (): ServicesPageContent => {
+    return deepMerge(servicesDefaults, content as Partial<ServicesPageContent> | null);
   };
 
-  const getModalData = () => {
+  const getModalData = (): Record<string, unknown> => {
     if (!editingSection) return {};
     const merged = getMergedContent();
-    return merged[editingSection.key] || {};
+    return (merged[editingSection.key as keyof ServicesPageContent] as unknown as Record<string, unknown>) || {};
   };
 
-  const handleEdit = (section) => {
+  const handleEdit = (section: SectionConfig) => {
     setEditingSection(section);
   };
 
-  const handleSave = async (editedData) => {
+  const handleSave = async (editedData: Record<string, unknown>) => {
     setIsSaving(true);
 
-    const dataToSave = { [editingSection.key]: editedData };
+    const dataToSave = { [editingSection!.key]: editedData };
     const result = await saveServicesContent(dataToSave);
 
     if (result.success) {
       await loadContent();
-      toast.success(`${editingSection.title} updated successfully!`);
+      toast.success(`${editingSection!.title} updated successfully!`);
       setEditingSection(null);
     } else {
       toast.error(result.error || 'Failed to save');
@@ -144,6 +154,6 @@ const ServicesContentAdmin = () => {
       )}
     </div>
   );
-};
+}
 
 export default ServicesContentAdmin;

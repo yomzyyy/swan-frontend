@@ -10,22 +10,52 @@ import {
 import { formatFileSize, validateImageFile } from '../../services/imageService';
 import FormFileUpload from '../forms/FormFileUpload';
 import ConfirmDialog from './ConfirmDialog';
+import type { HeroTextContent } from '../../types/content';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3001/v1';
 
-const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSaving }) => {
+interface HeroImageDisplay {
+  position: number;
+  isEmpty: boolean;
+  altText: string;
+  filename: string;
+  imageUrl?: string;
+  fileSize?: number;
+}
+
+interface DeleteDialogState {
+  open: boolean;
+  image: HeroImageDisplay | null;
+}
+
+interface FileChangeEvent {
+  target: {
+    name: string;
+    value: File;
+  };
+}
+
+interface HeroSectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  contentData: HeroTextContent | null;
+  onSaveContent: (data: HeroTextContent) => Promise<void>;
+  isSaving: boolean;
+}
+
+function HeroSectionModal({ isOpen, onClose, contentData, onSaveContent, isSaving }: HeroSectionModalProps) {
   // --- Text fields state ---
-  const [textFields, setTextFields] = useState({ title: '', description: '', ctaText: '' });
+  const [textFields, setTextFields] = useState<HeroTextContent>({ title: '', description: '', ctaText: '' });
 
   // --- Image management state ---
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<HeroImageDisplay[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingPosition, setEditingPosition] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+  const [editingPosition, setEditingPosition] = useState<number | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [altText, setAltText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [deleteDialog, setDeleteDialog] = useState({ open: false, image: null });
+  const [deleteDialog, setDeleteDialog] = useState<DeleteDialogState>({ open: false, image: null });
 
   useEffect(() => {
     if (isOpen) {
@@ -47,7 +77,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
     setLoading(true);
     try {
       const allImages = await getAllHeroImages();
-      const imagesByPosition = [1, 2, 3].map((position) => {
+      const imagesByPosition: HeroImageDisplay[] = [1, 2, 3].map((position) => {
         const existing = allImages.find((img) => img.position === position);
         return existing
           ? { ...existing, isEmpty: false }
@@ -66,7 +96,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
   };
 
   // --- Text field handlers ---
-  const handleTextChange = (field, value) => {
+  const handleTextChange = (field: keyof HeroTextContent, value: string) => {
     setTextFields(prev => ({ ...prev, [field]: value }));
   };
 
@@ -78,20 +108,20 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
     await onSaveContent(textFields);
   };
 
-  // --- Image handlers (unchanged from HeroImagesModal) ---
-  const handleEditClick = (image) => {
+  // --- Image handlers ---
+  const handleEditClick = (image: HeroImageDisplay) => {
     setEditingPosition(image.position);
     setAltText(image.isEmpty ? '' : image.altText);
     setImageFile(null);
     setError('');
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: FileChangeEvent) => {
     const file = e.target.value;
     if (!file) return;
     const validation = validateImageFile(file);
     if (!validation.valid) {
-      setError(validation.error);
+      setError(validation.error || 'Invalid file');
       setImageFile(null);
       return;
     }
@@ -116,10 +146,12 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
     setError('');
 
     let result;
-    if (imageFile) {
+    if (imageFile && editingPosition !== null) {
       result = await uploadHeroImage(editingPosition, imageFile, altText.trim());
-    } else {
+    } else if (editingPosition !== null) {
       result = await updateHeroAltText(editingPosition, altText.trim());
+    } else {
+      return;
     }
 
     if (result.success) {
@@ -135,7 +167,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
     setIsSubmitting(false);
   };
 
-  const handleDeleteClick = (image) => {
+  const handleDeleteClick = (image: HeroImageDisplay) => {
     if (image.isEmpty) return;
     setDeleteDialog({ open: true, image });
   };
@@ -170,7 +202,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {/* ─── Text Fields Section ─── */}
+          {/* Text Fields Section */}
           <div className="mb-6 border rounded-xl p-5 bg-gray-50">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Hero Text</h3>
 
@@ -215,7 +247,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
             </div>
           </div>
 
-          {/* ─── Carousel Images Section ─── */}
+          {/* Carousel Images Section */}
           <div className="border rounded-xl p-5 bg-gray-50">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Carousel Images</h3>
 
@@ -253,7 +285,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
                           className="w-full max-h-48 object-cover rounded mb-2"
                         />
                         <p className="text-xs text-gray-500">
-                          {current.filename} &middot; {formatFileSize(current.fileSize)}
+                          {current.filename} &middot; {formatFileSize(current.fileSize || 0)}
                         </p>
                       </div>
                     );
@@ -342,7 +374,7 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
                       </p>
                       {!image.isEmpty && (
                         <p className="text-xs text-gray-400">
-                          {image.filename} &middot; {formatFileSize(image.fileSize)}
+                          {image.filename} &middot; {formatFileSize(image.fileSize || 0)}
                         </p>
                       )}
                     </div>
@@ -418,6 +450,6 @@ const HeroSectionModal = ({ isOpen, onClose, contentData, onSaveContent, isSavin
       />
     </div>
   );
-};
+}
 
 export default HeroSectionModal;

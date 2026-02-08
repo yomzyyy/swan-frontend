@@ -1,6 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 
-const FormFileUpload = ({
+export interface FileChangeEvent {
+  target: {
+    name: string;
+    value: File;
+  };
+}
+
+interface FormFileUploadProps {
+  label: string;
+  name: string;
+  onChange: (e: FileChangeEvent) => void;
+  error?: string;
+  required?: boolean;
+  accept?: string;
+  file?: File | null;
+  description?: string;
+  showImagePreview?: boolean;
+  disabled?: boolean;
+}
+
+function FormFileUpload({
   label,
   name,
   onChange,
@@ -11,11 +31,13 @@ const FormFileUpload = ({
   description = 'PDF or DOC (max 5MB)',
   showImagePreview = false,
   disabled = false
-}) => {
-  const [imagePreview, setImagePreview] = useState(null);
+}: FormFileUploadProps) {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
     onChange({
       target: {
         name: name,
@@ -24,10 +46,10 @@ const FormFileUpload = ({
     });
 
     // Generate image preview if enabled and file is an image
-    if (showImagePreview && selectedFile && selectedFile.type.startsWith('image/')) {
+    if (showImagePreview && selectedFile.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result as string);
       };
       reader.onerror = () => {
         setImagePreview(null);
@@ -48,7 +70,7 @@ const FormFileUpload = ({
 
   return (
     <div className="mb-6">
-      
+
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
@@ -74,7 +96,7 @@ const FormFileUpload = ({
           htmlFor={name}
           className="flex flex-col items-center cursor-pointer"
         >
-          
+
           <svg
             className="w-12 h-12 text-gray-400 mb-3"
             fill="none"
@@ -89,7 +111,7 @@ const FormFileUpload = ({
             />
           </svg>
 
-          
+
           {file ? (
             <div className="text-center">
               <p className="text-sm font-semibold text-gray-700">{file.name}</p>
@@ -129,6 +151,6 @@ const FormFileUpload = ({
       )}
     </div>
   );
-};
+}
 
 export default FormFileUpload;

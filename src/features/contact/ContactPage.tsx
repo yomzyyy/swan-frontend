@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import LocationOn from '@mui/icons-material/LocationOn';
 import Phone from '@mui/icons-material/Phone';
 import Email from '@mui/icons-material/Email';
 import { validateContactForm, validateJobForm, validateQuoteForm } from '../../utils';
+import type { ContactFormData, JobFormData, QuoteFormData } from '../../utils/formValidation';
+import type { FileChangeEvent } from '../../components/forms/FormFileUpload';
 import GeneralContactForm from './components/GeneralContactForm';
 import ContactJobForm from './components/ContactJobForm';
 import QuoteRequestForm from './components/QuoteRequestForm';
@@ -12,8 +14,8 @@ const ContactPage = () => {
   const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get('tab') || 'contact';
   const [activeTab, setActiveTab] = useState(tabFromUrl);
-  const [formData, setFormData] = useState({});
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState<Record<string, string | File | null>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -24,7 +26,7 @@ const ContactPage = () => {
     }
   }, [searchParams]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | FileChangeEvent) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -38,16 +40,16 @@ const ContactPage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let validationErrors = {};
+    let validationErrors: Record<string, string> = {};
     if (activeTab === 'contact') {
-      validationErrors = validateContactForm(formData);
+      validationErrors = validateContactForm(formData as unknown as ContactFormData);
     } else if (activeTab === 'jobs') {
-      validationErrors = validateJobForm(formData);
+      validationErrors = validateJobForm(formData as unknown as JobFormData);
     } else if (activeTab === 'quote') {
-      validationErrors = validateQuoteForm(formData);
+      validationErrors = validateQuoteForm(formData as unknown as QuoteFormData);
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -206,13 +208,13 @@ const ContactPage = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {activeTab === 'contact' && (
-                    <GeneralContactForm formData={formData} errors={errors} onChange={handleChange} />
+                    <GeneralContactForm formData={formData as Record<string, string>} errors={errors} onChange={handleChange} />
                   )}
                   {activeTab === 'jobs' && (
-                    <ContactJobForm formData={formData} errors={errors} onChange={handleChange} />
+                    <ContactJobForm formData={formData as Record<string, string>} errors={errors} onChange={handleChange} />
                   )}
                   {activeTab === 'quote' && (
-                    <QuoteRequestForm formData={formData} errors={errors} onChange={handleChange} />
+                    <QuoteRequestForm formData={formData as Record<string, string>} errors={errors} onChange={handleChange} />
                   )}
 
                   <button
@@ -251,7 +253,7 @@ const ContactPage = () => {
               width="100%"
               height="100%"
               style={{ border: 0, borderRadius: '4px' }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="SWAN Shipping Office Location - 3F S&L Building, 1500 Roxas Boulevard, Ermita, Manila"

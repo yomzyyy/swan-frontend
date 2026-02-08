@@ -1,18 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { FormFileUpload } from '../../components/forms';
+import type { FileChangeEvent } from '../../components/forms/FormFileUpload';
+import type { Career } from '../../types';
+
+interface JobApplicationFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  coverLetter: string;
+  resume: File | null;
+}
 
 const JobApplicationForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [job, setJob] = useState(null);
+  const [job, setJob] = useState<Career | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<JobApplicationFormData>({
     firstName: '',
     lastName: '',
     email: '',
@@ -21,13 +32,13 @@ const JobApplicationForm = () => {
     resume: null
   });
 
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
         setLoading(true);
-        const response = await api.careers.getById(id);
+        const response = await api.careers.getById(id as string);
         setJob(response.data?.data || null);
       } catch (err) {
         setError('Job opening not found');
@@ -39,12 +50,12 @@ const JobApplicationForm = () => {
     fetchJob();
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | FileChangeEvent) => {
+    const { name, value } = e.target;
     if (name === 'resume') {
-      setFormData({ ...formData, resume: files[0] });
+      setFormData({ ...formData, resume: value as File });
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData({ ...formData, [name]: value as string });
     }
     // Clear error for this field
     if (formErrors[name]) {
@@ -53,7 +64,7 @@ const JobApplicationForm = () => {
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: Record<string, string> = {};
 
     if (!formData.firstName.trim()) {
       errors.firstName = 'First name is required';
@@ -86,7 +97,7 @@ const JobApplicationForm = () => {
     return errors;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validateForm();
@@ -153,13 +164,13 @@ const JobApplicationForm = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="bg-white rounded-3xl p-12 shadow-lg text-center max-w-2xl">
           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-5xl">✓</span>
+            <span className="text-5xl">&#10003;</span>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Application Submitted Successfully!
           </h2>
           <p className="text-gray-600 text-lg mb-6">
-            Thank you for applying to the {job.title} position. We'll review your application and get back to you soon.
+            Thank you for applying to the {job?.title} position. We'll review your application and get back to you soon.
           </p>
           <p className="text-gray-500">Redirecting to careers page...</p>
         </div>
@@ -175,20 +186,20 @@ const JobApplicationForm = () => {
             to="/careers"
             className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
           >
-            ← Back to All Openings
+            &larr; Back to All Openings
           </Link>
           <h1 className="text-5xl font-extrabold mb-4">
-            Apply for {job.title}
+            Apply for {job?.title}
           </h1>
           <div className="flex flex-wrap gap-3">
             <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-              {job.department}
+              {job?.department}
             </span>
             <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-              📍 {job.location}
+              {job?.location}
             </span>
             <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-              {job.type}
+              {job?.type}
             </span>
           </div>
         </div>
@@ -197,7 +208,7 @@ const JobApplicationForm = () => {
       <div className="max-w-4xl mx-auto px-8 py-12">
         <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Job Description</h2>
-          <p className="text-gray-600 leading-relaxed">{job.description}</p>
+          <p className="text-gray-600 leading-relaxed">{job?.description}</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-lg p-8">
@@ -313,7 +324,7 @@ const JobApplicationForm = () => {
                 name="coverLetter"
                 value={formData.coverLetter}
                 onChange={handleChange}
-                rows="6"
+                rows={6}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   formErrors.coverLetter ? 'border-red-500' : 'border-gray-300'
                 }`}

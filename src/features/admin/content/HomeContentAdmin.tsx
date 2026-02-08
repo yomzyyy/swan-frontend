@@ -6,8 +6,19 @@ import { getHomeContent, saveHomeContent } from './contentAdminService';
 import { homeDefaults } from '../../../constants/homeDefaults';
 import { deepMerge } from '../../../utils';
 import { EditSectionModal, HeroSectionModal } from '../../../components/admin';
+import type { PageContent } from '../../../types';
+import type { HomeContent, HeroTextContent } from '../../../types';
+import type { FieldDefinition } from '../../../components/admin/fields';
 
-const SECTIONS = [
+interface SectionConfig {
+  key: string;
+  title: string;
+  description: string;
+  isCustomModal?: boolean;
+  fields?: FieldDefinition[];
+}
+
+const SECTIONS: SectionConfig[] = [
   {
     key: 'hero',
     title: 'Hero Section',
@@ -67,10 +78,10 @@ const SECTIONS = [
   }
 ];
 
-const HomeContentAdmin = () => {
-  const [content, setContent] = useState(null);
+function HomeContentAdmin() {
+  const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
-  const [editingSection, setEditingSection] = useState(null);
+  const [editingSection, setEditingSection] = useState<SectionConfig | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [heroSectionOpen, setHeroSectionOpen] = useState(false);
 
@@ -85,17 +96,17 @@ const HomeContentAdmin = () => {
     setLoading(false);
   };
 
-  const getMergedContent = () => {
-    return deepMerge(homeDefaults, content);
+  const getMergedContent = (): HomeContent => {
+    return deepMerge(homeDefaults, content as Partial<HomeContent> | null);
   };
 
-  const getModalData = () => {
+  const getModalData = (): Record<string, unknown> => {
     if (!editingSection) return {};
     const merged = getMergedContent();
-    return merged[editingSection.key] || {};
+    return (merged[editingSection.key as keyof HomeContent] as unknown as Record<string, unknown>) || {};
   };
 
-  const handleEdit = (section) => {
+  const handleEdit = (section: SectionConfig) => {
     if (section.isCustomModal) {
       setHeroSectionOpen(true);
     } else {
@@ -103,7 +114,7 @@ const HomeContentAdmin = () => {
     }
   };
 
-  const handleSaveHeroText = async (textData) => {
+  const handleSaveHeroText = async (textData: HeroTextContent) => {
     setIsSaving(true);
     const result = await saveHomeContent({ heroText: textData });
     if (result.success) {
@@ -115,15 +126,15 @@ const HomeContentAdmin = () => {
     setIsSaving(false);
   };
 
-  const handleSave = async (editedData) => {
+  const handleSave = async (editedData: Record<string, unknown>) => {
     setIsSaving(true);
 
-    const dataToSave = { [editingSection.key]: editedData };
+    const dataToSave = { [editingSection!.key]: editedData };
     const result = await saveHomeContent(dataToSave);
 
     if (result.success) {
       await loadContent();
-      toast.success(`${editingSection.title} updated successfully!`);
+      toast.success(`${editingSection!.title} updated successfully!`);
       setEditingSection(null);
     } else {
       toast.error(result.error || 'Failed to save');
@@ -202,6 +213,6 @@ const HomeContentAdmin = () => {
       />
     </div>
   );
-};
+}
 
 export default HomeContentAdmin;

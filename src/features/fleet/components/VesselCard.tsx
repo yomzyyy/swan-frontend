@@ -1,4 +1,10 @@
-const VesselCard = ({ vessel }) => (
+import type { Fleet } from '../../../types';
+
+interface VesselCardProps {
+  vessel: Fleet;
+}
+
+const VesselCard = ({ vessel }: VesselCardProps) => (
   <div className="group bg-white  overflow-hidden shadow-sm
                   hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
     {/* Image with type badge overlay */}

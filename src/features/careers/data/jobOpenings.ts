@@ -1,4 +1,13 @@
-export const jobOpenings = [
+interface JobOpening {
+  id: number;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string;
+}
+
+export const jobOpenings: JobOpening[] = [
   {
     id: 1,
     title: 'Marine Engineer',

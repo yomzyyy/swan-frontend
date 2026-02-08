@@ -4,23 +4,25 @@ import { AdminTable, ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { fleetService } from '../../../services/adminCrudService';
 import { useApiQuery } from '../../../hooks';
+import type { Fleet } from '../../../types';
+import type { TableColumn } from '../../../types';
 
-const FleetListAdmin = () => {
-  const { data: vessels, loading, refetch } = useApiQuery(
+function FleetListAdmin() {
+  const { data: vessels, loading, refetch } = useApiQuery<Fleet[]>(
     () => fleetService.getAll(),
     { initialData: [] }
   );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [vesselToDelete, setVesselToDelete] = useState(null);
+  const [vesselToDelete, setVesselToDelete] = useState<Fleet | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
-  const handleEdit = (vessel) => {
+  const handleEdit = (vessel: Fleet) => {
     navigate(`/admin/fleet/edit/${vessel.id}`);
   };
 
-  const handleDeleteClick = (vessel) => {
+  const handleDeleteClick = (vessel: Fleet) => {
     setVesselToDelete(vessel);
     setDeleteConfirmOpen(true);
   };
@@ -43,12 +45,12 @@ const FleetListAdmin = () => {
     setVesselToDelete(null);
   };
 
-  const filteredVessels = vessels.filter(vessel =>
+  const filteredVessels = vessels!.filter(vessel =>
     vessel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     vessel.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const columns = [
+  const columns: TableColumn<Fleet>[] = [
     {
       header: 'Name',
       accessor: 'name',
@@ -149,7 +151,7 @@ const FleetListAdmin = () => {
         emptyMessage="No vessels found. Add your first vessel!"
       />
 
-      
+
       <ConfirmDialog
         isOpen={deleteConfirmOpen}
         title="Delete Vessel"
@@ -162,6 +164,6 @@ const FleetListAdmin = () => {
       />
     </div>
   );
-};
+}
 
 export default FleetListAdmin;

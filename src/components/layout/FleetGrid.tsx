@@ -1,4 +1,15 @@
 import SkeletonCard from '../skeletons/SkeletonCard';
+import type { Fleet } from '../../types';
+
+interface FleetGridProps {
+  vessels: Fleet[];
+  loading?: boolean;
+  showTitle?: boolean;
+  title?: string;
+  description?: string;
+  gridClassName?: string;
+  skeletonCount?: number;
+}
 
 const FleetGrid = ({
   vessels,
@@ -6,8 +17,9 @@ const FleetGrid = ({
   showTitle = true,
   title = "OUR FLEET",
   description,
-  gridClassName = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-}) => {
+  gridClassName = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
+  skeletonCount = 3
+}: FleetGridProps) => {
   if (loading) {
     return (
       <div>
@@ -25,7 +37,7 @@ const FleetGrid = ({
         )}
 
         <div className={gridClassName}>
-          {Array(vessels?.length || 3).fill(0).map((_, i) => (
+          {Array(skeletonCount).fill(0).map((_, i) => (
             <SkeletonCard key={i} variant="fleet" />
           ))}
         </div>

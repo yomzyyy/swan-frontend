@@ -1,4 +1,29 @@
-export const COMPANY_INFO = {
+interface CompanyInfo {
+  name: string;
+  address: string;
+  phone: string;
+  phone2: string;
+  email: string;
+  businessHours: {
+    weekday: string;
+    saturday: string;
+    sunday: string;
+  };
+  socialMedia: {
+    linkedin: string;
+    facebook: string;
+    twitter: string;
+  };
+}
+
+interface FleetStats {
+  totalVessels: number;
+  maxCapacity: string;
+  avgFleetAge: number;
+  safetyCompliance: string;
+}
+
+export const COMPANY_INFO: CompanyInfo = {
   name: 'SWAN Shipping Corporation',
   address: '3F S&L Building, 1500 Roxas Boulevard, Ermita, Manila 1000, Philippines',
   phone: '+63-2-85268718 to 19',
@@ -16,7 +41,7 @@ export const COMPANY_INFO = {
   },
 };
 
-export const FLEET_STATS = {
+export const FLEET_STATS: FleetStats = {
   totalVessels: 19,
   maxCapacity: '15K',
   avgFleetAge: 2017,

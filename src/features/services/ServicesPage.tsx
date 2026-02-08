@@ -4,9 +4,10 @@ import GetInTouch from '../../components/layout/GetInTouch';
 import { servicesDefaults } from '../../constants/servicesDefaults';
 import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
+import type { ServicesPageContent } from '../../types';
 
 const ServicesPage = () => {
-  const [content, setContent] = useState(servicesDefaults);
+  const [content, setContent] = useState<ServicesPageContent>(servicesDefaults);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -14,7 +15,7 @@ const ServicesPage = () => {
         const response = await api.content.get('services');
         const apiData = response.data.data;
         if (apiData) {
-          setContent(deepMerge(servicesDefaults, apiData));
+          setContent(deepMerge(servicesDefaults, apiData as unknown as Partial<ServicesPageContent>));
         }
       } catch {
         // Silently fall back to defaults

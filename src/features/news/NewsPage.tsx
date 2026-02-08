@@ -5,12 +5,14 @@ import { useApiQuery } from '../../hooks';
 import { SkeletonCard } from '../../components/skeletons';
 import NewsSidebar from './components/NewsSidebar';
 import NewsCard from './components/NewsCard';
+import type { News } from '../../types';
 
 const NewsPage = () => {
-  const { data: newsArticles, loading, error } = useApiQuery(
+  const { data, loading, error } = useApiQuery<News[]>(
     () => api.news.getAll().then(r => r.data?.data || []),
     { initialData: [] }
   );
+  const newsArticles = data ?? [];
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
@@ -92,7 +94,7 @@ const NewsPage = () => {
                     <Pagination
                       count={totalPages}
                       page={currentPage}
-                      onChange={(event, value) => setCurrentPage(value)}
+                      onChange={(_event, value) => setCurrentPage(value)}
                       shape="rounded"
                       sx={{
                         '& .MuiPaginationItem-root': {

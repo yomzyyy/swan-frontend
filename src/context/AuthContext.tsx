@@ -1,13 +1,28 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { api } from '../services/api';
+import type { AuthUser, LoginCredentials, ServiceResult } from '../types/api';
 
-const AuthContext = createContext(null);
+interface AuthContextValue {
+  user: AuthUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (credentials: LoginCredentials) => Promise<ServiceResult<void>>;
+  logout: () => void;
+}
+
+interface StoredAuthData {
+  user: AuthUser;
+  token: string;
+  expiresAt: number;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 const SESSION_STORAGE_KEY = 'swan_admin_auth';
 const SESSION_DURATION = 3600000; // 1 hour in milliseconds
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       const authData = sessionStorage.getItem(SESSION_STORAGE_KEY);
 
       if (authData) {
-        const { user, expiresAt } = JSON.parse(authData);
+        const { user, expiresAt } = JSON.parse(authData) as StoredAuthData;
 
         if (Date.now() < expiresAt) {
           setUser(user);
@@ -37,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (credentials) => {
+  const login = async (credentials: LoginCredentials): Promise<ServiceResult<void>> => {
     try {
       const response = await api.auth.login(
         credentials.username,  // Email
@@ -48,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 
       const expiresAt = Date.now() + SESSION_DURATION;
 
-      const authData = {
+      const authData: StoredAuthData = {
         user: {
           username: user.email,                          // For compatibility
           name: `${user.firstName} ${user.lastName}`,    // Full name
@@ -63,10 +78,10 @@ export const AuthProvider = ({ children }) => {
       setUser(authData.user);
       setIsAuthenticated(true);
 
-      return { success: true };
+      return { success: true, data: undefined };
 
     } catch (error) {
-      const errorMessage = error.message || 'Login failed. Please check your credentials.';
+      const errorMessage = (error as Error).message || 'Login failed. Please check your credentials.';
 
       return {
         success: false,
@@ -81,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  const value = {
+  const value: AuthContextValue = {
     user,
     isAuthenticated,
     isLoading,
@@ -96,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext);
 
   if (!context) {

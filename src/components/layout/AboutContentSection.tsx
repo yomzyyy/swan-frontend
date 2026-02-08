@@ -1,16 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { aboutDefaults } from '../../constants/aboutDefaults';
 import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
+import type { ContentTabsContent } from '../../types';
+
+type TabKey = keyof ContentTabsContent;
+
+interface AboutContentSectionProps {
+  sectionTitle?: ReactNode;
+  showSectionTitle?: boolean;
+  containerClassName?: string;
+  tabContent?: ContentTabsContent;
+}
 
 const AboutContentSection = ({
   sectionTitle,
   showSectionTitle = true,
   containerClassName = '',
   tabContent: tabContentProp
-}) => {
-  const [activeTab, setActiveTab] = useState('heritage');
-  const [tabContent, setTabContent] = useState(aboutDefaults.contentTabs);
+}: AboutContentSectionProps) => {
+  const [activeTab, setActiveTab] = useState<TabKey>('heritage');
+  const [tabContent, setTabContent] = useState<ContentTabsContent>(aboutDefaults.contentTabs);
 
   useEffect(() => {
     if (tabContentProp) {
@@ -23,7 +33,7 @@ const AboutContentSection = ({
         const response = await api.content.get('about');
         const apiData = response.data.data;
         if (apiData?.contentTabs) {
-          setTabContent(deepMerge(aboutDefaults.contentTabs, apiData.contentTabs));
+          setTabContent(deepMerge(aboutDefaults.contentTabs, apiData.contentTabs as unknown as Partial<ContentTabsContent>));
         }
       } catch {
         // Silently fall back to defaults
@@ -34,7 +44,7 @@ const AboutContentSection = ({
 
   // Auto-rotate tabs every 5 seconds
   useEffect(() => {
-    const tabs = ['heritage', 'innovation', 'sustainability'];
+    const tabs: TabKey[] = ['heritage', 'innovation', 'sustainability'];
     const interval = setInterval(() => {
       setActiveTab(current => {
         const currentIndex = tabs.indexOf(current);

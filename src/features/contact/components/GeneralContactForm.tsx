@@ -1,6 +1,13 @@
+import type { ChangeEvent } from 'react';
 import { FormInput, FormTextarea } from '../../../components/forms';
 
-const GeneralContactForm = ({ formData, errors, onChange }) => (
+interface GeneralContactFormProps {
+  formData: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+const GeneralContactForm = ({ formData, errors, onChange }: GeneralContactFormProps) => (
   <>
     <FormInput
       label="Full Name"

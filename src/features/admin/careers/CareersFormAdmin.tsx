@@ -1,13 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { careersService } from '../../../services/adminCrudService';
+import type { JobType } from '../../../types';
 
-const CareersFormAdmin = () => {
+interface CareerFormData {
+  title: string;
+  department: string;
+  location: string;
+  type: JobType;
+  description: string;
+}
+
+function CareersFormAdmin() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CareerFormData>({
     title: '',
     department: '',
     location: '',
@@ -22,21 +31,22 @@ const CareersFormAdmin = () => {
     const fetchCareer = async () => {
       if (isEditMode) {
         try {
-          const career = await careersService.getById(id);
+          const career = await careersService.getById(id as string);
           if (career) {
-            setFormData(career);
+            setFormData(career as unknown as CareerFormData);
           } else {
             setError('Career not found');
           }
-        } catch (error) {
+        } catch (err) {
           setError('Failed to load career');
+          console.error(err);
         }
       }
     };
     fetchCareer();
   }, [id, isEditMode]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -44,14 +54,14 @@ const CareersFormAdmin = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
       const result = isEditMode
-        ? await careersService.update(id, formData)
+        ? await careersService.update(id as string, formData)
         : await careersService.create(formData);
 
       if (result.success) {
@@ -61,6 +71,7 @@ const CareersFormAdmin = () => {
       }
     } catch (err) {
       setError('An error occurred while saving the career');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -180,6 +191,6 @@ const CareersFormAdmin = () => {
       </form>
     </div>
   );
-};
+}
 
 export default CareersFormAdmin;

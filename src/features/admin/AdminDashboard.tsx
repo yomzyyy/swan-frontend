@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { AdminCard } from '../../components/admin';
 import { SkeletonStats } from '../../components/skeletons';
@@ -5,10 +6,24 @@ import { fleetService, careersService } from '../../services/adminCrudService';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
 
-const AdminDashboard = () => {
+interface DashboardCounts {
+  fleet: number;
+  careers: number;
+  news: number;
+}
+
+interface StatItem {
+  title: string;
+  value: number;
+  icon: ReactNode;
+  color: 'blue' | 'green' | 'purple';
+  link: string;
+}
+
+function AdminDashboard() {
   const { user } = useAuth();
 
-  const { data: counts, loading } = useApiQuery(
+  const { data: counts, loading } = useApiQuery<DashboardCounts>(
     async () => {
       const [vessels, careers, newsResponse] = await Promise.all([
         fleetService.getAll(),
@@ -18,31 +33,31 @@ const AdminDashboard = () => {
       return {
         fleet: vessels.length,
         careers: careers.length,
-        news: (newsResponse.data?.data || []).length,
+        news: ((newsResponse.data?.data as unknown[]) || []).length,
       };
     },
     { initialData: { fleet: 0, careers: 0, news: 0 } }
   );
 
-  const stats = [
+  const stats: StatItem[] = [
     {
       title: 'News Articles',
-      value: counts.news,
-      icon: '📰',
+      value: counts!.news,
+      icon: '\uD83D\uDCF0',
       color: 'blue',
       link: '/admin/news',
     },
     {
       title: 'Fleet Vessels',
-      value: counts.fleet,
-      icon: '🚢',
+      value: counts!.fleet,
+      icon: '\uD83D\uDEA2',
       color: 'green',
       link: '/admin/fleet',
     },
     {
       title: 'Job Postings',
-      value: counts.careers,
-      icon: '💼',
+      value: counts!.careers,
+      icon: '\uD83D\uDCBC',
       color: 'purple',
       link: '/admin/careers',
     },
@@ -84,7 +99,7 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      
+
       <div className="bg-white shadow-sm p-6 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -135,13 +150,13 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      
+
       <div className="bg-white shadow-sm p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
         <p className="text-gray-500">No recent activity to display.</p>
       </div>
     </div>
   );
-};
+}
 
 export default AdminDashboard;

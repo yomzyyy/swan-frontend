@@ -1,13 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-/**
- * Custom hook for animating number counting from a random start value to a target
- * @param {number} target - The final number to count to
- * @param {number} duration - Animation duration in milliseconds (default: 2000)
- * @param {boolean} shouldAnimate - Trigger to start the animation
- * @returns {number} - The current animated count value
- */
-export const useCountingAnimation = (target, duration = 2000, shouldAnimate = true) => {
+export const useCountingAnimation = (target: number, duration = 2000, shouldAnimate = true): number => {
   const [count, setCount] = useState(0);
   const hasAnimated = useRef(false);
 
@@ -18,7 +11,7 @@ export const useCountingAnimation = (target, duration = 2000, shouldAnimate = tr
     hasAnimated.current = true;
     const startValue = Math.floor(Math.random() * target);
     const startTime = Date.now();
-    const easeOutQuad = (t) => t * (2 - t);
+    const easeOutQuad = (t: number) => t * (2 - t);
 
     const animate = () => {
       const elapsed = Date.now() - startTime;

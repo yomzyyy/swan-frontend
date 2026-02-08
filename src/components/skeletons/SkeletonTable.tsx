@@ -1,6 +1,11 @@
 import SkeletonBase from './SkeletonBase';
 
-const SkeletonTable = ({ columns = 4, rows = 5 }) => {
+interface SkeletonTableProps {
+  columns?: number;
+  rows?: number;
+}
+
+const SkeletonTable = ({ columns = 4, rows = 5 }: SkeletonTableProps) => {
   return (
     <div className="bg-white shadow-sm overflow-hidden">
       <table className="w-full">

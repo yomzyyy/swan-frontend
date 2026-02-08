@@ -1,10 +1,22 @@
-const AdminCard = ({ title, value, icon, color = 'blue', link }) => {
-  const colorClasses = {
-    blue: 'bg-blue-600 border-blue-500 border-l-blue-800',
-    green: 'bg-emerald-600 border-emerald-500 border-l-emerald-800',
-    purple: 'bg-purple-600 border-purple-500 border-l-purple-800',
-  };
+import type { ReactNode } from 'react';
 
+type CardColor = 'blue' | 'green' | 'purple';
+
+interface AdminCardProps {
+  title: string;
+  value: string | number;
+  icon: ReactNode;
+  color?: CardColor;
+  link?: string;
+}
+
+const colorClasses: Record<CardColor, string> = {
+  blue: 'bg-blue-600 border-blue-500 border-l-blue-800',
+  green: 'bg-emerald-600 border-emerald-500 border-l-emerald-800',
+  purple: 'bg-purple-600 border-purple-500 border-l-purple-800',
+};
+
+function AdminCard({ title, value, icon, color = 'blue', link }: AdminCardProps) {
   const CardContent = () => (
     <div className={`${colorClasses[color]} p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4`}>
       <div className="flex items-center justify-between">
@@ -26,6 +38,6 @@ const AdminCard = ({ title, value, icon, color = 'blue', link }) => {
   }
 
   return <CardContent />;
-};
+}
 
 export default AdminCard;

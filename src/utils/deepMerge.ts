@@ -4,13 +4,13 @@
  * - Null/undefined API values fall back to defaults.
  * - Plain objects are recursively merged.
  */
-export const deepMerge = (defaults, apiData) => {
+export const deepMerge = <T extends object>(defaults: T, apiData: Partial<T> | null | undefined): T => {
   if (!apiData) return defaults;
-  if (!defaults) return apiData;
+  if (!defaults) return apiData as T;
 
   const result = { ...defaults };
 
-  for (const key of Object.keys(apiData)) {
+  for (const key of Object.keys(apiData) as Array<keyof T>) {
     const apiValue = apiData[key];
     const defaultValue = defaults[key];
 
@@ -19,15 +19,18 @@ export const deepMerge = (defaults, apiData) => {
     }
 
     if (Array.isArray(apiValue)) {
-      result[key] = apiValue;
+      (result as Record<string, unknown>)[key as string] = apiValue;
     } else if (
       typeof apiValue === 'object' &&
       typeof defaultValue === 'object' &&
       !Array.isArray(defaultValue)
     ) {
-      result[key] = deepMerge(defaultValue, apiValue);
+      (result as Record<string, unknown>)[key as string] = deepMerge(
+        defaultValue as Record<string, unknown>,
+        apiValue as Record<string, unknown>
+      );
     } else {
-      result[key] = apiValue;
+      (result as Record<string, unknown>)[key as string] = apiValue;
     }
   }
 

@@ -1,6 +1,23 @@
 import Search from '@mui/icons-material/Search';
 import Close from '@mui/icons-material/Close';
 
+interface FleetFilterBarProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  selectedType: string;
+  setSelectedType: (type: string) => void;
+  selectedTradeArea: string;
+  setSelectedTradeArea: (area: string) => void;
+  sortBy: string;
+  setSortBy: (field: string) => void;
+  sortOrder: string;
+  setSortOrder: (order: string) => void;
+  vesselTypes: string[];
+  tradeAreas: string[];
+  hasActiveFilters: boolean;
+  clearAllFilters: () => void;
+}
+
 const FleetFilterBar = ({
   searchQuery,
   setSearchQuery,
@@ -16,7 +33,7 @@ const FleetFilterBar = ({
   tradeAreas,
   hasActiveFilters,
   clearAllFilters,
-}) => (
+}: FleetFilterBarProps) => (
   <div className="bg-white shadow-sm p-4 md:p-6 mb-8">
     <div className="flex flex-col lg:flex-row gap-4">
       {/* Search Input */}

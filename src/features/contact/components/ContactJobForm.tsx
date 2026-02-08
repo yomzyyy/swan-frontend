@@ -1,6 +1,14 @@
+import type { ChangeEvent } from 'react';
 import { FormInput, FormTextarea, FormFileUpload } from '../../../components/forms';
+import type { FileChangeEvent } from '../../../components/forms/FormFileUpload';
 
-const ContactJobForm = ({ formData, errors, onChange }) => (
+interface ContactJobFormProps {
+  formData: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | FileChangeEvent) => void;
+}
+
+const ContactJobForm = ({ formData, errors, onChange }: ContactJobFormProps) => (
   <>
     <FormInput
       label="Full Name"

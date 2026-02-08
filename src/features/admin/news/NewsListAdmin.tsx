@@ -5,23 +5,25 @@ import { SkeletonTable } from '../../../components/skeletons';
 import { getAllArticles, deleteArticle } from './newsAdminService';
 import { useApiQuery } from '../../../hooks';
 import { formatNewsDate } from '../../../utils';
+import type { News } from '../../../types';
+import type { TableColumn } from '../../../types';
 
-const NewsListAdmin = () => {
-  const { data: articles, loading, refetch } = useApiQuery(
+function NewsListAdmin() {
+  const { data: articles, loading, refetch } = useApiQuery<News[]>(
     () => getAllArticles(),
     { initialData: [] }
   );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [articleToDelete, setArticleToDelete] = useState(null);
+  const [articleToDelete, setArticleToDelete] = useState<News | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
-  const handleEdit = (article) => {
+  const handleEdit = (article: News) => {
     navigate(`/admin/news/edit/${article.id}`);
   };
 
-  const handleDeleteClick = (article) => {
+  const handleDeleteClick = (article: News) => {
     setArticleToDelete(article);
     setDeleteConfirmOpen(true);
   };
@@ -44,12 +46,12 @@ const NewsListAdmin = () => {
     setArticleToDelete(null);
   };
 
-  const filteredArticles = articles.filter(article =>
+  const filteredArticles = articles!.filter(article =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     article.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const columns = [
+  const columns: TableColumn<News>[] = [
     {
       header: 'Title',
       accessor: 'title',
@@ -81,7 +83,7 @@ const NewsListAdmin = () => {
       accessor: 'image',
       render: (article) => (
         <img
-          src={article.image}
+          src={article.image || ''}
           alt={article.title}
           className="w-16 h-10 object-cover rounded"
         />
@@ -145,7 +147,7 @@ const NewsListAdmin = () => {
         emptyMessage="No articles found. Create your first article!"
       />
 
-      
+
       <ConfirmDialog
         isOpen={deleteConfirmOpen}
         title="Delete Article"
@@ -158,6 +160,6 @@ const NewsListAdmin = () => {
       />
     </div>
   );
-};
+}
 
 export default NewsListAdmin;

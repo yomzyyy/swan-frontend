@@ -1,8 +1,9 @@
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
+import type { FieldRendererProps } from './types';
 
-const ArrayObjectsField = ({ field, value, onChange, renderField }) => {
-  const items = value || [];
+function ArrayObjectsField({ field, value, onChange, renderField }: FieldRendererProps) {
+  const items = (value as Record<string, unknown>[]) || [];
 
   return (
     <div className="mb-4">
@@ -24,8 +25,8 @@ const ArrayObjectsField = ({ field, value, onChange, renderField }) => {
                 <Delete sx={{ fontSize: 16 }} />
               </button>
             </div>
-            {field.fields.map(subField =>
-              renderField(subField, item, (childKey, childValue) => {
+            {field.fields?.map(subField =>
+              renderField!(subField, item, (childKey: string, childValue: unknown) => {
                 const newArr = [...items];
                 newArr[i] = { ...newArr[i], [childKey]: childValue };
                 onChange(field.key, newArr);
@@ -37,8 +38,8 @@ const ArrayObjectsField = ({ field, value, onChange, renderField }) => {
       <button
         type="button"
         onClick={() => {
-          const template = {};
-          field.fields.forEach(f => { template[f.key] = ''; });
+          const template: Record<string, string> = {};
+          field.fields?.forEach(f => { template[f.key] = ''; });
           onChange(field.key, [...items, template]);
         }}
         className="mt-2 flex items-center gap-1 text-sm text-[#207dff] hover:underline"
@@ -47,6 +48,6 @@ const ArrayObjectsField = ({ field, value, onChange, renderField }) => {
       </button>
     </div>
   );
-};
+}
 
 export default ArrayObjectsField;

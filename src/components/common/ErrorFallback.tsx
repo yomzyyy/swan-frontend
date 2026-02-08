@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-const ErrorFallback = ({ error, onReset }) => {
+interface ErrorFallbackProps {
+  error?: Error | null;
+  onReset?: () => void;
+}
+
+const ErrorFallback = ({ error, onReset }: ErrorFallbackProps) => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {

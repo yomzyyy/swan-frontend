@@ -1,4 +1,6 @@
-export const servicesDefaults = {
+import type { ServicesPageContent } from '../types/content';
+
+export const servicesDefaults: ServicesPageContent = {
   hero: {
     backgroundImage: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1600'
   },

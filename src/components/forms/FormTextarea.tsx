@@ -1,5 +1,18 @@
+import type { ChangeEvent } from 'react';
 
-const FormTextarea = ({
+interface FormTextareaProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  error?: string;
+  required?: boolean;
+  placeholder?: string;
+  rows?: number;
+  disabled?: boolean;
+}
+
+function FormTextarea({
   label,
   name,
   value,
@@ -9,16 +22,16 @@ const FormTextarea = ({
   placeholder = '',
   rows = 5,
   disabled = false
-}) => {
+}: FormTextareaProps) {
   return (
     <div className="mb-6">
-      
+
       <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
-      
+
       <textarea
         id={name}
         name={name}
@@ -38,12 +51,12 @@ const FormTextarea = ({
         `}
       />
 
-      
+
       {error && (
         <p className="text-red-500 text-sm mt-1">{error}</p>
       )}
     </div>
   );
-};
+}
 
 export default FormTextarea;

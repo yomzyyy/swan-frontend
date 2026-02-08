@@ -1,30 +1,34 @@
 import { useState, useCallback } from 'react';
 
-/**
- * Generic mutation hook for create/update/delete operations.
- * Wraps async functions with loading state and callbacks.
- *
- * @param {Function} mutationFn - Async function that performs the mutation
- * @param {Object} options
- * @param {Function} options.onSuccess - Called with result on success
- * @param {Function} options.onError - Called with error message on failure
- * @returns {{ mutate: Function, loading: boolean, error: string|null }}
- */
-const useApiMutation = (mutationFn, options = {}) => {
+interface UseApiMutationOptions<T> {
+  onSuccess?: (result: T) => void;
+  onError?: (error: string) => void;
+}
+
+interface UseApiMutationResult<T> {
+  mutate: (...args: unknown[]) => Promise<T | { success: false; error: string }>;
+  loading: boolean;
+  error: string | null;
+}
+
+const useApiMutation = <T>(
+  mutationFn: (...args: unknown[]) => Promise<T>,
+  options: UseApiMutationOptions<T> = {}
+): UseApiMutationResult<T> => {
   const { onSuccess, onError } = options;
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const mutate = useCallback(async (...args) => {
+  const mutate = useCallback(async (...args: unknown[]) => {
     try {
       setLoading(true);
       setError(null);
       const result = await mutationFn(...args);
 
       // Support the { success, data, error } pattern used by admin services
-      if (result && result.success === false) {
-        const errMsg = result.error || 'Operation failed';
+      if (result && (result as { success?: boolean }).success === false) {
+        const errMsg = (result as { error?: string }).error || 'Operation failed';
         setError(errMsg);
         onError?.(errMsg);
         return result;
@@ -33,10 +37,10 @@ const useApiMutation = (mutationFn, options = {}) => {
       onSuccess?.(result);
       return result;
     } catch (err) {
-      const errMsg = err.message || 'An error occurred';
+      const errMsg = (err as Error).message || 'An error occurred';
       setError(errMsg);
       onError?.(errMsg);
-      return { success: false, error: errMsg };
+      return { success: false as const, error: errMsg };
     } finally {
       setLoading(false);
     }
