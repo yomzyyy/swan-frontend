@@ -1,3 +1,4 @@
+import { resolveImageUrl } from '../../../utils';
 import type { Fleet } from '../../../types';
 
 interface VesselCardProps {
@@ -10,7 +11,7 @@ const VesselCard = ({ vessel }: VesselCardProps) => (
     {/* Image with type badge overlay */}
     <div className="relative h-52 overflow-hidden">
       <img
-        src={vessel.image}
+        src={resolveImageUrl(vessel.image)}
         alt={vessel.name}
         className="w-full h-full object-cover group-hover:scale-105
                    transition-transform duration-500"

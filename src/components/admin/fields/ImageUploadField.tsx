@@ -6,6 +6,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import BrokenImage from '@mui/icons-material/BrokenImage';
 import Close from '@mui/icons-material/Close';
 import { uploadContentImage, validateImageFile, formatFileSize } from '../../../services/imageService';
+import { resolveImageUrl } from '../../../utils';
 import type { FieldRendererProps } from './types';
 
 function ImageUploadField({ field, value, onChange }: FieldRendererProps) {
@@ -71,11 +72,6 @@ function ImageUploadField({ field, value, onChange }: FieldRendererProps) {
     setImageError(false);
   }, [value]);
 
-  const resolveImageSrc = (url: string) =>
-    url.startsWith('/api/')
-      ? `${(import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace('/v1', '') || 'http://localhost:3001'}/v1${url}`
-      : url;
-
   const renderPreview = () => {
     if (!stringValue) return null;
 
@@ -90,7 +86,7 @@ function ImageUploadField({ field, value, onChange }: FieldRendererProps) {
           </div>
         ) : (
           <img
-            src={resolveImageSrc(stringValue)}
+            src={resolveImageUrl(stringValue)}
             alt="Preview"
             className="h-20 w-20 object-cover rounded-lg border border-gray-200"
             onError={() => setImageError(true)}

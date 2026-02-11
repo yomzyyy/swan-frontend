@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { formatNewsDate } from '../../../utils';
+import { formatNewsDate, resolveImageUrl } from '../../../utils';
 import type { News } from '../../../types';
 
 interface NewsCardProps {
@@ -10,7 +10,7 @@ const NewsCard = ({ article }: NewsCardProps) => (
   <div className="bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
     <div className="h-56 overflow-hidden">
       <img
-        src={article.image || ''}
+        src={resolveImageUrl(article.image || '')}
         alt={article.title}
         className="w-full h-full object-cover"
       />

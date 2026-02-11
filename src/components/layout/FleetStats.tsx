@@ -3,6 +3,7 @@ import DirectionsBoat from '@mui/icons-material/DirectionsBoat';
 import Language from '@mui/icons-material/Language';
 import Public from '@mui/icons-material/Public';
 import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
+import { resolveImageUrl } from '../../utils';
 import type { FleetStatsContent } from '../../types';
 
 const DEFAULT_BG_IMAGE = 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920';
@@ -94,7 +95,7 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
       {/* Optional background image overlay */}
       <div className="absolute inset-0 opacity-20">
         <img
-          src={backgroundImage}
+          src={resolveImageUrl(backgroundImage)}
           alt="Background"
           className="w-full h-full object-cover"
         />

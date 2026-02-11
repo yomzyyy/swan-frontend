@@ -31,7 +31,7 @@ const HomePage = () => {
   return (
     <>
       <Hero heroText={homeContent.heroText} />
-      <About />
+      <About tabContent={homeContent.contentTabs} />
       <FeaturedFleet />
       <FleetStats fleetStats={homeContent.fleetStats} />
       <Services services={homeContent.services} />

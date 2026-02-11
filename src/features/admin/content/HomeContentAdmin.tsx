@@ -10,13 +10,35 @@ import type { PageContent } from '../../../types';
 import type { HomeContent, HeroTextContent } from '../../../types';
 import type { FieldDefinition } from '../../../components/admin/fields';
 
+interface TabDefinition {
+  key: string;
+  label: string;
+  fields: FieldDefinition[];
+}
+
 interface SectionConfig {
   key: string;
   title: string;
   description: string;
   isCustomModal?: boolean;
   fields?: FieldDefinition[];
+  useTabs?: boolean;
+  tabs?: TabDefinition[];
 }
+
+const TAB_FIELDS: FieldDefinition[] = [
+  { key: 'badge', label: 'Badge Text', type: 'text' },
+  { key: 'title', label: 'Title', type: 'text' },
+  { key: 'body', label: 'Body Text', type: 'textarea', rows: 6 },
+  { key: 'image', label: 'Image', type: 'image' },
+  {
+    key: 'stats', label: 'Statistics', type: 'array-objects', itemLabel: 'Stat',
+    fields: [
+      { key: 'number', label: 'Number', type: 'text' },
+      { key: 'label', label: 'Label', type: 'text' }
+    ]
+  }
+];
 
 const SECTIONS: SectionConfig[] = [
   {
@@ -74,6 +96,17 @@ const SECTIONS: SectionConfig[] = [
       { key: 'phone', label: 'Phone', type: 'text' },
       { key: 'phone2', label: 'Phone 2', type: 'text' },
       { key: 'email', label: 'Email', type: 'text' }
+    ]
+  },
+  {
+    key: 'contentTabs',
+    title: 'Content Tabs',
+    description: 'Heritage, Innovation, and Sustainability tabs',
+    useTabs: true,
+    tabs: [
+      { key: 'heritage', label: 'Heritage', fields: TAB_FIELDS },
+      { key: 'innovation', label: 'Innovation', fields: TAB_FIELDS },
+      { key: 'sustainability', label: 'Sustainability', fields: TAB_FIELDS }
     ]
   }
 ];
@@ -196,7 +229,8 @@ function HomeContentAdmin() {
           isOpen={!!editingSection}
           onClose={() => setEditingSection(null)}
           title={`Edit ${editingSection.title}`}
-          fields={editingSection.fields}
+          fields={editingSection.useTabs ? undefined : editingSection.fields}
+          tabs={editingSection.useTabs ? editingSection.tabs : undefined}
           data={getModalData()}
           onSave={handleSave}
           isSaving={isSaving}

@@ -48,6 +48,7 @@ export interface HomeContent {
   fleetStats: FleetStatsContent;
   services: ServicesContent;
   getInTouch: GetInTouchContent;
+  contentTabs: ContentTabsContent;
 }
 
 // About page content
@@ -120,6 +121,7 @@ export interface ContentTab {
   badge: string;
   title: string;
   body: string;
+  image: string;
   stats: ContentTabStat[];
 }
 

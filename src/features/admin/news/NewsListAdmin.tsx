@@ -4,7 +4,7 @@ import { AdminTable, ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { getAllArticles, deleteArticle } from './newsAdminService';
 import { useApiQuery } from '../../../hooks';
-import { formatNewsDate } from '../../../utils';
+import { formatNewsDate, resolveImageUrl } from '../../../utils';
 import type { News } from '../../../types';
 import type { TableColumn } from '../../../types';
 
@@ -83,7 +83,7 @@ function NewsListAdmin() {
       accessor: 'image',
       render: (article) => (
         <img
-          src={article.image || ''}
+          src={resolveImageUrl(article.image || '')}
           alt={article.title}
           className="w-16 h-10 object-cover rounded"
         />

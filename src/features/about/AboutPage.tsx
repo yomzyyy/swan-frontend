@@ -7,7 +7,7 @@ import Groups from '@mui/icons-material/Groups';
 import Build from '@mui/icons-material/Build';
 import FactCheck from '@mui/icons-material/FactCheck';
 import { useInView, useCountingAnimation } from '../../hooks';
-import { parseStatNumber, deepMerge } from '../../utils';
+import { parseStatNumber, deepMerge, resolveImageUrl } from '../../utils';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { aboutDefaults } from '../../constants/aboutDefaults';
 import { api } from '../../services/api';
@@ -230,7 +230,7 @@ const AboutPage = () => {
             <div>
               <div className="relative">
                 <img
-                  src={whyChooseUs.image}
+                  src={resolveImageUrl(whyChooseUs.image)}
                   alt="Maritime Professional"
                   className="w-full h-96 object-cover shadow-lg"
                 />
@@ -247,7 +247,7 @@ const AboutPage = () => {
             {/* Left Column - Image */}
             <div className="order-2 lg:order-1">
               <img
-                src={content.lgpPillars.image}
+                src={resolveImageUrl(content.lgpPillars.image)}
                 alt="LPG Vessel"
                 className="w-full h-[500px] object-cover shadow-lg"
               />
@@ -333,7 +333,7 @@ const AboutPage = () => {
           {/* Left Column - Image (50%) */}
           <div className="relative h-[500px]">
             <img
-              src={missionVisionData[currentView].image}
+              src={resolveImageUrl(missionVisionData[currentView].image)}
               alt={missionVisionData[currentView].title}
               className="w-full h-full object-cover"
             />
@@ -396,7 +396,7 @@ const AboutPage = () => {
           <div className="text-center mb-12 group">
             <div className="mb-4 overflow-hidden inline-block relative">
               <img
-                src={president.image}
+                src={resolveImageUrl(president.image)}
                 alt={president.name}
                 className="w-64 h-80 object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -416,7 +416,7 @@ const AboutPage = () => {
               <div key={index} className="text-center group">
                 <div className="mb-4 overflow-hidden relative">
                   <img
-                    src={member.image}
+                    src={resolveImageUrl(member.image)}
                     alt={member.name}
                     className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -451,7 +451,7 @@ const AboutPage = () => {
               >
                 {client.logo ? (
                   <img
-                    src={client.logo}
+                    src={resolveImageUrl(client.logo)}
                     alt={client.name}
                     className="max-h-16 object-contain"
                   />

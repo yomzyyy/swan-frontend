@@ -4,6 +4,7 @@ import GetInTouch from '../../components/layout/GetInTouch';
 import { servicesDefaults } from '../../constants/servicesDefaults';
 import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
+import { resolveImageUrl } from '../../utils';
 import type { ServicesPageContent } from '../../types';
 
 const ServicesPage = () => {
@@ -30,7 +31,7 @@ const ServicesPage = () => {
       <div
         className="relative h-96 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${content.hero.backgroundImage})`,
+          backgroundImage: `url(${resolveImageUrl(content.hero.backgroundImage)})`,
         }}
       >
         <div className="absolute inset-0 bg-black/30"></div>
@@ -61,7 +62,7 @@ const ServicesPage = () => {
               >
                 {/* Background Image */}
                 <img
-                  src={service.image}
+                  src={resolveImageUrl(service.image)}
                   alt={service.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 z-0"
                 />

@@ -135,10 +135,6 @@ const FleetPage = () => {
 
       <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-            Our Fleet
-          </h2>
-
           <FleetFilterBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}

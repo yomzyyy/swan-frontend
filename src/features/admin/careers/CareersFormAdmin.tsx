@@ -33,7 +33,14 @@ function CareersFormAdmin() {
         try {
           const career = await careersService.getById(id as string);
           if (career) {
-            setFormData(career as unknown as CareerFormData);
+            const c = career as unknown as CareerFormData;
+            setFormData({
+              title: c.title,
+              department: c.department,
+              location: c.location,
+              type: c.type,
+              description: c.description,
+            });
           } else {
             setError('Career not found');
           }

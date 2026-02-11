@@ -9,3 +9,4 @@ export {
   validateQuoteForm,
 } from './formValidation';
 export { parseStatNumber } from './numberParser';
+export { resolveImageUrl } from './imageUrl';

@@ -1,4 +1,37 @@
-import type { HomeContent } from '../types/content';
+import type { HomeContent, ContentTabsContent } from '../types/content';
+
+const contentTabsDefaults: ContentTabsContent = {
+  heritage: {
+    badge: 'Our Story',
+    title: 'Delivering Trusted LPG Maritime Services for Over 30 Years',
+    body: 'For over three decades, Swan Shipping Corporation has been committed to providing safe, efficient, and cost-effective LPG maritime services to customers worldwide.\n',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    stats: [
+      { number: '19', label: 'Modern Vessels' },
+      { number: '50+', label: 'Global Ports' }
+    ]
+  },
+  innovation: {
+    badge: 'Our Approach',
+    title: 'Modern Solutions for Evolving Maritime Needs',
+    body: 'We continuously adapt to changing maritime regulations and industry standards by integrating modern ship management practices, technical expertise, and operational efficiency to support safe LPG transport worldwide.',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    stats: [
+      { number: '19', label: 'Modern Vessels' },
+      { number: '50+', label: 'Global Ports' }
+    ]
+  },
+  sustainability: {
+    badge: 'Our Commitment',
+    title: 'Responsible Operations for Safer Seas',
+    body: 'Swan Shipping Corporation is committed to responsible maritime operations by promoting safety, regulatory compliance, and environmentally conscious practices across all vessel management activities.',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    stats: [
+      { number: '19', label: 'Modern Vessels' },
+      { number: '50+', label: 'Global Ports' }
+    ]
+  }
+};
 
 export const homeDefaults: HomeContent = {
   heroText: {
@@ -83,5 +116,6 @@ export const homeDefaults: HomeContent = {
     phone: '+63-2-85268718 to 19',
     phone2: '+63-2-85239830',
     email: 'info@swan-manila.com'
-  }
+  },
+  contentTabs: contentTabsDefaults
 };

@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
-import { formatNewsDate } from '../../utils';
+import { formatNewsDate, resolveImageUrl } from '../../utils';
 import { SkeletonArticle } from '../../components/skeletons';
 import type { News } from '../../types';
 
@@ -53,7 +53,7 @@ const ArticlePage = () => {
           {/* Featured Image */}
           <div className="mb-8">
             <img
-              src={article.image || ''}
+              src={resolveImageUrl(article.image || '')}
               alt={article.title}
               className="w-full h-auto object-cover"
             />
@@ -129,7 +129,7 @@ const ArticlePage = () => {
                   >
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={relatedArticle.image || ''}
+                        src={resolveImageUrl(relatedArticle.image || '')}
                         alt={relatedArticle.title}
                         className="w-full h-full object-cover"
                       />

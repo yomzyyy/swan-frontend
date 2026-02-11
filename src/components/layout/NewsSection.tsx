@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { formatNewsDate } from '../../utils';
+import { formatNewsDate, resolveImageUrl } from '../../utils';
 import { ActionButton } from '../common';
 import type { News } from '../../types';
 
@@ -53,7 +53,7 @@ const NewsSection = () => {
               {/* Image Thumbnail */}
               <div className="w-44 h-44 flex-shrink-0">
                 <img
-                  src={article.image || ''}
+                  src={resolveImageUrl(article.image || '')}
                   alt={article.title}
                   className="w-full h-full object-cover"
                 />

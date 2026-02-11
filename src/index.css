@@ -46,3 +46,18 @@ h1, h2, h3, h4, h5, h6 {
 .animate-fadeInSlide {
   animation: fadeInSlide 0.6s ease-out;
 }
+
+/* Subtle scrollbar for dark panels */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}

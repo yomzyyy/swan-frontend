@@ -30,6 +30,7 @@ const TAB_FIELDS: FieldDefinition[] = [
   { key: 'badge', label: 'Badge Text', type: 'text' },
   { key: 'title', label: 'Title', type: 'text' },
   { key: 'body', label: 'Body Text', type: 'textarea', rows: 6 },
+  { key: 'image', label: 'Image', type: 'image' },
   {
     key: 'stats', label: 'Statistics', type: 'array-objects', itemLabel: 'Stat',
     fields: [

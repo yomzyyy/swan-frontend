@@ -97,7 +97,11 @@ export const api = {
     update: (id: string, data: Partial<Fleet>): Promise<AxiosResponse<ApiResponse<Fleet>>> =>
       apiClient.put(`/api/fleet/${id}`, data),
     delete: (id: string): Promise<AxiosResponse<void>> =>
-      apiClient.delete(`/api/fleet/${id}`)
+      apiClient.delete(`/api/fleet/${id}`),
+    uploadImage: (formData: FormData): Promise<AxiosResponse<ApiResponse<{ imageUrl: string }>>> =>
+      apiClient.post('/api/fleet/images/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
   },
 
   careers: {

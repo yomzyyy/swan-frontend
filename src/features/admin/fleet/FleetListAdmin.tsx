@@ -4,6 +4,7 @@ import { AdminTable, ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { fleetService } from '../../../services/adminCrudService';
 import { useApiQuery } from '../../../hooks';
+import { resolveImageUrl } from '../../../utils';
 import type { Fleet } from '../../../types';
 import type { TableColumn } from '../../../types';
 
@@ -87,7 +88,7 @@ function FleetListAdmin() {
       accessor: 'image',
       render: (vessel) => (
         <img
-          src={vessel.image}
+          src={resolveImageUrl(vessel.image)}
           alt={vessel.name}
           className="w-16 h-10 object-cover rounded"
         />

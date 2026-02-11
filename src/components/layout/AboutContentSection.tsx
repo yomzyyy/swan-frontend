@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { aboutDefaults } from '../../constants/aboutDefaults';
-import { deepMerge } from '../../utils';
+import { deepMerge, resolveImageUrl } from '../../utils';
 import { api } from '../../services/api';
 import type { ContentTabsContent } from '../../types';
 
@@ -108,7 +108,7 @@ const AboutContentSection = ({
         <div className="h-full">
           <div className="overflow-hidden shadow-2xl relative h-full">
             <img
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800"
+              src={resolveImageUrl(tabContent[activeTab].image)}
               alt="Modern building"
               className="w-full h-full object-cover"
             />
@@ -133,11 +133,13 @@ const AboutContentSection = ({
               {tabContent[activeTab].title}
             </h3>
 
-            <p className="text-gray-300 leading-relaxed mb-auto text-lg whitespace-pre-line">
-              {tabContent[activeTab].body}
-            </p>
+            <div className="flex-1 min-h-0 overflow-y-auto pr-2 custom-scrollbar">
+              <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-line">
+                {tabContent[activeTab].body}
+              </p>
+            </div>
 
-            <div className="grid grid-cols-2 gap-8 mt-8">
+            <div className="grid grid-cols-2 gap-8 mt-8 shrink-0">
               {tabContent[activeTab].stats.map((stat, index) => (
                 <div key={index}>
                   <div className="text-4xl font-extrabold text-blue-500 mb-2">

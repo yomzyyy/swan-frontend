@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createArticle, updateArticle, getArticleById } from './newsAdminService';
 import { uploadNewsImage, validateImageFile } from '../../../services/imageService';
 import { FormFileUpload } from '../../../components/forms';
+import { resolveImageUrl } from '../../../utils';
 import type { FileChangeEvent } from '../../../components/forms/FormFileUpload';
 
 interface NewsFormData {
@@ -51,9 +52,14 @@ function NewsFormAdmin() {
             // Convert publishedAt timestamp to date string for input
             const dateStr = new Date(article.publishedAt!).toISOString().split('T')[0];
             setFormData({
-              ...article,
-              image: article.image || '',
+              title: article.title,
+              slug: article.slug,
               date: dateStr,
+              category: article.category,
+              image: article.image || '',
+              excerpt: article.excerpt,
+              content: article.content,
+              hashtags: article.hashtags || [],
             });
           } else {
             setError('Article not found');
@@ -319,7 +325,7 @@ function NewsFormAdmin() {
                 {formData.image && (
                   <div className="mt-2">
                     <img
-                      src={formData.image}
+                      src={resolveImageUrl(formData.image)}
                       alt="Preview"
                       className="w-32 h-20 object-cover rounded"
                       onError={(e: SyntheticEvent<HTMLImageElement>) => {

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import ActionButton from '../common/ActionButton';
 import { homeDefaults } from '../../constants/homeDefaults';
+import { resolveImageUrl } from '../../utils';
 import type { ServicesContent } from '../../types';
 
 interface ServicesProps {
@@ -35,7 +36,7 @@ const Services = ({ services: servicesProp = {} }: ServicesProps) => {
             >
               {/* Background Image */}
               <img
-                src={service.image}
+                src={resolveImageUrl(service.image)}
                 alt={service.title}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 z-0"
               />

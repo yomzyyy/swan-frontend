@@ -59,6 +59,26 @@ export const uploadContentImage = async (file: File): Promise<ImageUploadResult>
   }
 };
 
+export const uploadFleetImage = async (file: File): Promise<ImageUploadResult> => {
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await api.fleet.uploadImage(formData);
+
+    return {
+      success: true,
+      imageUrl: response.data.data.imageUrl
+    };
+  } catch (error) {
+    console.error('Failed to upload fleet image:', error);
+    return {
+      success: false,
+      error: (error as Error).message || 'Failed to upload image. Please try again.'
+    };
+  }
+};
+
 export const uploadNewsImage = async (imageFile: File, altText = ''): Promise<ImageUploadResult> => {
   try {
     const formData = new FormData();
