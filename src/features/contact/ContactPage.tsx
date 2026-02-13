@@ -6,6 +6,8 @@ import Email from '@mui/icons-material/Email';
 import { validateContactForm, validateJobForm, validateQuoteForm } from '../../utils';
 import type { ContactFormData, JobFormData, QuoteFormData } from '../../utils/formValidation';
 import type { FileChangeEvent } from '../../components/forms/FormFileUpload';
+import { SEO } from '../../components/common';
+import { PAGE_SEO } from '../../constants/seo';
 import GeneralContactForm from './components/GeneralContactForm';
 import ContactJobForm from './components/ContactJobForm';
 import QuoteRequestForm from './components/QuoteRequestForm';
@@ -77,6 +79,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO {...PAGE_SEO.CONTACT} path="/contact" />
       {/* Hero Section */}
       <div
         className="relative h-96 bg-cover bg-center"

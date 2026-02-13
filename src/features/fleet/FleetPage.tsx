@@ -2,7 +2,9 @@ import { useState, useMemo } from 'react';
 import Search from '@mui/icons-material/Search';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
+import { SEO, PageError } from '../../components/common';
 import { SkeletonCard } from '../../components/skeletons';
+import { PAGE_SEO } from '../../constants/seo';
 import FleetHero from './components/FleetHero';
 import FleetFilterBar from './components/FleetFilterBar';
 import VesselCard from './components/VesselCard';
@@ -114,16 +116,10 @@ const FleetPage = () => {
       <div className="min-h-screen bg-grey-100">
         <FleetHero />
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-8 text-center">
-            <div className="text-2xl text-red-600 mb-4">{error}</div>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700
-                         transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
+          <PageError
+            message={error}
+            onRetry={() => window.location.reload()}
+          />
         </section>
       </div>
     );
@@ -131,6 +127,7 @@ const FleetPage = () => {
 
   return (
     <div className="min-h-screen bg-grey-100">
+      <SEO {...PAGE_SEO.FLEET} path="/fleet" />
       <FleetHero />
 
       <section className="py-12 md:py-16">

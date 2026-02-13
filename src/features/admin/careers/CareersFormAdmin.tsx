@@ -1,5 +1,6 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { friendlyError } from '../../../utils';
 import { careersService } from '../../../services/adminCrudService';
 import type { JobType } from '../../../types';
 
@@ -74,10 +75,10 @@ function CareersFormAdmin() {
       if (result.success) {
         navigate('/admin/careers');
       } else {
-        setError(result.error);
+        setError(friendlyError(result.error));
       }
     } catch (err) {
-      setError('An error occurred while saving the career');
+      setError(friendlyError((err as Error).message || 'An error occurred while saving'));
       console.error(err);
     } finally {
       setLoading(false);

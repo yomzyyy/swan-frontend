@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Pagination } from '@mui/material';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
+import { PageError, SEO } from '../../components/common';
 import { SkeletonCard } from '../../components/skeletons';
+import { PAGE_SEO } from '../../constants/seo';
 import NewsSidebar from './components/NewsSidebar';
 import NewsCard from './components/NewsCard';
 import type { News } from '../../types';
@@ -62,14 +64,20 @@ const NewsPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-24">
-        <div className="text-2xl text-red-600">{error}</div>
+      <div className="min-h-screen bg-gray-50 pt-24">
+        <PageError
+          message={error}
+          onRetry={() => window.location.reload()}
+          backTo="/"
+          backLabel="Go Home"
+        />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white pt-24">
+      <SEO {...PAGE_SEO.NEWS} path="/news" />
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
           <NewsSidebar

@@ -4,7 +4,7 @@ import Edit from '@mui/icons-material/Edit';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import { getAboutContent, saveAboutContent } from './contentAdminService';
 import { aboutDefaults } from '../../../constants/aboutDefaults';
-import { deepMerge } from '../../../utils';
+import { deepMerge, friendlyError } from '../../../utils';
 import { EditSectionModal } from '../../../components/admin';
 import type { PageContent } from '../../../types';
 import type { AboutContent } from '../../../types';
@@ -217,7 +217,7 @@ function AboutContentAdmin() {
       toast.success(`${editingSection!.title} updated successfully!`);
       setEditingSection(null);
     } else {
-      toast.error(result.error || 'Failed to save');
+      toast.error(friendlyError(result.error || 'Failed to save'));
     }
 
     setIsSaving(false);

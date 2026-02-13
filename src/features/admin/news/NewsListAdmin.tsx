@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { AdminTable, ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { getAllArticles, deleteArticle } from './newsAdminService';
@@ -36,7 +37,8 @@ function NewsListAdmin() {
         setDeleteConfirmOpen(false);
         setArticleToDelete(null);
       } else {
-        alert('Failed to delete article: ' + result.error);
+        toast.error(result.error || 'Failed to delete article');
+        setDeleteConfirmOpen(false);
       }
     }
   };

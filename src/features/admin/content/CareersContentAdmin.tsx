@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import Edit from '@mui/icons-material/Edit';
 import OpenInNew from '@mui/icons-material/OpenInNew';
-import { getServicesContent, saveServicesContent } from './contentAdminService';
-import { servicesDefaults } from '../../../constants/servicesDefaults';
+import { getCareersContent, saveCareersContent } from './contentAdminService';
+import { careersDefaults } from '../../../constants/careersDefaults';
 import { deepMerge, friendlyError } from '../../../utils';
 import { EditSectionModal } from '../../../components/admin';
 import type { PageContent } from '../../../types';
-import type { ServicesPageContent } from '../../../types';
+import type { CareersPageContent } from '../../../types';
 import type { FieldDefinition } from '../../../components/admin/fields';
 
 interface SectionConfig {
@@ -27,25 +27,31 @@ const SECTIONS: SectionConfig[] = [
     ]
   },
   {
-    key: 'services',
-    title: 'Service Cards',
-    description: 'Section title and service card items',
+    key: 'joinTeam',
+    title: 'Join Our Team',
+    description: 'Title, subtitle, descriptions, and CTA button text',
+    fields: [
+      { key: 'title', label: 'Title', type: 'text' },
+      { key: 'subtitle', label: 'Subtitle', type: 'text' },
+      { key: 'description1', label: 'Description Paragraph 1', type: 'textarea' },
+      { key: 'description2', label: 'Description Paragraph 2', type: 'textarea' },
+      { key: 'ctaText', label: 'CTA Button Text', type: 'text' }
+    ]
+  },
+  {
+    key: 'opportunities',
+    title: 'Career Opportunities',
+    description: 'Section title, description, and empty state messages',
     fields: [
       { key: 'title', label: 'Section Title', type: 'text' },
-      {
-        key: 'items', label: 'Services', type: 'array-objects', itemLabel: 'Service',
-        fields: [
-          { key: 'title', label: 'Title', type: 'text' },
-          { key: 'description', label: 'Description', type: 'textarea' },
-          { key: 'image', label: 'Image', type: 'image' },
-          { key: 'category', label: 'Category', type: 'text' }
-        ]
-      }
+      { key: 'description', label: 'Section Description', type: 'textarea' },
+      { key: 'noPositionsMessage', label: 'No Positions Message', type: 'textarea' },
+      { key: 'noMatchMessage', label: 'No Match Message', type: 'textarea' }
     ]
   }
 ];
 
-function ServicesContentAdmin() {
+function CareersContentAdmin() {
   const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState<SectionConfig | null>(null);
@@ -57,19 +63,19 @@ function ServicesContentAdmin() {
 
   const loadContent = async () => {
     setLoading(true);
-    const data = await getServicesContent();
+    const data = await getCareersContent();
     setContent(data);
     setLoading(false);
   };
 
-  const getMergedContent = (): ServicesPageContent => {
-    return deepMerge(servicesDefaults, content as Partial<ServicesPageContent> | null);
+  const getMergedContent = (): CareersPageContent => {
+    return deepMerge(careersDefaults, content as Partial<CareersPageContent> | null);
   };
 
   const getModalData = (): Record<string, unknown> => {
     if (!editingSection) return {};
     const merged = getMergedContent();
-    return (merged[editingSection.key as keyof ServicesPageContent] as unknown as Record<string, unknown>) || {};
+    return (merged[editingSection.key as keyof CareersPageContent] as unknown as Record<string, unknown>) || {};
   };
 
   const handleEdit = (section: SectionConfig) => {
@@ -80,7 +86,7 @@ function ServicesContentAdmin() {
     setIsSaving(true);
 
     const dataToSave = { [editingSection!.key]: editedData };
-    const result = await saveServicesContent(dataToSave);
+    const result = await saveCareersContent(dataToSave);
 
     if (result.success) {
       await loadContent();
@@ -106,11 +112,11 @@ function ServicesContentAdmin() {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Services Page Content</h1>
-          <p className="text-gray-600 mt-1">Manage all sections of the Services page</p>
+          <h1 className="text-3xl font-bold text-gray-900">Careers Page Content</h1>
+          <p className="text-gray-600 mt-1">Manage all sections of the Careers page</p>
         </div>
         <a
-          href="/services"
+          href="/careers"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#207dff] hover:underline"
@@ -156,4 +162,4 @@ function ServicesContentAdmin() {
   );
 }
 
-export default ServicesContentAdmin;
+export default CareersContentAdmin;

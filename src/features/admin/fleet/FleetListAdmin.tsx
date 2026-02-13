@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { AdminTable, ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { fleetService } from '../../../services/adminCrudService';
@@ -36,7 +37,8 @@ function FleetListAdmin() {
         setDeleteConfirmOpen(false);
         setVesselToDelete(null);
       } else {
-        alert('Failed to delete vessel: ' + result.error);
+        toast.error(result.error || 'Failed to delete vessel');
+        setDeleteConfirmOpen(false);
       }
     }
   };

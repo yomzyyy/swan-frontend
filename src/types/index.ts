@@ -44,6 +44,10 @@ export type {
   ContentTab,
   ContentTabsContent,
   AboutContent,
+  CareersHeroContent,
+  JoinTeamContent,
+  OpportunitiesContent,
+  CareersPageContent,
   ServicesHeroContent,
   ServicesPageContent,
 } from './content';
@@ -52,3 +56,5 @@ export type {
   TableColumn,
   SortOrder,
 } from './components';
+
+export type { SEOProps } from './seo';

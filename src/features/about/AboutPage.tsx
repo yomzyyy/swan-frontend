@@ -8,8 +8,10 @@ import Build from '@mui/icons-material/Build';
 import FactCheck from '@mui/icons-material/FactCheck';
 import { useInView, useCountingAnimation } from '../../hooks';
 import { parseStatNumber, deepMerge, resolveImageUrl } from '../../utils';
+import { SEO } from '../../components/common';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { aboutDefaults } from '../../constants/aboutDefaults';
+import { PAGE_SEO } from '../../constants/seo';
 import { api } from '../../services/api';
 import type { RefObject } from 'react';
 import type { AboutContent, IntroStat, Pillar } from '../../types';
@@ -131,6 +133,7 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO {...PAGE_SEO.ABOUT} path="/about" />
       {/* Hero Section */}
       <div
         className="relative h-96 bg-cover bg-center"

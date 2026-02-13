@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { SEO } from '../../components/common';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { servicesDefaults } from '../../constants/servicesDefaults';
+import { PAGE_SEO } from '../../constants/seo';
 import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
 import { resolveImageUrl } from '../../utils';
@@ -27,6 +29,7 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO {...PAGE_SEO.SERVICES} path="/services" />
       {/* Hero Section */}
       <div
         className="relative h-96 bg-cover bg-center"

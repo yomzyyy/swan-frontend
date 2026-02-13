@@ -75,6 +75,10 @@ function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
       title: 'Services Page',
       path: '/admin/content/services',
     },
+    {
+      title: 'Careers Page',
+      path: '/admin/content/careers',
+    },
   ];
 
   return (

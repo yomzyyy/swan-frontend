@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { ConfirmDialog } from '../../../components/admin';
 import { SkeletonTable } from '../../../components/skeletons';
 import { careersService } from '../../../services/adminCrudService';
@@ -34,7 +35,8 @@ function CareersListAdmin() {
         setDeleteConfirmOpen(false);
         setCareerToDelete(null);
       } else {
-        alert('Failed to delete career: ' + result.error);
+        toast.error(result.error || 'Failed to delete career');
+        setDeleteConfirmOpen(false);
       }
     }
   };

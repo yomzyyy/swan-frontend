@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { AdminSidebar, AdminHeader } from '../../components/admin';
 import { PageLoader } from '../../components/common';
 
@@ -12,6 +13,10 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
+      <Helmet>
+        <title>Admin | SWAN Shipping</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <AdminSidebar isOpen={sidebarOpen} onClose={closeSidebar} />
 
       <div

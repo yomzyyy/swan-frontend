@@ -4,7 +4,7 @@ import Edit from '@mui/icons-material/Edit';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import { getHomeContent, saveHomeContent } from './contentAdminService';
 import { homeDefaults } from '../../../constants/homeDefaults';
-import { deepMerge } from '../../../utils';
+import { deepMerge, friendlyError } from '../../../utils';
 import { EditSectionModal, HeroSectionModal } from '../../../components/admin';
 import type { PageContent } from '../../../types';
 import type { HomeContent, HeroTextContent } from '../../../types';
@@ -154,7 +154,7 @@ function HomeContentAdmin() {
       await loadContent();
       toast.success('Hero text updated successfully!');
     } else {
-      toast.error(result.error || 'Failed to save hero text');
+      toast.error(friendlyError(result.error || 'Failed to save hero text'));
     }
     setIsSaving(false);
   };
@@ -170,7 +170,7 @@ function HomeContentAdmin() {
       toast.success(`${editingSection!.title} updated successfully!`);
       setEditingSection(null);
     } else {
-      toast.error(result.error || 'Failed to save');
+      toast.error(friendlyError(result.error || 'Failed to save'));
     }
 
     setIsSaving(false);

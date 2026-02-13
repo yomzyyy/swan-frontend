@@ -6,6 +6,7 @@ import CheckCircle from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import BrokenImage from '@mui/icons-material/BrokenImage';
 import Close from '@mui/icons-material/Close';
+import { friendlyError } from '../../../utils';
 import { fleetService } from '../../../services/adminCrudService';
 import { uploadFleetImage, validateImageFile, formatFileSize } from '../../../services/imageService';
 import { resolveImageUrl } from '../../../utils';
@@ -156,10 +157,10 @@ function FleetFormAdmin() {
       if (result.success) {
         navigate('/admin/fleet');
       } else {
-        setError(result.error || 'Failed to save vessel');
+        setError(friendlyError(result.error || 'Failed to save vessel'));
       }
     } catch (err) {
-      setError('An error occurred while saving');
+      setError(friendlyError((err as Error).message || 'An error occurred while saving'));
       console.error(err);
     } finally {
       setIsSubmitting(false);

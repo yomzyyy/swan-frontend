@@ -20,6 +20,7 @@ const ArticlePage = lazy(() => import('./features/news/ArticlePage'));
 const PrivacyPolicy = lazy(() => import('./features/legal/PrivacyPolicyPage'));
 const TermsConditions = lazy(() => import('./features/legal/TermsPage'));
 const CookiePolicy = lazy(() => import('./features/legal/CookiePolicyPage'));
+const NotFoundPage = lazy(() => import('./features/notfound/NotFoundPage'));
 
 // Admin pages - lazy loaded
 const LoginPage = lazy(() => import('./features/admin/LoginPage'));
@@ -33,6 +34,7 @@ const CareersFormAdmin = lazy(() => import('./features/admin/careers/CareersForm
 const AboutContentAdmin = lazy(() => import('./features/admin/content/AboutContentAdmin'));
 const HomeContentAdmin = lazy(() => import('./features/admin/content/HomeContentAdmin'));
 const ServicesContentAdmin = lazy(() => import('./features/admin/content/ServicesContentAdmin'));
+const CareersContentAdmin = lazy(() => import('./features/admin/content/CareersContentAdmin'));
 
 function App() {
   return (
@@ -75,7 +77,11 @@ function App() {
               <Route path="content/home" element={<HomeContentAdmin />} />
               <Route path="content/about" element={<AboutContentAdmin />} />
               <Route path="content/services" element={<ServicesContentAdmin />} />
+              <Route path="content/careers" element={<CareersContentAdmin />} />
             </Route>
+
+            {/* 404 catch-all */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ErrorBoundary>
       </AuthProvider>

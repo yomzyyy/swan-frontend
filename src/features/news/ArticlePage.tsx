@@ -1,6 +1,9 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
+import { SEO } from '../../components/common';
+import { ENV } from '../../config/env';
 import { formatNewsDate, resolveImageUrl } from '../../utils';
 import { SkeletonArticle } from '../../components/skeletons';
 import type { News } from '../../types';
@@ -41,10 +44,39 @@ const ArticlePage = () => {
     return <Navigate to="/news" replace />;
   }
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.excerpt,
+    image: article.image ? resolveImageUrl(article.image) : undefined,
+    datePublished: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
+    dateModified: new Date(article.updatedAt).toISOString(),
+    author: { '@type': 'Organization', name: 'SWAN Shipping Corporation' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'SWAN Shipping Corporation',
+      logo: { '@type': 'ImageObject', url: `${ENV.SITE_URL}/swan-logo.png` },
+    },
+    mainEntityOfPage: `${ENV.SITE_URL}/news/${article.slug}`,
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title={article.title}
+        description={article.excerpt}
+        path={`/news/${article.slug}`}
+        ogType="article"
+        ogImage={article.image ? resolveImageUrl(article.image) : undefined}
+        publishedTime={article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined}
+        modifiedTime={new Date(article.updatedAt).toISOString()}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+      </Helmet>
       <div className="pt-32 pb-12">
-        <div className="max-w-4xl mx-auto px-8">
+        <article className="max-w-4xl mx-auto px-8">
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-black uppercase mb-8 leading-tight">
             {article.title}
@@ -71,7 +103,7 @@ const ArticlePage = () => {
           {/* Metadata: Author and Date */}
           <div className="mb-4">
             <p className="text-sm text-gray-700">
-              by admin, {formatNewsDate(article.publishedAt)}
+              by admin, <time dateTime={article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined}>{formatNewsDate(article.publishedAt)}</time>
             </p>
           </div>
 
@@ -107,7 +139,7 @@ const ArticlePage = () => {
               Back to Home
             </Link>
           </div>
-        </div>
+        </article>
       </div>
 
       {recentArticles.length > 0 && (

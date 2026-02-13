@@ -1,6 +1,7 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { api } from '../../services/api';
+import { PageError, SEO } from '../../components/common';
 import { FormFileUpload } from '../../components/forms';
 import type { FileChangeEvent } from '../../components/forms/FormFileUpload';
 import type { Career } from '../../types';
@@ -145,16 +146,12 @@ const JobApplicationForm = () => {
 
   if (error && !job) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-2xl text-red-600 mb-4">{error}</div>
-          <Link
-            to="/careers"
-            className="inline-block bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
-          >
-            Back to Careers
-          </Link>
-        </div>
+      <div className="min-h-screen bg-gray-50">
+        <PageError
+          message={error}
+          backTo="/careers"
+          backLabel="Back to Careers"
+        />
       </div>
     );
   }
@@ -180,6 +177,12 @@ const JobApplicationForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title={job ? `Apply for ${job.title}` : 'Job Application'}
+        description={job ? `Apply for the ${job.title} position at SWAN Shipping Corporation.` : 'Submit your job application to SWAN Shipping Corporation.'}
+        path={`/careers/apply/${id}`}
+        noIndex
+      />
       <div className="bg-gradient-to-br from-[#001E3C] to-[#003C78] text-white py-16 pt-28">
         <div className="max-w-4xl mx-auto px-8">
           <Link

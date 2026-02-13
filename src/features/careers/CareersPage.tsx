@@ -1,12 +1,33 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
 import { SkeletonCard } from '../../components/skeletons';
-import { ActionButton } from '../../components/common';
+import { ActionButton, PageError, SEO } from '../../components/common';
+import { careersDefaults } from '../../constants/careersDefaults';
+import { PAGE_SEO } from '../../constants/seo';
+import { deepMerge, resolveImageUrl } from '../../utils';
 import type { Career } from '../../types';
+import type { CareersPageContent } from '../../types';
 
 const CareersPage = () => {
+  const [content, setContent] = useState<CareersPageContent>(careersDefaults);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.content.get('careers');
+        const apiData = response.data.data;
+        if (apiData) {
+          setContent(deepMerge(careersDefaults, apiData as unknown as Partial<CareersPageContent>));
+        }
+      } catch {
+        // Silently fall back to defaults
+      }
+    };
+    fetchContent();
+  }, []);
+
   const { data, loading, error } = useApiQuery<Career[]>(
     () => api.careers.getAll().then(r => r.data?.data || []),
     { initialData: [] }
@@ -51,19 +72,25 @@ const CareersPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-2xl text-red-600">{error}</div>
+      <div className="min-h-screen bg-white">
+        <PageError
+          message={error}
+          onRetry={() => window.location.reload()}
+          backTo="/"
+          backLabel="Go Home"
+        />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO {...PAGE_SEO.CAREERS} path="/careers" />
       {/* Hero Section */}
       <div
         className="relative h-96 bg-cover bg-center"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
+          backgroundImage: `url(${resolveImageUrl(content.hero.backgroundImage)})`,
         }}
       >
         <div className="absolute inset-0 bg-black/30"></div>
@@ -76,23 +103,28 @@ const CareersPage = () => {
             {/* Left Side - Title */}
             <div>
               <h1 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-                Join Our Team at<br />SWAN Shipping
+                {content.joinTeam.title.split('\n').map((line, i, arr) => (
+                  <span key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
               </h1>
             </div>
 
             {/* Right Side - Description and Button */}
             <div>
               <h2 className="font-heading text-xl font-semibold text-gray-900 mb-4">
-                Are you ready to take your career to the next level?
+                {content.joinTeam.subtitle}
               </h2>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                At SWAN Shipping, we are a dynamic and innovative logistics and maritime company committed to excellence, sustainability, and delivering exceptional customer experiences.
+                {content.joinTeam.description1}
               </p>
               <p className="text-gray-700 mb-8 leading-relaxed">
-                We believe our greatest asset is our people, and we're dedicated to fostering a culture of growth, inclusion, and innovation.
+                {content.joinTeam.description2}
               </p>
               <ActionButton onClick={scrollToCareers}>
-                Open Positions
+                {content.joinTeam.ctaText}
               </ActionButton>
             </div>
           </div>
@@ -105,10 +137,10 @@ const CareersPage = () => {
           {/* Section Header */}
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Career Opportunities
+              {content.opportunities.title}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We're always on the lookout for passionate and talented individuals to join our team. Roles include:
+              {content.opportunities.description}
             </p>
           </div>
 
@@ -167,8 +199,8 @@ const CareersPage = () => {
               </h3>
               <p className="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
                 {jobOpenings.length === 0
-                  ? "We don't have any open positions at the moment, but we're always interested in hearing from talented professionals."
-                  : "Try adjusting your filters to see more opportunities."
+                  ? content.opportunities.noPositionsMessage
+                  : content.opportunities.noMatchMessage
                 }
               </p>
               {selectedLocation || selectedCategory || selectedType ? (

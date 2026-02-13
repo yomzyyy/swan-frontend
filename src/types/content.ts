@@ -142,6 +142,32 @@ export interface AboutContent {
   contentTabs: ContentTabsContent;
 }
 
+// Careers page content
+export interface CareersHeroContent {
+  backgroundImage: string;
+}
+
+export interface JoinTeamContent {
+  title: string;
+  subtitle: string;
+  description1: string;
+  description2: string;
+  ctaText: string;
+}
+
+export interface OpportunitiesContent {
+  title: string;
+  description: string;
+  noPositionsMessage: string;
+  noMatchMessage: string;
+}
+
+export interface CareersPageContent {
+  hero: CareersHeroContent;
+  joinTeam: JoinTeamContent;
+  opportunities: OpportunitiesContent;
+}
+
 // Services page content
 export interface ServicesHeroContent {
   backgroundImage: string;

@@ -1,5 +1,6 @@
 import axios, { type AxiosResponse } from 'axios';
 import { ENV } from '../config/env';
+import { friendlyError } from '../utils/friendlyError';
 import type { ApiResponse, LoginResponse } from '../types/api';
 import type { News, Fleet, Career, HeroImage, PageContent } from '../types/models';
 
@@ -45,11 +46,11 @@ apiClient.interceptors.response.use(
       window.location.href = '/system-access';
     }
 
-    const message = error.response?.data?.message ||
+    const rawMessage = error.response?.data?.message ||
                    error.message ||
                    'An error occurred';
 
-    return Promise.reject(new Error(message));
+    return Promise.reject(new Error(friendlyError(rawMessage)));
   }
 );
 

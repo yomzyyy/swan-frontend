@@ -1,6 +1,10 @@
+import { SEO } from '../../components/common';
+import { PAGE_SEO } from '../../constants/seo';
+
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-24">
+      <SEO {...PAGE_SEO.PRIVACY} path="/privacy-policy" />
       <div className="max-w-4xl mx-auto px-8">
         <div className="mb-12">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-4">

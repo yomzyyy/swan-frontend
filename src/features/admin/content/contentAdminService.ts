@@ -93,6 +93,29 @@ export const clearServicesContent = async (): Promise<ServiceResult<PageContent>
   }
 };
 
+export const getCareersContent = async (): Promise<PageContent | null> => {
+  try {
+    const response = await api.content.get('careers');
+    return response.data.data;
+  } catch (error) {
+    console.error('Failed to fetch careers content:', error);
+    return null;
+  }
+};
+
+export const saveCareersContent = async (content: Record<string, unknown>): Promise<ServiceResult<PageContent>> => {
+  try {
+    const response = await api.content.update('careers', content);
+    return { success: true, data: response.data.data };
+  } catch (error) {
+    console.error('Failed to save careers content:', error);
+    return {
+      success: false,
+      error: (error as Error).message || 'Failed to save content'
+    };
+  }
+};
+
 export const getHomeContent = async (): Promise<PageContent | null> => {
   try {
     const response = await api.content.get('home');

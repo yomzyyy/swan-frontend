@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { SEO } from '../../components/common';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -37,6 +38,12 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#001E3C] via-[#0A2540] to-[#001E3C] flex items-center justify-center p-4">
+      <SEO
+        title="Admin Login"
+        description="SWAN Shipping Corporation admin system access."
+        path="/system-access"
+        noIndex
+      />
       <div className="w-full max-w-md">
 
         <div className="text-center mb-8">

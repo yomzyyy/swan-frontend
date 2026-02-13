@@ -2,6 +2,7 @@ import { useState, useEffect, type ChangeEvent, type FormEvent, type SyntheticEv
 import { useNavigate, useParams } from 'react-router-dom';
 import { createArticle, updateArticle, getArticleById } from './newsAdminService';
 import { uploadNewsImage, validateImageFile } from '../../../services/imageService';
+import { friendlyError } from '../../../utils';
 import { FormFileUpload } from '../../../components/forms';
 import { resolveImageUrl } from '../../../utils';
 import type { FileChangeEvent } from '../../../components/forms/FormFileUpload';
@@ -65,8 +66,7 @@ function NewsFormAdmin() {
             setError('Article not found');
           }
         } catch (err) {
-          const errorMessage = (err as Error).message || 'Failed to load article';
-          setError(`Failed to load article: ${errorMessage}`);
+          setError(friendlyError((err as Error).message || 'Failed to load article'));
           console.error('Error loading article:', err);
         }
       }
@@ -137,7 +137,7 @@ function NewsFormAdmin() {
         setImageUploading(false);
 
         if (!uploadResult.success) {
-          setError(uploadResult.error || 'Failed to upload image');
+          setError(friendlyError(uploadResult.error || 'Failed to upload image'));
           setIsSubmitting(false);
           return;
         }
@@ -169,10 +169,10 @@ function NewsFormAdmin() {
       if (result.success) {
         navigate('/admin/news');
       } else {
-        setError(result.error || 'Failed to save article');
+        setError(friendlyError(result.error || 'Failed to save article'));
       }
     } catch (err) {
-      setError('An error occurred while saving');
+      setError(friendlyError((err as Error).message || 'An error occurred while saving'));
       console.error(err);
     } finally {
       setIsSubmitting(false);

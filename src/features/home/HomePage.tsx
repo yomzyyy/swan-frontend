@@ -1,7 +1,9 @@
 import { api } from '../../services/api';
 import { homeDefaults } from '../../constants/homeDefaults';
+import { PAGE_SEO } from '../../constants/seo';
 import { deepMerge } from '../../utils';
 import { useApiQuery } from '../../hooks';
+import { SEO } from '../../components/common';
 import Hero from '../../components/layout/Hero';
 import About from '../../components/layout/About';
 import Services from '../../components/layout/Services';
@@ -30,6 +32,7 @@ const HomePage = () => {
 
   return (
     <>
+      <SEO {...PAGE_SEO.HOME} path="/" />
       <Hero heroText={homeContent.heroText} />
       <About tabContent={homeContent.contentTabs} />
       <FeaturedFleet />
