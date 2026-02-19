@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import { resolveImageUrl } from '../../utils';
 import SkeletonHero from '../skeletons/SkeletonHero';
 import { ROUTES } from '../../config/routes';
 import ActionButton from '../common/ActionButton';
@@ -48,9 +49,7 @@ const Hero = ({ heroText = {} }: HeroProps) => {
         const sortedImages = heroImages
           .sort((a, b) => a.position - b.position)
           .map((img) => ({
-            url: `${
-              import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1'
-            }${img.imageUrl}`,
+            url: resolveImageUrl(img.imageUrl),
             altText: img.altText
           }));
 

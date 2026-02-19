@@ -72,6 +72,10 @@ function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
       path: '/admin/content/about',
     },
     {
+      title: 'Fleet Page',
+      path: '/admin/content/fleet',
+    },
+    {
       title: 'Services Page',
       path: '/admin/content/services',
     },

@@ -168,6 +168,15 @@ export interface CareersPageContent {
   opportunities: OpportunitiesContent;
 }
 
+// Fleet page content
+export interface FleetHeroContent {
+  backgroundImage: string;
+}
+
+export interface FleetPageContent {
+  hero: FleetHeroContent;
+}
+
 // Services page content
 export interface ServicesHeroContent {
   backgroundImage: string;

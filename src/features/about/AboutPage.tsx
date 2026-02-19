@@ -138,7 +138,7 @@ const AboutPage = () => {
       <div
         className="relative h-96 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${heroImage})`,
+          backgroundImage: `url(${resolveImageUrl(heroImage)})`,
         }}
       >
         <div className="absolute inset-0 bg-black/30"></div>

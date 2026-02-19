@@ -44,6 +44,8 @@ export type {
   ContentTab,
   ContentTabsContent,
   AboutContent,
+  FleetHeroContent,
+  FleetPageContent,
   CareersHeroContent,
   JoinTeamContent,
   OpportunitiesContent,

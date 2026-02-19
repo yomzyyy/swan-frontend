@@ -78,7 +78,7 @@ const SECTIONS: SectionConfig[] = [
         fields: [
           { key: 'title', label: 'Title', type: 'text' },
           { key: 'description', label: 'Description', type: 'textarea' },
-          { key: 'image', label: 'Image URL', type: 'text' },
+          { key: 'image', label: 'Image', type: 'image' },
           { key: 'category', label: 'Category', type: 'text' }
         ]
       }

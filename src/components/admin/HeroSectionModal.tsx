@@ -8,11 +8,10 @@ import {
   deleteHeroImage,
 } from '../../features/admin/hero/heroAdminService';
 import { formatFileSize, validateImageFile } from '../../services/imageService';
+import { resolveImageUrl } from '../../utils';
 import FormFileUpload from '../forms/FormFileUpload';
 import ConfirmDialog from './ConfirmDialog';
 import type { HeroTextContent } from '../../types/content';
-
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3001/v1';
 
 interface HeroImageDisplay {
   position: number;
@@ -280,7 +279,7 @@ function HeroSectionModal({ isOpen, onClose, contentData, onSaveContent, isSavin
                       <div className="mb-4 border rounded-lg p-3 bg-white">
                         <p className="text-sm font-medium text-gray-700 mb-2">Current Image</p>
                         <img
-                          src={`${API_BASE}${current.imageUrl}`}
+                          src={resolveImageUrl(current.imageUrl || '')}
                           alt={current.altText}
                           className="w-full max-h-48 object-cover rounded mb-2"
                         />
@@ -359,7 +358,7 @@ function HeroSectionModal({ isOpen, onClose, contentData, onSaveContent, isSavin
                         </div>
                       ) : (
                         <img
-                          src={`${API_BASE}${image.imageUrl}`}
+                          src={resolveImageUrl(image.imageUrl || '')}
                           alt={image.altText}
                           className="w-full h-full object-cover"
                         />
