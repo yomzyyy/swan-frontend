@@ -1,6 +1,32 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../../services/api';
+import { servicesDefaults } from '../../constants/servicesDefaults';
+import { deepMerge } from '../../utils';
+import type { ServicesPageContent } from '../../types';
 
 const Footer = () => {
+  const [services, setServices] = useState(servicesDefaults.services.items);
+
+  useEffect(() => {
+    let stale = false;
+    const fetchServices = async () => {
+      try {
+        const response = await api.content.get('services');
+        if (stale) return;
+        const apiData = response.data.data;
+        if (apiData) {
+          const merged = deepMerge(servicesDefaults, apiData as unknown as Partial<ServicesPageContent>);
+          setServices(merged.services.items);
+        }
+      } catch {
+        // Silently fall back to defaults
+      }
+    };
+    fetchServices();
+    return () => { stale = true; };
+  }, []);
+
   return (
     <footer className="bg-[#1a2332] text-white">
 
@@ -95,46 +121,16 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-bold mb-6">Our Services</h4>
             <ul className="space-y-3">
-              <li>
-                <Link
-                  to="/services"
-                  className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
-                >
-                  Vessel Chartering
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/services"
-                  className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
-                >
-                  Terminal Operations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/services"
-                  className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
-                >
-                  Fleet Management
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/services"
-                  className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
-                >
-                  Safety Standards
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/services"
-                  className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
-                >
-                  24/7 Support
-                </Link>
-              </li>
+              {services.slice(0, 6).map((item, index) => (
+                <li key={`${item.title}-${index}`}>
+                  <Link
+                    to="/services"
+                    className="text-sm text-gray-400 hover:text-[#207dff] transition-colors duration-300"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -199,11 +195,11 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#207dff] transition-colors duration-300"
+                  className="px-4 py-2 bg-white/10 border border-white/20 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#207dff] transition-colors duration-300"
                 />
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-[#207dff] to-[#00bfff] px-6 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+                  className="bg-[#207dff] px-6 py-2 text-sm font-semibold hover:bg-[#1a6ad4] transition-colors duration-300"
                 >
                   Subscribe
                 </button>
