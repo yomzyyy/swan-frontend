@@ -55,10 +55,7 @@ const Footer = () => {
 
             <div className="flex flex-wrap gap-2">
               <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
-                ISO 9001
-              </span>
-              <span className="bg-white/10 px-3 py-1 rounded-full text-xs font-semibold border border-white/20">
-                IMO Certified
+                ISO 9001 Certified
               </span>
             </div>
           </div>
