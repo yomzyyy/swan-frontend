@@ -14,7 +14,8 @@ import { aboutDefaults } from '../../constants/aboutDefaults';
 import { PAGE_SEO } from '../../constants/seo';
 import { api } from '../../services/api';
 import type { RefObject } from 'react';
-import type { AboutContent, IntroStat, Pillar } from '../../types';
+import TeamMemberModal from './components/TeamMemberModal';
+import type { AboutContent, IntroStat, Pillar, TeamMember } from '../../types';
 
 type MuiIcon = typeof HealthAndSafety;
 
@@ -65,6 +66,7 @@ const StatItem = ({ stat, shouldAnimate }: StatItemProps) => {
 
 const AboutPage = () => {
   const [content, setContent] = useState<AboutContent>(aboutDefaults);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -396,7 +398,10 @@ const AboutPage = () => {
           </h2>
 
           {/* President - Prominent Display */}
-          <div className="text-center mb-12 group">
+          <div
+            className="text-center mb-12 group cursor-pointer"
+            onClick={() => setSelectedMember(president)}
+          >
             <div className="mb-4 overflow-hidden inline-block relative">
               <img
                 src={resolveImageUrl(president.image)}
@@ -416,7 +421,11 @@ const AboutPage = () => {
           {/* Team Members Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {teamMembers.map((member, index) => (
-              <div key={index} className="text-center group">
+              <div
+                key={index}
+                className="text-center group cursor-pointer"
+                onClick={() => setSelectedMember(member)}
+              >
                 <div className="mb-4 overflow-hidden relative">
                   <img
                     src={resolveImageUrl(member.image)}
@@ -436,6 +445,12 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
+      <TeamMemberModal
+        member={selectedMember}
+        open={!!selectedMember}
+        onClose={() => setSelectedMember(null)}
+      />
 
       {/* Clients Section */}
       <section className="py-12 bg-white">

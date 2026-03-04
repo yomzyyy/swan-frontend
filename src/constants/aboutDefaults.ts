@@ -91,43 +91,51 @@ export const aboutDefaults: AboutContent = {
     president: {
       name: 'Bong Salas',
       position: 'President',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400'
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
+      description: ''
     },
     members: [
       {
         name: 'Capt Ermer C. Magbanua',
         position: 'General Manager',
-        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+        description: ''
       },
       {
         name: 'Capt Joseph N. San Pedro',
         position: 'DPA',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'
+        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+        description: ''
       },
       {
         name: 'CE Abel B. Cataroja',
         position: 'Technical Manager',
-        image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400'
+        image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400',
+        description: ''
       },
       {
         name: 'Capt Randy M. Lacorte',
         position: 'Marine Manager',
-        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400'
+        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+        description: ''
       },
       {
         name: 'Ms Beth D. Ramirez',
         position: 'Admin',
-        image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400'
+        image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
+        description: ''
       },
       {
         name: 'Ms Bel Mapalad',
         position: 'Accounting',
-        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400'
+        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400',
+        description: ''
       },
       {
         name: 'Ms Kriz B. Marquez',
         position: 'Fleet Personnel Officer',
-        image: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400'
+        image: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400',
+        description: ''
       }
     ]
   },

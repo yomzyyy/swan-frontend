@@ -120,7 +120,7 @@ function EditSectionModal({ isOpen, onClose, title, fields, tabs, data, onSave, 
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-6 py-2 bg-gradient-to-r from-[#207dff] to-[#00bfff] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+            className="px-6 py-2 bg-[#207dff] text-white rounded-lg font-semibold hover:bg-blue-600 transition-all duration-300 disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save Changes'}
           </button>

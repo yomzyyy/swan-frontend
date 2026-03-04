@@ -100,6 +100,7 @@ export interface TeamMember {
   name: string;
   position: string;
   image: string;
+  description: string;
 }
 
 export interface ManagementTeamContent {

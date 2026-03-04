@@ -123,7 +123,8 @@ const SECTIONS: SectionConfig[] = [
         fields: [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'position', label: 'Position', type: 'text' },
-          { key: 'image', label: 'Image', type: 'image' }
+          { key: 'image', label: 'Image', type: 'image' },
+          { key: 'description', label: 'Description', type: 'textarea', rows: 3 }
         ]
       },
       {
@@ -131,7 +132,8 @@ const SECTIONS: SectionConfig[] = [
         fields: [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'position', label: 'Position', type: 'text' },
-          { key: 'image', label: 'Image', type: 'image' }
+          { key: 'image', label: 'Image', type: 'image' },
+          { key: 'description', label: 'Description', type: 'textarea', rows: 3 }
         ]
       }
     ]
