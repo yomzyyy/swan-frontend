@@ -86,8 +86,10 @@ function FleetFormAdmin() {
   }, [id, isEditMode]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    // Number inputs still yield a string value from the DOM; coerce so the
+    // payload matches the backend schema (year must be a JSON number).
+    setFormData(prev => ({ ...prev, [name]: type === 'number' ? Number(value) : value }));
   };
 
   // Image upload handlers
