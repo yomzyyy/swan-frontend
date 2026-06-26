@@ -3,9 +3,10 @@ import type { ContentTabsContent } from '../../types';
 
 interface AboutProps {
   tabContent?: ContentTabsContent;
+  loading?: boolean;
 }
 
-const About = ({ tabContent }: AboutProps) => {
+const About = ({ tabContent, loading }: AboutProps) => {
   return (
     <section id="about" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-8">
@@ -19,6 +20,7 @@ const About = ({ tabContent }: AboutProps) => {
           }
           showSectionTitle={true}
           tabContent={tabContent}
+          loading={loading}
         />
       </div>
     </section>

@@ -105,6 +105,27 @@ export const homeDefaults: HomeContent = {
       }
     ]
   },
+  ourPeople: {
+    badge: 'Our People',
+    titleLine1: 'The Heart of Every Vessel',
+    titleLine2: 'Is Our Crew.',
+    description:
+      "Our people are our greatest competitive advantage. Filipino seafarers are globally recognized for competence, dedication, and adaptability — and Swan's crew welfare, training, and retention programs are built to keep the best aboard.",
+    stats: [
+      { number: '330', label: 'Crew Onboard' },
+      { number: '272', label: 'On Relief/Vacation' },
+      { number: '152', label: 'Officers Onboard' },
+      { number: '178', label: 'Ratings Onboard' }
+    ],
+    retentionTitle: 'Crew Retention Rates (Dec 2024)',
+    retentionRates: [
+      { label: 'Senior Officers', percentage: '88.5' },
+      { label: 'Junior Officers', percentage: '96.7' },
+      { label: 'Ratings', percentage: '98.1' }
+    ],
+    footnote:
+      'Industry-leading retention reflects the Swan culture: a workplace where people are valued, developed, and proud to return voyage after voyage. One Crew. One Standard. Driving Operational Excellence at Sea.'
+  },
   getInTouch: {
     badge: 'Get In Touch',
     title:

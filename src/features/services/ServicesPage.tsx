@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { SEO } from '../../components/common';
+import { SEO, ContentImage } from '../../components/common';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { servicesDefaults } from '../../constants/servicesDefaults';
 import { PAGE_SEO } from '../../constants/seo';
 import { deepMerge } from '../../utils';
 import { api } from '../../services/api';
-import { resolveImageUrl } from '../../utils';
 import type { ServicesPageContent } from '../../types';
 
 const ServicesPage = () => {
   const [content, setContent] = useState<ServicesPageContent>(servicesDefaults);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -22,6 +22,8 @@ const ServicesPage = () => {
         }
       } catch {
         // Silently fall back to defaults
+      } finally {
+        setLoading(false);
       }
     };
     fetchContent();
@@ -31,12 +33,8 @@ const ServicesPage = () => {
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.SERVICES} path="/services" />
       {/* Hero Section */}
-      <div
-        className="relative h-96 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${resolveImageUrl(content.hero.backgroundImage)})`,
-        }}
-      >
+      <div className="relative h-96">
+        <ContentImage src={content.hero.backgroundImage} alt="" loading={loading} fill />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
@@ -64,10 +62,13 @@ const ServicesPage = () => {
                 className="relative h-96 overflow-hidden group cursor-pointer block"
               >
                 {/* Background Image */}
-                <img
-                  src={resolveImageUrl(service.image)}
+                <ContentImage
+                  src={service.image}
                   alt={service.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 z-0"
+                  loading={loading}
+                  fill
+                  className="z-0"
+                  imgClassName="transition-transform duration-300 group-hover:scale-110"
                 />
 
                 {/* Dark Overlay */}

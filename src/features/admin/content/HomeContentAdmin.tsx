@@ -64,6 +64,33 @@ const SECTIONS: SectionConfig[] = [
     ]
   },
   {
+    key: 'ourPeople',
+    title: 'Our People',
+    description: 'Crew stats and retention rates',
+    fields: [
+      { key: 'badge', label: 'Eyebrow Label', type: 'text' },
+      { key: 'titleLine1', label: 'Title Line 1', type: 'text' },
+      { key: 'titleLine2', label: 'Title Line 2 (accent color)', type: 'text' },
+      { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+      {
+        key: 'stats', label: 'Stat Counters', type: 'array-objects', itemLabel: 'Stat',
+        fields: [
+          { key: 'number', label: 'Number', type: 'text' },
+          { key: 'label', label: 'Label', type: 'text' }
+        ]
+      },
+      { key: 'retentionTitle', label: 'Retention Panel Title', type: 'text' },
+      {
+        key: 'retentionRates', label: 'Retention Rates', type: 'array-objects', itemLabel: 'Rate',
+        fields: [
+          { key: 'label', label: 'Label', type: 'text' },
+          { key: 'percentage', label: 'Percentage (number only, e.g. 88.5)', type: 'text' }
+        ]
+      },
+      { key: 'footnote', label: 'Footnote', type: 'textarea', rows: 3 }
+    ]
+  },
+  {
     key: 'services',
     title: 'Services',
     description: 'Badge, title, and service cards with images',

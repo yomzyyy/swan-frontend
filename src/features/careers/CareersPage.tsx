@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import { useApiQuery } from '../../hooks';
 import { SkeletonCard } from '../../components/skeletons';
-import { ActionButton, PageError, SEO } from '../../components/common';
+import { ActionButton, ContentImage, PageError, SEO } from '../../components/common';
 import { careersDefaults } from '../../constants/careersDefaults';
 import { PAGE_SEO } from '../../constants/seo';
-import { deepMerge, resolveImageUrl } from '../../utils';
+import { deepMerge } from '../../utils';
 import type { Career } from '../../types';
 import type { CareersPageContent } from '../../types';
 
 const CareersPage = () => {
   const [content, setContent] = useState<CareersPageContent>(careersDefaults);
+  const [contentLoading, setContentLoading] = useState(true);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -23,6 +24,8 @@ const CareersPage = () => {
         }
       } catch {
         // Silently fall back to defaults
+      } finally {
+        setContentLoading(false);
       }
     };
     fetchContent();
@@ -87,12 +90,8 @@ const CareersPage = () => {
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.CAREERS} path="/careers" />
       {/* Hero Section */}
-      <div
-        className="relative h-96 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${resolveImageUrl(content.hero.backgroundImage)})`,
-        }}
-      >
+      <div className="relative h-96">
+        <ContentImage src={content.hero.backgroundImage} alt="" loading={contentLoading} fill />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 

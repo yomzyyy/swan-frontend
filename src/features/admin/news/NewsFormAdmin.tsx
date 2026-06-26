@@ -253,8 +253,12 @@ function NewsFormAdmin() {
               name="date"
               value={formData.date}
               onChange={handleChange}
+              // Open the native calendar when the field itself is clicked, not
+              // just the small icon. showPicker() needs a user gesture (a click
+              // qualifies); guarded for browsers that don't support it.
+              onClick={(e) => { try { e.currentTarget.showPicker?.(); } catch { /* picker unsupported */ } }}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent cursor-pointer"
             />
           </div>
 

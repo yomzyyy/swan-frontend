@@ -2,6 +2,7 @@ import { useState, useEffect, type ReactNode } from 'react';
 import { aboutDefaults } from '../../constants/aboutDefaults';
 import { deepMerge, resolveImageUrl } from '../../utils';
 import { api } from '../../services/api';
+import Spinner from '../common/Spinner';
 import type { ContentTabsContent } from '../../types';
 
 type TabKey = keyof ContentTabsContent;
@@ -11,16 +12,22 @@ interface AboutContentSectionProps {
   showSectionTitle?: boolean;
   containerClassName?: string;
   tabContent?: ContentTabsContent;
+  loading?: boolean;
 }
 
 const AboutContentSection = ({
   sectionTitle,
   showSectionTitle = true,
   containerClassName = '',
-  tabContent: tabContentProp
+  tabContent: tabContentProp,
+  loading: loadingProp
 }: AboutContentSectionProps) => {
   const [activeTab, setActiveTab] = useState<TabKey>('heritage');
   const [tabContent, setTabContent] = useState<ContentTabsContent>(aboutDefaults.contentTabs);
+  const [selfLoading, setSelfLoading] = useState(true);
+
+  // In prop mode the parent owns the loading state; otherwise we track our own fetch.
+  const imageLoading = tabContentProp ? Boolean(loadingProp) : selfLoading;
 
   useEffect(() => {
     if (tabContentProp) {
@@ -37,6 +44,8 @@ const AboutContentSection = ({
         }
       } catch {
         // Silently fall back to defaults
+      } finally {
+        setSelfLoading(false);
       }
     };
     fetchContent();
@@ -107,11 +116,17 @@ const AboutContentSection = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         <div className="h-full">
           <div className="overflow-hidden shadow-2xl relative h-full">
-            <img
-              src={resolveImageUrl(tabContent[activeTab].image)}
-              alt="Modern building"
-              className="w-full h-full object-cover"
-            />
+            {imageLoading ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <Spinner className="w-8 h-8" />
+              </div>
+            ) : (
+              <img
+                src={resolveImageUrl(tabContent[activeTab].image)}
+                alt="Modern building"
+                className="w-full h-full object-cover"
+              />
+            )}
             <div className="absolute top-6 left-6 flex gap-3">
               <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold text-gray-800">
                 EST. 1994

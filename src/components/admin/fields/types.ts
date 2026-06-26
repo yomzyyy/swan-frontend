@@ -8,6 +8,8 @@ export interface FieldDefinition {
   rows?: number;
   itemLabel?: string;
   fields?: FieldDefinition[];
+  /** When true, an `array-objects` field's rows can be reordered by drag-and-drop. */
+  sortable?: boolean;
 }
 
 export type FieldChangeHandler = (key: string, value: unknown) => void;

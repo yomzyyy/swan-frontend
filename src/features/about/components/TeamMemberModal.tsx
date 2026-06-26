@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Close from '@mui/icons-material/Close';
-import { resolveImageUrl } from '../../../utils';
+import { ContentImage } from '../../../components/common';
 import type { TeamMember } from '../../../types';
 
 interface TeamMemberModalProps {
@@ -57,10 +57,10 @@ export default function TeamMemberModal({ member, open, onClose }: TeamMemberMod
         <div className="p-6 flex flex-col sm:flex-row gap-6">
           {/* Image */}
           <div className="sm:w-48 flex-shrink-0">
-            <img
-              src={resolveImageUrl(member.image)}
+            <ContentImage
+              src={member.image}
               alt={member.name}
-              className="w-full h-64 sm:h-56 object-cover"
+              className="w-full h-64 sm:h-56"
             />
           </div>
 

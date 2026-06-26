@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 import ActionButton from '../common/ActionButton';
+import ContentImage from '../common/ContentImage';
 import { homeDefaults } from '../../constants/homeDefaults';
-import { resolveImageUrl } from '../../utils';
 import type { ServicesContent } from '../../types';
 
 interface ServicesProps {
   services?: Partial<ServicesContent>;
+  loading?: boolean;
 }
 
-const Services = ({ services: servicesProp = {} }: ServicesProps) => {
+const Services = ({ services: servicesProp = {}, loading = false }: ServicesProps) => {
   const badge = servicesProp.badge || homeDefaults.services.badge;
   const sectionTitle = servicesProp.title || homeDefaults.services.title;
   const services = servicesProp.items || homeDefaults.services.items;
@@ -35,10 +36,13 @@ const Services = ({ services: servicesProp = {} }: ServicesProps) => {
               className="relative h-64 overflow-hidden group cursor-pointer block"
             >
               {/* Background Image */}
-              <img
-                src={resolveImageUrl(service.image)}
+              <ContentImage
+                src={service.image}
                 alt={service.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 z-0"
+                loading={loading}
+                fill
+                className="z-0"
+                imgClassName="transition-transform duration-300 group-hover:scale-110"
               />
 
               {/* Dark Overlay */}

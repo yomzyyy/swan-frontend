@@ -42,11 +42,33 @@ export interface GetInTouchContent {
   email: string;
 }
 
+export interface PeopleStat {
+  number: string;
+  label: string;
+}
+
+export interface RetentionRate {
+  label: string;
+  percentage: string;
+}
+
+export interface OurPeopleContent {
+  badge: string;
+  titleLine1: string;
+  titleLine2: string;
+  description: string;
+  stats: PeopleStat[];
+  retentionTitle: string;
+  retentionRates: RetentionRate[];
+  footnote: string;
+}
+
 // Home page content (all sections)
 export interface HomeContent {
   heroText: HeroTextContent;
   fleetStats: FleetStatsContent;
   services: ServicesContent;
+  ourPeople: OurPeopleContent;
   getInTouch: GetInTouchContent;
   contentTabs: ContentTabsContent;
 }

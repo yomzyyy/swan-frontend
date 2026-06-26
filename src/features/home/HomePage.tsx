@@ -11,10 +11,11 @@ import FeaturedFleet from '../../components/layout/FeaturedFleet';
 import NewsSection from '../../components/layout/NewsSection';
 import GetInTouch from '../../components/layout/GetInTouch';
 import FleetStats from '../../components/layout/FleetStats';
+import OurPeople from '../../components/layout/OurPeople';
 import type { HomeContent } from '../../types';
 
 const HomePage = () => {
-  const { data } = useApiQuery<HomeContent>(
+  const { data, loading } = useApiQuery<HomeContent>(
     async () => {
       try {
         const response = await api.content.get('home');
@@ -34,10 +35,11 @@ const HomePage = () => {
     <>
       <SEO {...PAGE_SEO.HOME} path="/" />
       <Hero heroText={homeContent.heroText} />
-      <About tabContent={homeContent.contentTabs} />
+      <About tabContent={homeContent.contentTabs} loading={loading} />
       <FeaturedFleet />
       <FleetStats fleetStats={homeContent.fleetStats} />
-      <Services services={homeContent.services} />
+      <OurPeople ourPeople={homeContent.ourPeople} />
+      <Services services={homeContent.services} loading={loading} />
       <NewsSection />
       <GetInTouch getInTouch={homeContent.getInTouch} />
     </>

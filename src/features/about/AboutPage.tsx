@@ -8,7 +8,7 @@ import Build from '@mui/icons-material/Build';
 import FactCheck from '@mui/icons-material/FactCheck';
 import { useInView, useCountingAnimation } from '../../hooks';
 import { parseStatNumber, deepMerge, resolveImageUrl } from '../../utils';
-import { SEO } from '../../components/common';
+import { SEO, ContentImage, Spinner } from '../../components/common';
 import GetInTouch from '../../components/layout/GetInTouch';
 import { aboutDefaults } from '../../constants/aboutDefaults';
 import { PAGE_SEO } from '../../constants/seo';
@@ -66,6 +66,7 @@ const StatItem = ({ stat, shouldAnimate }: StatItemProps) => {
 
 const AboutPage = () => {
   const [content, setContent] = useState<AboutContent>(aboutDefaults);
+  const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   useEffect(() => {
@@ -78,6 +79,8 @@ const AboutPage = () => {
         }
       } catch {
         // Silently fall back to defaults
+      } finally {
+        setLoading(false);
       }
     };
     fetchContent();
@@ -90,6 +93,11 @@ const AboutPage = () => {
   const missionVisionData = content.missionVision;
   const president = content.managementTeam.president;
   const teamMembers = content.managementTeam.members;
+  // Always feature two photos up top: the president plus the next person in the
+  // list. The rest fill the grid below. Who appears second is controlled simply
+  // by ordering the (drag-sortable) members list in the admin.
+  const topLeaders = teamMembers.length > 0 ? [president, teamMembers[0]] : [president];
+  const gridMembers = teamMembers.slice(1);
   const clients = content.clients;
 
   // Map pillar data with hardcoded icons
@@ -137,12 +145,8 @@ const AboutPage = () => {
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.ABOUT} path="/about" />
       {/* Hero Section */}
-      <div
-        className="relative h-96 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${resolveImageUrl(heroImage)})`,
-        }}
-      >
+      <div className="relative h-96">
+        <ContentImage src={heroImage} alt="" loading={loading} fill />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
@@ -234,10 +238,11 @@ const AboutPage = () => {
             {/* Right Column - Image (50%) */}
             <div>
               <div className="relative">
-                <img
-                  src={resolveImageUrl(whyChooseUs.image)}
+                <ContentImage
+                  src={whyChooseUs.image}
                   alt="Maritime Professional"
-                  className="w-full h-96 object-cover shadow-lg"
+                  loading={loading}
+                  className="w-full h-96 shadow-lg"
                 />
               </div>
             </div>
@@ -251,10 +256,11 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Column - Image */}
             <div className="order-2 lg:order-1">
-              <img
-                src={resolveImageUrl(content.lgpPillars.image)}
+              <ContentImage
+                src={content.lgpPillars.image}
                 alt="LPG Vessel"
-                className="w-full h-[500px] object-cover shadow-lg"
+                loading={loading}
+                className="w-full h-[500px] shadow-lg"
               />
             </div>
 
@@ -337,10 +343,11 @@ const AboutPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Left Column - Image (50%) */}
           <div className="relative h-[500px]">
-            <img
-              src={resolveImageUrl(missionVisionData[currentView].image)}
+            <ContentImage
+              src={missionVisionData[currentView].image}
               alt={missionVisionData[currentView].title}
-              className="w-full h-full object-cover"
+              loading={loading}
+              fill
             />
           </div>
 
@@ -397,40 +404,49 @@ const AboutPage = () => {
             Management Team
           </h2>
 
-          {/* President - Prominent Display */}
-          <div
-            className="text-center mb-12 group cursor-pointer"
-            onClick={() => setSelectedMember(president)}
-          >
-            <div className="mb-4 overflow-hidden inline-block relative">
-              <img
-                src={resolveImageUrl(president.image)}
-                alt={president.name}
-                className="w-64 h-80 object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              {/* Shine overlay */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
-                              transition-transform duration-700 ease-out
-                              bg-gradient-to-r from-transparent via-white/30 to-transparent
-                              skew-x-12 pointer-events-none" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900">{president.name}</h3>
-            <p className="text-gray-500 font-medium">{president.position}</p>
+          {/* Featured Leaders - Prominent Display (president + next person) */}
+          <div className="flex flex-wrap justify-center gap-10 md:gap-16 mb-12">
+            {topLeaders.map((leader, index) => (
+              <div
+                key={index}
+                className="text-center group cursor-pointer"
+                onClick={() => setSelectedMember(leader)}
+              >
+                <div className="mb-4 overflow-hidden inline-block relative">
+                  <ContentImage
+                    src={leader.image}
+                    alt={leader.name}
+                    loading={loading}
+                    className="w-64 h-80"
+                    imgClassName="transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Shine overlay */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
+                                  transition-transform duration-700 ease-out
+                                  bg-gradient-to-r from-transparent via-white/30 to-transparent
+                                  skew-x-12 pointer-events-none" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">{leader.name}</h3>
+                <p className="text-gray-500 font-medium">{leader.position}</p>
+              </div>
+            ))}
           </div>
 
           {/* Team Members Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamMembers.map((member, index) => (
+            {gridMembers.map((member, index) => (
               <div
                 key={index}
                 className="text-center group cursor-pointer"
                 onClick={() => setSelectedMember(member)}
               >
                 <div className="mb-4 overflow-hidden relative">
-                  <img
-                    src={resolveImageUrl(member.image)}
+                  <ContentImage
+                    src={member.image}
                     alt={member.name}
-                    className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading={loading}
+                    className="w-full h-72"
+                    imgClassName="transition-transform duration-300 group-hover:scale-105"
                   />
                   {/* Shine overlay */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
@@ -467,7 +483,11 @@ const AboutPage = () => {
                 key={index}
                 className="flex items-center justify-center p-6 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
               >
-                {client.logo ? (
+                {loading ? (
+                  <div className="flex items-center justify-center h-12">
+                    <Spinner className="w-5 h-5" />
+                  </div>
+                ) : client.logo ? (
                   <img
                     src={resolveImageUrl(client.logo)}
                     alt={client.name}

@@ -128,7 +128,7 @@ const SECTIONS: SectionConfig[] = [
         ]
       },
       {
-        key: 'members', label: 'Team Members', type: 'array-objects', itemLabel: 'Member',
+        key: 'members', label: 'Team Members', type: 'array-objects', itemLabel: 'Member', sortable: true,
         fields: [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'position', label: 'Position', type: 'text' },
