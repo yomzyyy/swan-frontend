@@ -8,12 +8,10 @@ interface OurPeopleProps {
   ourPeople?: Partial<OurPeopleContent>;
 }
 
-// Brand colors (match the existing public-page palette / design system)
 const NAVY = '#0D2136';
 const ACCENT = '#2563eb';
 const TRACK = '#dbeafe';
 
-// One animated stat counter — the hook must be called per item, so this is its own component.
 interface AnimatedStatProps {
   value: string;
   label: string;
@@ -52,29 +50,23 @@ const OurPeople = ({ ourPeople: ourPeopleProp = {} }: OurPeopleProps) => {
   return (
     <section className="py-20" style={{ backgroundColor: '#f0f6ff' }}>
       <div ref={ref as RefObject<HTMLDivElement | null>} className="max-w-7xl mx-auto px-8">
-        {/* Eyebrow */}
         <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT }}>
           {badge}
         </p>
 
-        {/* Two-tone title */}
         <h2 className="text-4xl md:text-5xl font-black leading-tight mb-3">
           <span style={{ color: NAVY }}>{titleLine1}</span>
           <br />
           <span style={{ color: ACCENT }}>{titleLine2}</span>
         </h2>
 
-        {/* Accent rule */}
         <div className="w-16 h-1 mb-8" style={{ backgroundColor: ACCENT }} />
 
-        {/* Description */}
         <p className="text-gray-600 text-lg leading-relaxed max-w-3xl mb-16">
           {description}
         </p>
 
-        {/* Stats + retention */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Stat counters (2x2) */}
           <div className="grid grid-cols-2 gap-y-12 gap-x-8">
             {stats.map((stat, index) => (
               <AnimatedStat
@@ -86,7 +78,6 @@ const OurPeople = ({ ourPeople: ourPeopleProp = {} }: OurPeopleProps) => {
             ))}
           </div>
 
-          {/* Retention rates panel */}
           <div>
             <h3 className="text-base font-bold uppercase tracking-wider mb-6" style={{ color: NAVY }}>
               {retentionTitle}

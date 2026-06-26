@@ -23,10 +23,8 @@ interface PillarWithIcon extends Pillar {
   icon: MuiIcon;
 }
 
-// Hardcoded icons mapped by pillar index (MUI components can't serialize to DB)
 const PILLAR_ICONS: MuiIcon[] = [HealthAndSafety, Groups, Build, FactCheck];
 
-// StatItem Component - Displays animated statistics
 interface StatItemProps {
   stat: IntroStat;
   shouldAnimate: boolean;
@@ -38,14 +36,12 @@ const StatItem = ({ stat, shouldAnimate }: StatItemProps) => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Large Animated Number */}
       <div className="mb-6">
         <span className="text-6xl md:text-7xl font-black text-gray-900">
           {animatedNumber}{suffix}
         </span>
       </div>
 
-      {/* Category & Label */}
       <div className="text-center">
         <p
           className="text-sm font-bold uppercase tracking-wider mb-2"
@@ -78,7 +74,6 @@ const AboutPage = () => {
           setContent(deepMerge(aboutDefaults, apiData as unknown as Partial<AboutContent>));
         }
       } catch {
-        // Silently fall back to defaults
       } finally {
         setLoading(false);
       }
@@ -86,30 +81,23 @@ const AboutPage = () => {
     fetchContent();
   }, []);
 
-  // Derived data from content
   const heroImage = content.hero.backgroundImage;
   const intro = content.intro;
   const whyChooseUs = content.whyChooseUs;
   const missionVisionData = content.missionVision;
   const president = content.managementTeam.president;
   const teamMembers = content.managementTeam.members;
-  // Always feature two photos up top: the president plus the next person in the
-  // list. The rest fill the grid below. Who appears second is controlled simply
-  // by ordering the (drag-sortable) members list in the admin.
   const topLeaders = teamMembers.length > 0 ? [president, teamMembers[0]] : [president];
   const gridMembers = teamMembers.slice(1);
   const clients = content.clients;
 
-  // Map pillar data with hardcoded icons
   const lgpPillars: PillarWithIcon[] = content.lgpPillars.pillars.map((pillar, i) => ({
     ...pillar,
     icon: PILLAR_ICONS[i] || PILLAR_ICONS[0]
   }));
 
-  // Intersection observer for scroll-triggered animation
   const [statsRef, statsInView] = useInView({ threshold: 0.3 });
 
-  // Mission/Vision state
   const [currentView, setCurrentView] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -123,12 +111,10 @@ const AboutPage = () => {
     }, 300);
   };
 
-  // Carousel state for LPG pillars
   const [currentPillarIndex, setCurrentPillarIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isCarouselTransitioning, setIsCarouselTransitioning] = useState(false);
 
-  // Auto-rotate carousel every 4 seconds with fade animation
   useEffect(() => {
     const interval = setInterval(() => {
       setIsCarouselTransitioning(true);
@@ -144,32 +130,26 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.ABOUT} path="/about" />
-      {/* Hero Section */}
       <div className="relative h-96">
         <ContentImage src={heroImage} alt="" loading={loading} fill />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
-      {/* Main Title + Circular Stats Section - Combined */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-8">
-          {/* Label - Outside Grid */}
           <div className="mb-6">
             <span className="text-sm font-bold uppercase tracking-wider" style={{color: '#2563eb'}}>
               {intro.badge}
             </span>
           </div>
 
-          {/* Top Part: Title + Description (Side-by-Side) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-            {/* Left Column - Heading */}
             <div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 uppercase leading-tight">
                 {intro.title}
               </h1>
             </div>
 
-            {/* Right Column - Description */}
             <div className="space-y-4">
               {intro.paragraphs.map((paragraph, index) => (
                 <p key={index} className="text-base text-gray-900 leading-relaxed">
@@ -179,7 +159,6 @@ const AboutPage = () => {
             </div>
           </div>
 
-          {/* Bottom Part: Animated Stats */}
           <div
             ref={statsRef as RefObject<HTMLDivElement | null>}
             className="grid grid-cols-1 md:grid-cols-3 gap-16"
@@ -195,30 +174,24 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Why Owners Choose SWAN Section */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Text Content (50%) */}
             <div>
-              {/* Label */}
               <div className="mb-4">
                 <span className="text-sm font-bold uppercase tracking-wider" style={{color: '#2563eb'}}>
                   {whyChooseUs.badge}
                 </span>
               </div>
 
-              {/* Heading */}
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 uppercase">
                 {whyChooseUs.title}
               </h2>
 
-              {/* Intro Text */}
               <p className="text-base text-gray-600 leading-relaxed mb-6">
                 {whyChooseUs.description}
               </p>
 
-              {/* Achievement List */}
               <div className="space-y-3">
                 {whyChooseUs.bulletItems.map((item, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -235,7 +208,6 @@ const AboutPage = () => {
               </div>
             </div>
 
-            {/* Right Column - Image (50%) */}
             <div>
               <div className="relative">
                 <ContentImage
@@ -250,11 +222,9 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* LPG Management Approach Section - Our LPG Management Pillars */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left Column - Image */}
             <div className="order-2 lg:order-1">
               <ContentImage
                 src={content.lgpPillars.image}
@@ -264,14 +234,11 @@ const AboutPage = () => {
               />
             </div>
 
-            {/* Right Column - Title and Cards */}
             <div className="order-1 lg:order-2">
-              {/* Main Heading */}
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-12">
                 {content.lgpPillars.title}
               </h2>
 
-              {/* Cards Carousel */}
               <div
                 className="grid grid-cols-3 gap-4 mb-8 transition-opacity duration-300"
                 style={{ opacity: isCarouselTransitioning ? 0 : 1 }}
@@ -294,7 +261,6 @@ const AboutPage = () => {
                           border: '2px solid #e5e7eb'
                         }}
                       >
-                        {/* Icon */}
                         <div className="mb-4">
                           <div
                             className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -311,7 +277,6 @@ const AboutPage = () => {
                           </div>
                         </div>
 
-                        {/* Title */}
                         <h3
                           className="text-lg font-bold mb-2"
                           style={{
@@ -327,7 +292,6 @@ const AboutPage = () => {
                 })()}
               </div>
 
-              {/* Current Description */}
               <div>
                 <p className="text-base text-gray-600 leading-relaxed">
                   {lgpPillars[currentPillarIndex].description}
@@ -338,10 +302,8 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Mission/Vision Section */}
       <section className="relative">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          {/* Left Column - Image (50%) */}
           <div className="relative h-[500px]">
             <ContentImage
               src={missionVisionData[currentView].image}
@@ -351,25 +313,20 @@ const AboutPage = () => {
             />
           </div>
 
-          {/* Right Column - Content (50%) */}
           <div className="relative flex items-center px-12 md:px-16 lg:px-24 py-12 h-[500px]" style={{backgroundColor: '#0D2136'}}>
             <div className="transition-opacity duration-300" style={{ opacity: isTransitioning ? 0 : 1 }}>
-              {/* Title */}
               <h2 className="text-3xl md:text-4xl font-black mb-4 uppercase" style={{color: 'white'}}>
                 {missionVisionData[currentView].title}
               </h2>
 
-              {/* Subtitle */}
               <h3 className="text-xl md:text-2xl font-bold mb-6" style={{color: 'white'}}>
                 {missionVisionData[currentView].subtitle}
               </h3>
 
-              {/* Description */}
               <p className="text-base text-white/90 leading-relaxed mb-8">
                 {missionVisionData[currentView].description}
               </p>
 
-              {/* Navigation Buttons */}
               <div className="flex gap-4">
                 <button
                   onClick={() => handleViewChange(0)}
@@ -397,30 +354,27 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Management Team Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-12 text-center uppercase">
             Management Team
           </h2>
 
-          {/* Featured Leaders - Prominent Display (president + next person) */}
-          <div className="flex flex-wrap justify-center gap-10 md:gap-16 mb-12">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-12">
             {topLeaders.map((leader, index) => (
               <div
                 key={index}
-                className="text-center group cursor-pointer"
+                className="text-center group cursor-pointer w-full sm:w-72"
                 onClick={() => setSelectedMember(leader)}
               >
-                <div className="mb-4 overflow-hidden inline-block relative">
+                <div className="mb-4 overflow-hidden relative">
                   <ContentImage
                     src={leader.image}
                     alt={leader.name}
                     loading={loading}
-                    className="w-64 h-80"
+                    className="w-full aspect-[4/5]"
                     imgClassName="transition-transform duration-300 group-hover:scale-105"
                   />
-                  {/* Shine overlay */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
                                   transition-transform duration-700 ease-out
                                   bg-gradient-to-r from-transparent via-white/30 to-transparent
@@ -432,7 +386,6 @@ const AboutPage = () => {
             ))}
           </div>
 
-          {/* Team Members Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {gridMembers.map((member, index) => (
               <div
@@ -445,10 +398,9 @@ const AboutPage = () => {
                     src={member.image}
                     alt={member.name}
                     loading={loading}
-                    className="w-full h-72"
+                    className="w-full aspect-[4/5]"
                     imgClassName="transition-transform duration-300 group-hover:scale-105"
                   />
-                  {/* Shine overlay */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
                                   transition-transform duration-700 ease-out
                                   bg-gradient-to-r from-transparent via-white/30 to-transparent
@@ -468,15 +420,12 @@ const AboutPage = () => {
         onClose={() => setSelectedMember(null)}
       />
 
-      {/* Clients Section */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-8">
-          {/* Heading */}
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-8 text-center uppercase">
             Our Clients
           </h2>
 
-          {/* Logo Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
             {clients.map((client, index) => (
               <div
@@ -509,7 +458,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Get In Touch Section */}
       <GetInTouch bgColor="bg-white" />
     </div>
   );

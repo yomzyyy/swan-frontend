@@ -55,6 +55,10 @@ export type {
   CareersPageContent,
   ServicesHeroContent,
   ServicesPageContent,
+  ContactHeroContent,
+  ContactAboutContent,
+  ContactInfoContent,
+  ContactPageContent,
 } from './content';
 
 export type {

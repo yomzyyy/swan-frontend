@@ -3,11 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import LocationOn from '@mui/icons-material/LocationOn';
 import Phone from '@mui/icons-material/Phone';
 import Email from '@mui/icons-material/Email';
-import { validateContactForm, validateJobForm, validateQuoteForm } from '../../utils';
+import { validateContactForm, validateJobForm, validateQuoteForm, deepMerge } from '../../utils';
 import type { ContactFormData, JobFormData, QuoteFormData } from '../../utils/formValidation';
 import type { FileChangeEvent } from '../../components/forms/FormFileUpload';
-import { SEO } from '../../components/common';
+import { SEO, ContentImage } from '../../components/common';
 import { PAGE_SEO } from '../../constants/seo';
+import { api } from '../../services/api';
+import { contactDefaults } from '../../constants/contactDefaults';
+import type { ContactPageContent } from '../../types';
 import GeneralContactForm from './components/GeneralContactForm';
 import ContactJobForm from './components/ContactJobForm';
 import QuoteRequestForm from './components/QuoteRequestForm';
@@ -20,6 +23,24 @@ const ContactPage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [content, setContent] = useState<ContactPageContent>(contactDefaults);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await api.content.get('contact');
+        const apiData = response.data.data;
+        if (apiData) {
+          setContent(deepMerge(contactDefaults, apiData as unknown as Partial<ContactPageContent>));
+        }
+      } catch {
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContent();
+  }, []);
 
   useEffect(() => {
     const tab = searchParams.get('tab');
@@ -80,24 +101,18 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.CONTACT} path="/contact" />
-      {/* Hero Section */}
-      <div
-        className="relative h-96 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600)',
-        }}
-      >
+      <div className="relative h-96 bg-[#0D2136]">
+        <ContentImage src={content.hero.backgroundImage} alt="" loading={loading} fill />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
-      {/* About Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
           <div className="mb-12">
             <div className="flex items-center gap-4">
               <div className="w-12 h-0.5 bg-gray-900"></div>
               <span className="text-sm font-bold text-gray-900 uppercase tracking-wider">
-                About Us
+                {content.whyChooseUs.badge}
               </span>
             </div>
           </div>
@@ -105,29 +120,24 @@ const ContactPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-16">
             <div>
               <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight uppercase">
-                Maritime Excellence In LPG Shipping Services
+                {content.whyChooseUs.title}
               </h2>
             </div>
             <div className="flex items-center">
-              <p className="text-gray-700 text-base leading-relaxed">
-                From safe vessel operations to technical ship management and crew training, we offer
-                a wide range of products and services that meet the unique needs of the
-                LPG shipping industry.
+              <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                {content.whyChooseUs.description}
               </p>
             </div>
           </div>
 
-          {/* Contact Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div style={{backgroundColor: '#2d3748'}} className="p-10">
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <LocationOn sx={{ fontSize: 24, color: 'white' }} />
               </div>
               <h3 className="text-base font-bold mb-6 text-white">Address</h3>
-              <p className="text-white text-sm leading-relaxed">
-                3F S&L Building, 1500 Roxas Boulevard<br />
-                Ermita, Manila 1000<br />
-                Philippines
+              <p className="text-white text-sm leading-relaxed whitespace-pre-line">
+                {content.getInTouch.address}
               </p>
             </div>
 
@@ -135,10 +145,15 @@ const ContactPage = () => {
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <Phone sx={{ fontSize: 24, color: 'white' }} />
               </div>
-              <h3 className="text-base font-bold mb-6 text-white">Address</h3>
+              <h3 className="text-base font-bold mb-6 text-white">Phone</h3>
               <p className="text-white text-sm leading-relaxed">
-                +63-2-85268718 to 19<br />
-                +63-2-85239830
+                {content.getInTouch.phone}
+                {content.getInTouch.phone2 && (
+                  <>
+                    <br />
+                    {content.getInTouch.phone2}
+                  </>
+                )}
               </p>
             </div>
 
@@ -146,16 +161,15 @@ const ContactPage = () => {
               <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-6">
                 <Email sx={{ fontSize: 24, color: 'white' }} />
               </div>
-              <h3 className="text-base font-bold mb-6 text-white">Address</h3>
+              <h3 className="text-base font-bold mb-6 text-white">Email</h3>
               <p className="text-white text-sm leading-relaxed">
-                info@swan-manila.com
+                {content.getInTouch.email}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -247,7 +261,6 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Map Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-8">
           <div className="h-96 shadow-lg rounded">

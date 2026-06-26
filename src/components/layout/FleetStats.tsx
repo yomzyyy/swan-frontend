@@ -6,13 +6,14 @@ import { FLEET_STATS as DEFAULT_FLEET_STATS } from '../../constants/metadata';
 import { resolveImageUrl } from '../../utils';
 import type { FleetStatsContent } from '../../types';
 
-const DEFAULT_BG_IMAGE = 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920';
+const DEFAULT_BG_IMAGE = '';
 
 interface FleetStatsProps {
   fleetStats?: Partial<FleetStatsContent>;
+  loading?: boolean;
 }
 
-const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
+const FleetStats = ({ fleetStats: fleetStatsProp = {}, loading = false }: FleetStatsProps) => {
   const backgroundImage = fleetStatsProp.backgroundImage || DEFAULT_BG_IMAGE;
   const FLEET_STATS = {
     totalVessels: Number(fleetStatsProp.totalVessels) || DEFAULT_FLEET_STATS.totalVessels,
@@ -28,16 +29,13 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
   });
 
   useEffect(() => {
-    const duration = 2000; // 2 seconds
+    const duration = 2000;
     const startTime = Date.now();
 
-    // Parse maxCapacity (15K -> 15000)
     const maxCapacityValue = parseInt(FLEET_STATS.maxCapacity) * 1000;
-    // Calculate fleet age (2017 is year built, so age = current year - year built)
     const currentYear = new Date().getFullYear();
     const avgFleetAgeValue = currentYear - FLEET_STATS.avgFleetAge;
 
-    // Random starting values
     const startValues = {
       totalVessels: Math.floor(Math.random() * 30),
       maxCapacity: Math.floor(Math.random() * 20000),
@@ -45,7 +43,6 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
       safetyCompliance: Math.floor(Math.random() * 100)
     };
 
-    // Final target values
     const targetValues = {
       totalVessels: FLEET_STATS.totalVessels,
       maxCapacity: maxCapacityValue,
@@ -58,11 +55,9 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Ease-out function for smooth deceleration
       const easeOutQuad = (t: number) => t * (2 - t);
       const easedProgress = easeOutQuad(progress);
 
-      // Calculate current values
       setAnimatedValues({
         totalVessels: Math.floor(
           startValues.totalVessels +
@@ -92,18 +87,18 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
 
   return (
     <div className="relative py-20" style={{backgroundColor: '#1a1a1a'}}>
-      {/* Optional background image overlay */}
       <div className="absolute inset-0 opacity-20">
-        <img
-          src={resolveImageUrl(backgroundImage)}
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
+        {!loading && backgroundImage && (
+          <img
+            src={resolveImageUrl(backgroundImage)}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
-          {/* Stat 1 */}
           <div className="flex flex-col items-center py-8 border-r border-gray-600 last:border-r-0">
             <DirectionsBoat sx={{ fontSize: 60, color: 'white', marginBottom: 2 }} />
             <div className="text-5xl font-extrabold mb-3" style={{color: '#2563eb'}}>
@@ -114,7 +109,6 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
             </div>
           </div>
 
-          {/* Stat 2 */}
           <div className="flex flex-col items-center py-8 border-r border-gray-600 last:border-r-0">
             <Language sx={{ fontSize: 60, color: 'white', marginBottom: 2 }} />
             <div className="text-5xl font-extrabold mb-3" style={{color: '#2563eb'}}>
@@ -125,7 +119,6 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
             </div>
           </div>
 
-          {/* Stat 3 */}
           <div className="flex flex-col items-center py-8 border-r border-gray-600 last:border-r-0">
             <Public sx={{ fontSize: 60, color: 'white', marginBottom: 2 }} />
             <div className="text-5xl font-extrabold mb-3" style={{color: '#2563eb'}}>
@@ -136,7 +129,6 @@ const FleetStats = ({ fleetStats: fleetStatsProp = {} }: FleetStatsProps) => {
             </div>
           </div>
 
-          {/* Stat 4 */}
           <div className="flex flex-col items-center py-8">
             <DirectionsBoat sx={{ fontSize: 60, color: 'white', marginBottom: 2 }} />
             <div className="text-5xl font-extrabold mb-3" style={{color: '#2563eb'}}>

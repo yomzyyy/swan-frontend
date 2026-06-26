@@ -1,6 +1,3 @@
-// CMS content section types — precise shapes for known content structures
-// These match the default constants in src/constants/
-
 export interface HeroTextContent {
   title: string;
   description: string;
@@ -63,7 +60,6 @@ export interface OurPeopleContent {
   footnote: string;
 }
 
-// Home page content (all sections)
 export interface HomeContent {
   heroText: HeroTextContent;
   fleetStats: FleetStatsContent;
@@ -73,7 +69,6 @@ export interface HomeContent {
   contentTabs: ContentTabsContent;
 }
 
-// About page content
 export interface AboutHeroContent {
   backgroundImage: string;
 }
@@ -165,7 +160,6 @@ export interface AboutContent {
   contentTabs: ContentTabsContent;
 }
 
-// Careers page content
 export interface CareersHeroContent {
   backgroundImage: string;
 }
@@ -191,7 +185,6 @@ export interface CareersPageContent {
   opportunities: OpportunitiesContent;
 }
 
-// Fleet page content
 export interface FleetHeroContent {
   backgroundImage: string;
 }
@@ -200,7 +193,6 @@ export interface FleetPageContent {
   hero: FleetHeroContent;
 }
 
-// Services page content
 export interface ServicesHeroContent {
   backgroundImage: string;
 }
@@ -208,4 +200,27 @@ export interface ServicesHeroContent {
 export interface ServicesPageContent {
   hero: ServicesHeroContent;
   services: ServicesContent;
+}
+
+export interface ContactHeroContent {
+  backgroundImage: string;
+}
+
+export interface ContactAboutContent {
+  badge: string;
+  title: string;
+  description: string;
+}
+
+export interface ContactInfoContent {
+  address: string;
+  phone: string;
+  phone2: string;
+  email: string;
+}
+
+export interface ContactPageContent {
+  hero: ContactHeroContent;
+  whyChooseUs: ContactAboutContent;
+  getInTouch: ContactInfoContent;
 }

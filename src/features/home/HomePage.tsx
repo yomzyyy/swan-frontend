@@ -37,7 +37,7 @@ const HomePage = () => {
       <Hero heroText={homeContent.heroText} />
       <About tabContent={homeContent.contentTabs} loading={loading} />
       <FeaturedFleet />
-      <FleetStats fleetStats={homeContent.fleetStats} />
+      <FleetStats fleetStats={homeContent.fleetStats} loading={loading} />
       <OurPeople ourPeople={homeContent.ourPeople} />
       <Services services={homeContent.services} loading={loading} />
       <NewsSection />

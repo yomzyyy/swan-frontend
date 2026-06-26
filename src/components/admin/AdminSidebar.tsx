@@ -83,6 +83,10 @@ function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
       title: 'Careers Page',
       path: '/admin/content/careers',
     },
+    {
+      title: 'Contact Page',
+      path: '/admin/content/contact',
+    },
   ];
 
   return (

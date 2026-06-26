@@ -28,8 +28,6 @@ interface SortableItemProps {
   children: ReactNode;
 }
 
-// A single draggable row. The drag listeners live on the handle only, so the
-// inputs inside stay fully editable (clicking a field never starts a drag).
 function SortableItem({ id, label, onDelete, children }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
@@ -73,16 +71,10 @@ function ArrayObjectsField({ field, value, onChange, renderField }: FieldRendere
   const items = (value as Record<string, unknown>[]) || [];
   const itemLabel = field.itemLabel || 'Item';
 
-  // Stable per-row ids for drag-and-drop. Deliberately kept OUT of the saved
-  // data (the backend schema rejects unknown properties); reordered in lockstep
-  // with `items` so drop animations stay smooth.
   const idCounter = useRef(0);
   const makeId = () => `dnd-${idCounter.current++}`;
   const [ids, setIds] = useState<string[]>(() => items.map(makeId));
 
-  // Re-sync only when the list is replaced wholesale from outside (e.g. the
-  // modal reopens with a different number of rows). Add/delete/reorder keep the
-  // ids in sync inline, so this never fires for those.
   useEffect(() => {
     if (ids.length !== items.length) {
       setIds(items.map(makeId));
@@ -140,7 +132,6 @@ function ArrayObjectsField({ field, value, onChange, renderField }: FieldRendere
     </button>
   );
 
-  // Non-sortable fields render exactly as before — no behavior change.
   if (!field.sortable) {
     return (
       <div className="mb-4">
@@ -167,8 +158,6 @@ function ArrayObjectsField({ field, value, onChange, renderField }: FieldRendere
     );
   }
 
-  // Guard against the single frame where a wholesale replace makes lengths
-  // disagree before the resync effect runs — use temp ids for that frame.
   const rowIds = ids.length === items.length ? ids : items.map((_, i) => `tmp-${i}`);
 
   return (

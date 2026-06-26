@@ -5,7 +5,7 @@ const contentTabsDefaults: ContentTabsContent = {
     badge: 'Our Story',
     title: 'Delivering Trusted LPG Maritime Services for Over 30 Years',
     body: 'For over three decades, Swan Shipping Corporation has been committed to providing safe, efficient, and cost-effective LPG maritime services to customers worldwide.\n',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    image: '',
     stats: [
       { number: '19', label: 'Modern Vessels' },
       { number: '50+', label: 'Global Ports' }
@@ -15,7 +15,7 @@ const contentTabsDefaults: ContentTabsContent = {
     badge: 'Our Approach',
     title: 'Modern Solutions for Evolving Maritime Needs',
     body: 'We continuously adapt to changing maritime regulations and industry standards by integrating modern ship management practices, technical expertise, and operational efficiency to support safe LPG transport worldwide.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    image: '',
     stats: [
       { number: '19', label: 'Modern Vessels' },
       { number: '50+', label: 'Global Ports' }
@@ -25,7 +25,7 @@ const contentTabsDefaults: ContentTabsContent = {
     badge: 'Our Commitment',
     title: 'Responsible Operations for Safer Seas',
     body: 'Swan Shipping Corporation is committed to responsible maritime operations by promoting safety, regulatory compliance, and environmentally conscious practices across all vessel management activities.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+    image: '',
     stats: [
       { number: '19', label: 'Modern Vessels' },
       { number: '50+', label: 'Global Ports' }
@@ -49,7 +49,7 @@ export const homeDefaults: HomeContent = {
     avgFleetAgeLabel: 'Avg Fleet Age',
     safetyCompliance: '100%',
     safetyComplianceLabel: 'Safety Compliance',
-    backgroundImage: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920'
+    backgroundImage: ''
   },
   services: {
     badge: 'Services We Provide',
@@ -60,7 +60,7 @@ export const homeDefaults: HomeContent = {
         description:
           'Maintenance and lifecycle management of cargo containment systems, reliquefaction plants, compressors, valves, and safety equipment.',
         image:
-          'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800',
+          '',
         category: 'LPG SHIPPING'
       },
       {
@@ -68,7 +68,7 @@ export const homeDefaults: HomeContent = {
         description:
           'Selection, training, and retention of LPG-competent officers and crew, including cargo operation and emergency response training.',
         image:
-          'https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=800',
+          '',
         category: 'LPG SHIPPING'
       },
       {
@@ -76,7 +76,7 @@ export const homeDefaults: HomeContent = {
         description:
           'Implementation of ISM, ISPS, and gas-specific operational procedures aligned with industry best practices.',
         image:
-          'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800',
+          '',
         category: 'LPG SHIPPING'
       },
       {
@@ -84,7 +84,7 @@ export const homeDefaults: HomeContent = {
         description:
           'LPG-specific PMS monitoring, spare parts planning, and dry-dock execution.',
         image:
-          'https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800',
+          '',
         category: 'LPG SHIPPING'
       },
       {
@@ -92,7 +92,7 @@ export const homeDefaults: HomeContent = {
         description:
           'Preparation and support for SIRE, CDI, Class, Flag, and terminal inspections.',
         image:
-          'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
+          '',
         category: 'LPG SHIPPING'
       },
       {
@@ -100,7 +100,7 @@ export const homeDefaults: HomeContent = {
         description:
           'Immediate response, investigation, and corrective action for LPG-related incidents and near-misses.',
         image:
-          'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800',
+          '',
         category: 'LPG SHIPPING'
       }
     ]

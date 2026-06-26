@@ -36,6 +36,7 @@ const HomeContentAdmin = lazy(() => import('./features/admin/content/HomeContent
 const ServicesContentAdmin = lazy(() => import('./features/admin/content/ServicesContentAdmin'));
 const CareersContentAdmin = lazy(() => import('./features/admin/content/CareersContentAdmin'));
 const FleetContentAdmin = lazy(() => import('./features/admin/content/FleetContentAdmin'));
+const ContactContentAdmin = lazy(() => import('./features/admin/content/ContactContentAdmin'));
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
               <Route path="content/services" element={<ServicesContentAdmin />} />
               <Route path="content/fleet" element={<FleetContentAdmin />} />
               <Route path="content/careers" element={<CareersContentAdmin />} />
+              <Route path="content/contact" element={<ContactContentAdmin />} />
             </Route>
 
             {/* 404 catch-all */}

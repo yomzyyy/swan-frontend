@@ -26,7 +26,6 @@ const AboutContentSection = ({
   const [tabContent, setTabContent] = useState<ContentTabsContent>(aboutDefaults.contentTabs);
   const [selfLoading, setSelfLoading] = useState(true);
 
-  // In prop mode the parent owns the loading state; otherwise we track our own fetch.
   const imageLoading = tabContentProp ? Boolean(loadingProp) : selfLoading;
 
   useEffect(() => {
@@ -43,7 +42,6 @@ const AboutContentSection = ({
           setTabContent(deepMerge(aboutDefaults.contentTabs, apiData.contentTabs as unknown as Partial<ContentTabsContent>));
         }
       } catch {
-        // Silently fall back to defaults
       } finally {
         setSelfLoading(false);
       }
@@ -51,7 +49,6 @@ const AboutContentSection = ({
     fetchContent();
   }, [tabContentProp]);
 
-  // Auto-rotate tabs every 5 seconds
   useEffect(() => {
     const tabs: TabKey[] = ['heritage', 'innovation', 'sustainability'];
     const interval = setInterval(() => {
@@ -75,11 +72,11 @@ const AboutContentSection = ({
         </div>
       )}
 
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8">
         <button
           onClick={() => setActiveTab('heritage')}
           style={activeTab === 'heritage' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
-          className={`px-8 py-3 font-semibold transition-all duration-300 ${
+          className={`w-full sm:w-auto px-8 py-3 font-semibold transition-all duration-300 ${
             activeTab === 'heritage'
               ? 'shadow-lg'
               : 'hover:bg-gray-100 shadow-md'
@@ -91,7 +88,7 @@ const AboutContentSection = ({
         <button
           onClick={() => setActiveTab('innovation')}
           style={activeTab === 'innovation' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
-          className={`px-8 py-3 font-semibold transition-all duration-300 ${
+          className={`w-full sm:w-auto px-8 py-3 font-semibold transition-all duration-300 ${
             activeTab === 'innovation'
               ? 'shadow-lg'
               : 'hover:bg-gray-100 shadow-md'
@@ -103,7 +100,7 @@ const AboutContentSection = ({
         <button
           onClick={() => setActiveTab('sustainability')}
           style={activeTab === 'sustainability' ? {backgroundColor: '#0D2136', color: 'white'} : {backgroundColor: 'white', color: '#2d3748'}}
-          className={`px-8 py-3 font-semibold transition-all duration-300 ${
+          className={`w-full sm:w-auto px-8 py-3 font-semibold transition-all duration-300 ${
             activeTab === 'sustainability'
               ? 'shadow-lg'
               : 'hover:bg-gray-100 shadow-md'
@@ -120,12 +117,14 @@ const AboutContentSection = ({
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                 <Spinner className="w-8 h-8" />
               </div>
-            ) : (
+            ) : tabContent[activeTab].image ? (
               <img
                 src={resolveImageUrl(tabContent[activeTab].image)}
                 alt="Modern building"
                 className="w-full h-full object-cover"
               />
+            ) : (
+              <div className="absolute inset-0 bg-gray-100" aria-hidden="true" />
             )}
             <div className="absolute top-6 left-6 flex gap-3">
               <span className="bg-white/90 backdrop-blur-sm px-4 py-2 border-l-4 border-blue-600 text-sm font-semibold text-gray-800">

@@ -50,7 +50,6 @@ function NewsFormAdmin() {
         try {
           const article = await getArticleById(id as string);
           if (article) {
-            // Convert publishedAt timestamp to date string for input
             const dateStr = new Date(article.publishedAt!).toISOString().split('T')[0];
             setFormData({
               title: article.title,
@@ -130,7 +129,6 @@ function NewsFormAdmin() {
     try {
       let imageUrl = formData.image;
 
-      // If upload mode and file selected, upload first
       if (imageMode === 'upload' && imageFile) {
         setImageUploading(true);
         const uploadResult = await uploadNewsImage(imageFile, imageAltText);
@@ -142,12 +140,10 @@ function NewsFormAdmin() {
           return;
         }
 
-        // Use uploaded image URL (full URL from backend)
         const baseUrl = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3001/v1';
         imageUrl = `${baseUrl}${(uploadResult.data as Record<string, string>).imageUrl}`;
       }
 
-      // Convert date string to timestamp for API
       const publishedAt = new Date(formData.date).getTime();
 
       const dataToSubmit = {
@@ -253,10 +249,7 @@ function NewsFormAdmin() {
               name="date"
               value={formData.date}
               onChange={handleChange}
-              // Open the native calendar when the field itself is clicked, not
-              // just the small icon. showPicker() needs a user gesture (a click
-              // qualifies); guarded for browsers that don't support it.
-              onClick={(e) => { try { e.currentTarget.showPicker?.(); } catch { /* picker unsupported */ } }}
+              onClick={(e) => { try { e.currentTarget.showPicker?.(); } catch { } }}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#207dff] focus:border-transparent cursor-pointer"
             />
@@ -288,7 +281,6 @@ function NewsFormAdmin() {
               Article Image <span className="text-red-500">*</span>
             </label>
 
-            {/* Mode Toggle */}
             <div className="flex space-x-2 mb-4">
               <button
                 type="button"
@@ -314,7 +306,6 @@ function NewsFormAdmin() {
               </button>
             </div>
 
-            {/* URL Mode */}
             {imageMode === 'url' && (
               <div>
                 <input
@@ -341,7 +332,6 @@ function NewsFormAdmin() {
               </div>
             )}
 
-            {/* Upload Mode */}
             {imageMode === 'upload' && (
               <div>
                 <FormFileUpload
@@ -356,7 +346,6 @@ function NewsFormAdmin() {
                   showImagePreview={true}
                 />
 
-                {/* Optional Alt Text for Upload */}
                 <div className="mt-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Alt Text (optional, for accessibility)

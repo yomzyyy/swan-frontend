@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { resolveImageUrl } from '../../utils';
-import SkeletonHero from '../skeletons/SkeletonHero';
+import Spinner from '../common/Spinner';
 import { ROUTES } from '../../config/routes';
 import ActionButton from '../common/ActionButton';
 import type { HeroTextContent } from '../../types';
@@ -21,20 +21,7 @@ const Hero = ({ heroText = {} }: HeroProps) => {
   const [loading, setLoading] = useState(true);
   const [animateContent, setAnimateContent] = useState(false);
 
-  const fallbackImages: HeroSlide[] = [
-    {
-      url: 'https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80',
-      altText: 'Maritime vessel at sea'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80',
-      altText: 'LPG tanker ship'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1605745341075-1b0c3401c2d7?w=1920&q=80',
-      altText: 'Shipping operations'
-    }
-  ];
+  const fallbackImages: HeroSlide[] = [];
 
   useEffect(() => {
     loadHeroImages();
@@ -86,11 +73,15 @@ const Hero = ({ heroText = {} }: HeroProps) => {
   };
 
   if (loading) {
-    return <SkeletonHero />;
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-[#0D2136]">
+        <Spinner className="w-10 h-10" />
+      </section>
+    );
   }
 
   return (
-    <section className="min-h-screen relative flex items-center pt-24 pb-16 overflow-hidden">
+    <section className="min-h-screen relative flex items-center pt-24 pb-16 overflow-hidden bg-[#0D2136]">
       {images.map((image, index) => (
         <div
           key={index}

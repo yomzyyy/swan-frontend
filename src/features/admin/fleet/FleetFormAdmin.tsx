@@ -42,7 +42,6 @@ function FleetFormAdmin() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Image upload state
   const [imageMode, setImageMode] = useState<'upload' | 'url'>('upload');
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -87,12 +86,9 @@ function FleetFormAdmin() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    // Number inputs still yield a string value from the DOM; coerce so the
-    // payload matches the backend schema (year must be a JSON number).
     setFormData(prev => ({ ...prev, [name]: type === 'number' ? Number(value) : value }));
   };
 
-  // Image upload handlers
   const handleImageFile = async (file: File) => {
     setUploadError('');
     setUploadSuccess('');
@@ -316,13 +312,11 @@ function FleetFormAdmin() {
           </div>
 
 
-          {/* Image Upload / URL */}
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Vessel Image <span className="text-red-500">*</span>
             </label>
 
-            {/* Mode Tabs */}
             <div className="flex mb-2">
               <button
                 type="button"
@@ -348,7 +342,6 @@ function FleetFormAdmin() {
               </button>
             </div>
 
-            {/* Upload Mode */}
             {imageMode === 'upload' && (
               <>
                 <div
@@ -394,7 +387,6 @@ function FleetFormAdmin() {
               </>
             )}
 
-            {/* URL Mode */}
             {imageMode === 'url' && (
               <input
                 type="url"
@@ -406,14 +398,12 @@ function FleetFormAdmin() {
               />
             )}
 
-            {/* Upload Error */}
             {uploadError && (
               <div className="mt-2 flex items-center gap-1 text-sm text-red-600">
                 <ErrorIcon sx={{ fontSize: 16 }} /> {uploadError}
               </div>
             )}
 
-            {/* Image Preview */}
             {formData.image && (
               <div className="mt-2 relative inline-block">
                 {imageError ? (
@@ -430,7 +420,6 @@ function FleetFormAdmin() {
                   />
                 )}
 
-                {/* Source badge */}
                 <span className={`absolute bottom-1 left-1 text-[9px] font-medium px-1 py-0.5 rounded ${
                   formData.image.startsWith('/api/')
                     ? 'bg-green-100 text-green-700'
@@ -439,7 +428,6 @@ function FleetFormAdmin() {
                   {formData.image.startsWith('/api/') ? 'Uploaded' : 'External URL'}
                 </span>
 
-                {/* Clear button */}
                 <button
                   type="button"
                   onClick={handleClearImage}
