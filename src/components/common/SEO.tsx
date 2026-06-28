@@ -4,7 +4,7 @@ import { SEO_DEFAULTS } from '../../constants/seo';
 import type { SEOProps } from '../../types';
 
 function SEO({ title, description, path, ogImage, ogType = 'website', publishedTime, modifiedTime, noIndex }: SEOProps) {
-  const fullTitle = title + SEO_DEFAULTS.titleSuffix;
+  const fullTitle = title ? title + SEO_DEFAULTS.titleSuffix : SEO_DEFAULTS.siteName;
   const canonicalUrl = ENV.SITE_URL + path;
   const imageUrl = ogImage?.startsWith('http') ? ogImage : ENV.SITE_URL + (ogImage || SEO_DEFAULTS.defaultOgImage);
 

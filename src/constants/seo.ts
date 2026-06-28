@@ -8,7 +8,7 @@ export const SEO_DEFAULTS = {
 
 export const PAGE_SEO = {
   HOME: {
-    title: 'Professional LPG Maritime Services',
+    title: '',
     description:
       'SWAN Shipping Corporation provides professional LPG maritime transport, vessel chartering, fleet management, and crew training services from Manila, Philippines.',
   },
