@@ -87,7 +87,7 @@ const AboutPage = () => {
   const missionVisionData = content.missionVision;
   const president = content.managementTeam.president;
   const teamMembers = content.managementTeam.members;
-  const topLeaders = teamMembers.length > 0 ? [president, teamMembers[0]] : [president];
+  const topLeaders = teamMembers.length > 0 ? [teamMembers[0], president] : [president];
   const gridMembers = teamMembers.slice(1);
   const clients = content.clients;
 

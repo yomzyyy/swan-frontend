@@ -17,7 +17,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Prevent body scroll when mobile menu is open
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -46,9 +45,16 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <ul className="flex gap-8 list-none">
+              <li>
+                <Link
+                  to="/"
+                  className="relative font-medium text-gray-800 pb-1 transition-all duration-300 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600"
+                >
+                  Home
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/about"
@@ -98,7 +104,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className="md:hidden text-gray-800 hover:text-blue-600 transition-colors"
@@ -109,7 +114,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-50 md:hidden"
@@ -117,14 +121,12 @@ const Navbar = () => {
         />
       )}
 
-      {/* Mobile Menu Drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Mobile Menu Header */}
           <div className="flex justify-between items-center p-6 border-b border-gray-200">
             <img
               src="/swan-logo.png"
@@ -140,9 +142,17 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu Links */}
           <nav className="flex-1 overflow-y-auto p-6">
             <ul className="flex flex-col gap-4 list-none">
+              <li>
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block py-3 text-lg font-medium text-gray-800 hover:text-blue-600 border-b border-gray-200 transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/about"
@@ -191,7 +201,6 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          {/* Mobile Menu Footer with Contact Button */}
           <div className="p-6 border-t border-gray-200">
             <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
               <button className="w-full bg-blue-500 px-6 py-3 rounded-full text-white font-semibold hover:bg-blue-600 transition-all duration-300">

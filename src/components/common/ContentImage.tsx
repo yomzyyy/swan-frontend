@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect, useRef } from 'react';
 import { resolveImageUrl } from '../../utils';
 import Spinner from './Spinner';
 
@@ -21,14 +21,16 @@ function ContentImage({
 }: ContentImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const resolved = resolveImageUrl(src);
   const hasImage = Boolean(resolved);
   const ready = !loading && hasImage;
 
-  useEffect(() => {
-    setLoaded(false);
+  useLayoutEffect(() => {
     setErrored(false);
+    const node = imgRef.current;
+    setLoaded(Boolean(node && node.complete && node.naturalWidth > 0));
   }, [resolved, ready]);
 
   const showSpinner = loading || (ready && !loaded && !errored);
@@ -46,8 +48,10 @@ function ContentImage({
 
       {ready && !errored && (
         <img
+          ref={imgRef}
           src={resolved}
           alt={alt}
+          loading="lazy"
           onLoad={() => setLoaded(true)}
           onError={() => setErrored(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${

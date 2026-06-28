@@ -102,7 +102,9 @@ const ContactPage = () => {
     <div className="min-h-screen bg-white">
       <SEO {...PAGE_SEO.CONTACT} path="/contact" />
       <div className="relative h-96 bg-[#0D2136]">
-        <ContentImage src={content.hero.backgroundImage} alt="" loading={loading} fill />
+        {content.hero.backgroundImage && (
+          <ContentImage src={content.hero.backgroundImage} alt="" loading={loading} fill />
+        )}
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
