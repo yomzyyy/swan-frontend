@@ -84,15 +84,29 @@ const ContactPage = () => {
     setErrors({});
 
     try {
-      console.log('Form submitted:', { ...formData, formType: activeTab });
+      const typeMap: Record<string, 'contact' | 'job' | 'quote'> = { contact: 'contact', jobs: 'job', quote: 'quote' };
+      const data: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(formData)) {
+        if (value instanceof File) {
+          const fileForm = new FormData();
+          fileForm.append('file', value);
+          const uploaded = await api.submissions.uploadAttachment(fileForm);
+          data[`${key}FileId`] = uploaded.data.data.fileId;
+          data[`${key}Filename`] = value.name;
+        } else if (value !== null && value !== '') {
+          data[key] = value;
+        }
+      }
+      const name = String(formData.name || 'Unknown');
+      const email = String(formData.email || '');
+      await api.submissions.create({ type: typeMap[activeTab], name, email, data });
       setSubmitSuccess(true);
       setFormData({});
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 5000);
     } catch (error) {
-      console.error('Submission error:', error);
-      setErrors({ submit: 'Failed to send. Please try again.' });
+      setErrors({ submit: (error as Error).message || 'Failed to send. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }

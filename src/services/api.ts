@@ -2,7 +2,7 @@ import axios, { type AxiosResponse } from 'axios';
 import { ENV } from '../config/env';
 import { friendlyError } from '../utils/friendlyError';
 import type { ApiResponse, LoginResponse } from '../types/api';
-import type { News, Fleet, Career, HeroImage, PageContent } from '../types/models';
+import type { News, Fleet, Career, HeroImage, PageContent, Submission } from '../types/models';
 
 const apiClient = axios.create({
   baseURL: ENV.API_URL,
@@ -129,17 +129,29 @@ export const api = {
       })
   },
 
-  contact: {
-    submitGeneral: (data: Record<string, unknown>): Promise<AxiosResponse<ApiResponse<unknown>>> =>
-      apiClient.post('/api/contact/general', data),
+  submissions: {
+    create: (data: { type: string; name: string; email: string; data: Record<string, unknown> }): Promise<AxiosResponse<ApiResponse<Submission>>> =>
+      apiClient.post('/api/submissions', data),
 
-    submitJobApplication: (formData: FormData): Promise<AxiosResponse<ApiResponse<unknown>>> =>
-      apiClient.post('/api/contact/job-application', formData, {
+    getAll: (type?: string): Promise<AxiosResponse<ApiResponse<Submission[]>>> =>
+      apiClient.get('/api/submissions', { params: type ? { type } : undefined }),
+
+    getById: (id: string): Promise<AxiosResponse<ApiResponse<Submission>>> =>
+      apiClient.get(`/api/submissions/${id}`),
+
+    setRead: (id: string, isRead: boolean): Promise<AxiosResponse<ApiResponse<Submission>>> =>
+      apiClient.put(`/api/submissions/${id}/read`, { isRead }),
+
+    remove: (id: string): Promise<AxiosResponse<ApiResponse<Submission>>> =>
+      apiClient.delete(`/api/submissions/${id}`),
+
+    uploadAttachment: (formData: FormData): Promise<AxiosResponse<ApiResponse<{ fileId: string; filename: string }>>> =>
+      apiClient.post('/api/submissions/attachment', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       }),
 
-    submitQuoteRequest: (data: Record<string, unknown>): Promise<AxiosResponse<ApiResponse<unknown>>> =>
-      apiClient.post('/api/contact/quote-request', data)
+    downloadAttachment: (fileId: string): Promise<AxiosResponse<Blob>> =>
+      apiClient.get(`/api/submissions/attachment/${fileId}`, { responseType: 'blob' })
   },
 
   hero: {

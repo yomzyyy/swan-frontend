@@ -37,6 +37,7 @@ const ServicesContentAdmin = lazy(() => import('./features/admin/content/Service
 const CareersContentAdmin = lazy(() => import('./features/admin/content/CareersContentAdmin'));
 const FleetContentAdmin = lazy(() => import('./features/admin/content/FleetContentAdmin'));
 const ContactContentAdmin = lazy(() => import('./features/admin/content/ContactContentAdmin'));
+const SubmissionsListAdmin = lazy(() => import('./features/admin/submissions/SubmissionsListAdmin'));
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
             {/* Admin routes - shared AdminLayout with Outlet */}
             <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
               <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="submissions" element={<SubmissionsListAdmin />} />
               <Route path="news" element={<NewsListAdmin />} />
               <Route path="news/create" element={<NewsFormAdmin />} />
               <Route path="news/edit/:id" element={<NewsFormAdmin />} />

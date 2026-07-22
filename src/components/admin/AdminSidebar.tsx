@@ -44,6 +44,10 @@ function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
       path: '/admin/dashboard',
     },
     {
+      title: 'Form Submissions',
+      path: '/admin/submissions',
+    },
+    {
       title: 'Content Management',
       isSection: true,
     },

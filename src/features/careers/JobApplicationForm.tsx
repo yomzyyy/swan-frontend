@@ -109,28 +109,39 @@ const JobApplicationForm = () => {
 
     setSubmitting(true);
 
-    // Simulate API submission (you'll need to implement the actual API endpoint)
     try {
-      // In a real implementation, you would send this data to your backend
-      // const formDataToSend = new FormData();
-      // Object.keys(formData).forEach(key => {
-      //   formDataToSend.append(key, formData[key]);
-      // });
-      // formDataToSend.append('jobId', id);
-      // await api.applications.create(formDataToSend);
-
-      // For now, simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      let resumeFileId: string | undefined;
+      if (formData.resume) {
+        const fileForm = new FormData();
+        fileForm.append('file', formData.resume);
+        const uploaded = await api.submissions.uploadAttachment(fileForm);
+        resumeFileId = uploaded.data.data.fileId;
+      }
+      const name = `${formData.firstName} ${formData.lastName}`.trim();
+      await api.submissions.create({
+        type: 'job',
+        name,
+        email: formData.email,
+        data: {
+          jobId: id,
+          jobTitle: job?.title,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          coverLetter: formData.coverLetter,
+          resumeFileId,
+          resumeFilename: formData.resume?.name
+        }
+      });
 
       setSubmitSuccess(true);
 
-      // Redirect after 3 seconds
       setTimeout(() => {
         navigate('/careers');
       }, 3000);
     } catch (err) {
-      setError('Failed to submit application. Please try again.');
-      console.error(err);
+      setError((err as Error).message || 'Failed to submit application. Please try again.');
     } finally {
       setSubmitting(false);
     }

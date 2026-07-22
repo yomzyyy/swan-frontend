@@ -47,6 +47,7 @@ const QuoteRequestForm = ({ formData, errors, onChange }: QuoteRequestFormProps)
       label="Phone Number"
       name="phone"
       type="tel"
+      placeholder="e.g., 0917 123 4567"
       value={formData.phone || ''}
       onChange={onChange}
       error={errors.phone}

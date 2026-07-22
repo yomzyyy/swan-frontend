@@ -9,6 +9,20 @@ export type NewsStatus = 'draft' | 'published';
 
 export type UserRole = 'admin';
 
+export type SubmissionType = 'contact' | 'job' | 'quote';
+
+export interface Submission {
+  id: string;
+  type: SubmissionType;
+  name: string;
+  email: string;
+  data: Record<string, unknown>;
+  isRead: boolean;
+  isDeleted: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface Fleet {
   id: string;
   name: string;

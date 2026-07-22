@@ -31,6 +31,7 @@ const ContactJobForm = ({ formData, errors, onChange }: ContactJobFormProps) => 
       label="Phone Number"
       name="phone"
       type="tel"
+      placeholder="e.g., 0917 123 4567"
       value={formData.phone || ''}
       onChange={onChange}
       error={errors.phone}
@@ -59,6 +60,7 @@ const ContactJobForm = ({ formData, errors, onChange }: ContactJobFormProps) => 
       label="Upload Resume (PDF or DOC)"
       name="resume"
       accept=".pdf,.doc,.docx"
+      file={(formData.resume as unknown as File | null) || null}
       onChange={onChange}
       error={errors.resume}
       required

@@ -1,7 +1,7 @@
 import type { ValidationResult } from '../types/api';
 
 export interface ContactFormData {
-  fullName: string;
+  name: string;
   email: string;
   phone?: string;
   subject: string;
@@ -9,27 +9,21 @@ export interface ContactFormData {
 }
 
 export interface JobFormData {
-  fullName: string;
+  name: string;
   email: string;
   phone: string;
   position: string;
-  experience: string;
+  coverLetter: string;
   resume: File | null;
-  coverLetter?: string;
 }
 
 export interface QuoteFormData {
-  companyName: string;
-  contactPerson: string;
+  company: string;
+  name: string;
   email: string;
   phone: string;
-  serviceType: string;
-  cargoType: string;
-  cargoVolume?: string;
-  originPort: string;
-  destinationPort: string;
-  shippingDate?: string;
-  additionalNotes?: string;
+  service: string;
+  details: string;
 }
 
 export const validateEmail = (email: string): boolean => {
@@ -38,8 +32,8 @@ export const validateEmail = (email: string): boolean => {
 };
 
 export const validatePhone = (phone: string): boolean => {
-  const regex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
-  return regex.test(phone);
+  const trimmed = phone.trim();
+  return trimmed.length > 0 && trimmed.length <= 25 && /^[0-9+\-\s()]+$/.test(trimmed);
 };
 
 export const validateFile = (file: File | null, maxSize = 5 * 1024 * 1024): ValidationResult => {
@@ -67,8 +61,8 @@ export const validateFile = (file: File | null, maxSize = 5 * 1024 * 1024): Vali
 export const validateContactForm = (formData: ContactFormData): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!formData.fullName || formData.fullName.trim() === '') {
-    errors.fullName = 'Full name is required';
+  if (!formData.name || formData.name.trim() === '') {
+    errors.name = 'Full name is required';
   }
 
   if (!formData.email || formData.email.trim() === '') {
@@ -97,8 +91,8 @@ export const validateContactForm = (formData: ContactFormData): Record<string, s
 export const validateJobForm = (formData: JobFormData): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!formData.fullName || formData.fullName.trim() === '') {
-    errors.fullName = 'Full name is required';
+  if (!formData.name || formData.name.trim() === '') {
+    errors.name = 'Full name is required';
   }
 
   if (!formData.email || formData.email.trim() === '') {
@@ -113,14 +107,12 @@ export const validateJobForm = (formData: JobFormData): Record<string, string> =
     errors.phone = 'Please enter a valid phone number';
   }
 
-  if (!formData.position || formData.position === '') {
-    errors.position = 'Please select a position';
+  if (!formData.position || formData.position.trim() === '') {
+    errors.position = 'Please enter a position';
   }
 
-  if (!formData.experience || formData.experience === '') {
-    errors.experience = 'Years of experience is required';
-  } else if (parseInt(formData.experience) < 0) {
-    errors.experience = 'Experience cannot be negative';
+  if (!formData.coverLetter || formData.coverLetter.trim() === '') {
+    errors.coverLetter = 'Cover letter is required';
   }
 
   if (!formData.resume) {
@@ -138,12 +130,12 @@ export const validateJobForm = (formData: JobFormData): Record<string, string> =
 export const validateQuoteForm = (formData: QuoteFormData): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!formData.companyName || formData.companyName.trim() === '') {
-    errors.companyName = 'Company name is required';
+  if (!formData.company || formData.company.trim() === '') {
+    errors.company = 'Company name is required';
   }
 
-  if (!formData.contactPerson || formData.contactPerson.trim() === '') {
-    errors.contactPerson = 'Contact person name is required';
+  if (!formData.name || formData.name.trim() === '') {
+    errors.name = 'Contact person name is required';
   }
 
   if (!formData.email || formData.email.trim() === '') {
@@ -158,34 +150,12 @@ export const validateQuoteForm = (formData: QuoteFormData): Record<string, strin
     errors.phone = 'Please enter a valid phone number';
   }
 
-  if (!formData.serviceType || formData.serviceType === '') {
-    errors.serviceType = 'Please select a service type';
+  if (!formData.service || formData.service.trim() === '') {
+    errors.service = 'Please select a service';
   }
 
-  if (!formData.cargoType || formData.cargoType.trim() === '') {
-    errors.cargoType = 'Cargo type is required';
-  }
-
-  if (formData.cargoVolume && parseFloat(formData.cargoVolume) <= 0) {
-    errors.cargoVolume = 'Cargo volume must be a positive number';
-  }
-
-  if (!formData.originPort || formData.originPort.trim() === '') {
-    errors.originPort = 'Origin port is required';
-  }
-
-  if (!formData.destinationPort || formData.destinationPort.trim() === '') {
-    errors.destinationPort = 'Destination port is required';
-  }
-
-  if (formData.shippingDate) {
-    const selectedDate = new Date(formData.shippingDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (selectedDate < today) {
-      errors.shippingDate = 'Shipping date cannot be in the past';
-    }
+  if (!formData.details || formData.details.trim() === '') {
+    errors.details = 'Project details are required';
   }
 
   return errors;

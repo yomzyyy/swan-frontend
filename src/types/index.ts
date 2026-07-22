@@ -9,6 +9,8 @@ export type {
   User,
   HeroImage,
   PageContent,
+  SubmissionType,
+  Submission,
 } from './models';
 
 export type {
