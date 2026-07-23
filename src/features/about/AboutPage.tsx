@@ -240,7 +240,7 @@ const AboutPage = () => {
               </h2>
 
               <div
-                className="grid grid-cols-3 gap-4 mb-8 transition-opacity duration-300"
+                className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 transition-opacity duration-300"
                 style={{ opacity: isCarouselTransitioning ? 0 : 1 }}
               >
                 {(() => {
@@ -255,7 +255,7 @@ const AboutPage = () => {
                         onMouseEnter={() => setHoveredCard(index)}
                         onMouseLeave={() => setHoveredCard(null)}
                         onClick={() => setCurrentPillarIndex(index)}
-                        className="cursor-pointer transition-all duration-300 p-6 shadow-md"
+                        className="cursor-pointer transition-all duration-300 p-4 xl:p-6 shadow-md"
                         style={{
                           backgroundColor: hoveredCard === index ? '#2563eb' : 'white',
                           border: '2px solid #e5e7eb'
@@ -278,7 +278,7 @@ const AboutPage = () => {
                         </div>
 
                         <h3
-                          className="text-lg font-bold mb-2"
+                          className="text-base xl:text-lg font-bold mb-2 break-words hyphens-auto"
                           style={{
                             color: hoveredCard === index ? 'white' : '#111827'
                           }}
