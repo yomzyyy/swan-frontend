@@ -60,6 +60,7 @@ export type {
   ContactHeroContent,
   ContactAboutContent,
   ContactInfoContent,
+  SocialLinksContent,
   ContactPageContent,
 } from './content';
 

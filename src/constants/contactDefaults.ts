@@ -15,5 +15,10 @@ export const contactDefaults: ContactPageContent = {
     phone: '+63-2-85268718 to 19',
     phone2: '+63-2-85239830',
     email: 'info@swan-manila.com'
+  },
+  socialLinks: {
+    linkedin: '',
+    twitter: '',
+    facebook: ''
   }
 };

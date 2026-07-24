@@ -219,8 +219,15 @@ export interface ContactInfoContent {
   email: string;
 }
 
+export interface SocialLinksContent {
+  linkedin: string;
+  twitter: string;
+  facebook: string;
+}
+
 export interface ContactPageContent {
   hero: ContactHeroContent;
   whyChooseUs: ContactAboutContent;
   getInTouch: ContactInfoContent;
+  socialLinks: SocialLinksContent;
 }

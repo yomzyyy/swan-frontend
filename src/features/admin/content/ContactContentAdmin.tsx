@@ -46,6 +46,16 @@ const SECTIONS: SectionConfig[] = [
       { key: 'phone2', label: 'Phone 2', type: 'text' },
       { key: 'email', label: 'Email', type: 'text' }
     ]
+  },
+  {
+    key: 'socialLinks',
+    title: 'Follow Us',
+    description: 'Social media profile links shown in the footer',
+    fields: [
+      { key: 'linkedin', label: 'LinkedIn URL', type: 'url', placeholder: 'https://www.linkedin.com/company/...' },
+      { key: 'twitter', label: 'X (Twitter) URL', type: 'url', placeholder: 'https://x.com/...' },
+      { key: 'facebook', label: 'Facebook URL', type: 'url', placeholder: 'https://www.facebook.com/...' }
+    ]
   }
 ];
 
