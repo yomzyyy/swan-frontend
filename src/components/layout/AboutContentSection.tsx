@@ -111,7 +111,7 @@ const AboutContentSection = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-        <div className="h-full">
+        <div className="h-full lg:h-[520px]">
           <div className="overflow-hidden shadow-2xl relative h-full">
             {imageLoading ? (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
